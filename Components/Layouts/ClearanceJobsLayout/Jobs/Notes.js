@@ -7,7 +7,7 @@ import openNotification from '../../../Shared/Notification';
 import moment from 'moment'
 import { useRouter } from 'next/router'
 
-const Notes = ({state, dispatch}) => {
+const Notes = ({state, dispatch, type}) => {
   const params = useRouter();
   const handleSubmit = async() => {
 
@@ -17,8 +17,7 @@ const Notes = ({state, dispatch}) => {
         await axios.post(process.env.NEXT_PUBLIC_CLIMAX_ADD_SEAJOB_NOTE,{
             title:state.title, note:state.note, recordId:state.selectedRecord.id, opened: "0", 
             recordId: state.selectedRecord.id,
-            type: params.pathname.includes("airJobs/export") ? "AE" : params.pathname.includes("airJobs/import") ? "AI" :
-            params.pathname.includes("seaJobs/import") ? "SI" : "SE",
+            type: type,
             createdBy:Cookies.get('username')
         }).then((x)=>{
         if(x.data.status=='success'){
@@ -28,9 +27,11 @@ const Notes = ({state, dispatch}) => {
         else{
           openNotification('Error', `An Error occured Please Try Again!`, 'red')
         }
-        dispatch({type:'toggle', fieldName:'title', payload:""});
-        dispatch({type:'toggle', fieldName:'note', payload:""}); 
-        dispatch({type:'toggle', fieldName:'load', payload:false});
+        dispatch({type:"set",payload:{
+          title : "",
+          note : "",
+          load : false
+        }})
         })
       }, 3000);
     }
@@ -41,6 +42,7 @@ const Notes = ({state, dispatch}) => {
       await axios.post(process.env.NEXT_PUBLIC_CLIMAX_GET_SEAJOB_NOTES,{
         id: state.selectedRecord.id, type :state.selectedRecord.operation
       }).then((x)=>{
+        console.log(x.data)
         if(x.data.status=='success'){
           const data = {opened : "1", recordId : x.data.result[0]?.recordId};
           updateNote(data);

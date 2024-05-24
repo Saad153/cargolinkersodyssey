@@ -4,6 +4,7 @@ import SelectComp from '/Components/Shared/Form/SelectComp';
 import SelectSearchComp from '/Components/Shared/Form/SelectSearchComp';
 import CheckGroupComp from '/Components/Shared/Form/CheckGroupComp';
 import DateComp from '/Components/Shared/Form/DateComp';
+import InputNumComp from "/Components/Shared/Form/InputNumComp";
 import TimeComp from '/Components/Shared/Form/TimeComp';
 import { Row, Col } from 'react-bootstrap';
 import CustomBoxSelect from '/Components/Shared/Form/CustomBoxSelect';
@@ -16,7 +17,6 @@ import { getStatus } from './states';
 import Router from 'next/router';
 import InputComp from '/Components/Shared/Form/InputComp';
 import { addBlCreationId } from '/redux/BlCreation/blCreationSlice';
-import Weights from './WeightComp';
 import BLInfo from './BLInfo';
 import airports from "/jsonData/airports";
 import Carrier from './Carrier';
@@ -224,12 +224,32 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
             options={state.fields.vendor.transporter} disabled={getStatus(approved) || transportCheck.length == 0} width={"100%"} 
           />
           <div style={{ marginTop: 13 }}></div>
-          <Weights register={register} control={control} equipments={state.equipments}
-            type={type} approved={approved} useWatch={useWatch}
-          />
+          <Row>
+          <Col md={6} className='mt-2'>
+            <InputNumComp register={register} name='truck' control={control} width={"100%"} label='Truck #' step={'0.01'} disabled={getStatus(approved)} />
+            </Col>
+            <Col md={6} className='mt-2'>
+                <InputNumComp register={register} name='container' control={control} label='Container #' width={"100%"} step={'0.00001'} disabled={getStatus(approved)}/>
+            </Col>
+            <Col md={4} className='mt-2'>
+                <InputNumComp register={register} name='pcs' control={control}  label='PCS' width={"100%"} disabled={getStatus(approved)} />
+            </Col>
+            <Col md={8} className='mt-2'>
+              <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"} disabled={getStatus(approved)}
+                options={[  
+                {"id":"BAGS"   , "name":"BAGS"},
+                {"id":"BALES"  , "name":"BALES"},
+                {"id":"BARRELS", "name":"BARRELS"},
+                {"id":"CARTONS", "name":"CARTONS"},
+                {"id":"BLOCKS" , "name":"BLOCKS"},
+                {"id":"BOATS"  , "name":"BOATS"}
+                ]} 
+              />
+            </Col>
+          </Row>
         </Col>
       <Col md={3}>
-      {state.edit &&<Notes state={state} dispatch={dispatch} />}
+      {state.edit &&<Notes state={state} dispatch={dispatch} type={type} />}
         {approved=="1" && <img src={'/approve.png'} height={100} />}
         <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
           <CheckGroupComp register={register} name='approved' control={control} label='' 

@@ -37,7 +37,6 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   const tabs = useSelector((state)=>state.tabs.tabs)
 
   useEffect(() => {
-    console.log(type)
     let tempState = {...baseValues, ...jobData};
     let tempVoyageList = [...state.voyageList];
     tempVoyageList.length>0?null:tempVoyageList.push(tempState.Voyage);
@@ -80,7 +79,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       voyageList:tempVoyageList,
     }});
     getInvoices(tempState.id, dispatch);
-    reset({...tempState, pol:type=="AE"?'KHI':""});
+    reset({...tempState});
   }, [state.selectedRecord]);
 
   const onSubmit = async(data) => {
@@ -240,7 +239,6 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
           onClick={()=>{
             PopConfirm("Confirmation", "Are You Sure You Want To Delete This Job?",
                 () => {
-                  console.log("Delete");
                   axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_JOBS,{
                     id:allValues.id
                   }).then(async(x)=>{

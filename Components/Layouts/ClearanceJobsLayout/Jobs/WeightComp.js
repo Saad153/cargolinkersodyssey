@@ -22,15 +22,40 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
           }
         });
         return {weight, teu, qty}
-    }
+      }
 
     return(
-    <Row>
+    <Row style={{border:'1px solid silver', paddingBottom:15, margin:0}}>
         <Col md={6} className='mt-2'>
-        <InputNumComp register={register} name='weight' control={control} width={"100%"} label='Truck #' step={'0.01'} disabled={getStatus(approved)} />
+        <InputNumComp register={register} name='weight' control={control} width={"100%"} label='Gross Weight' step={'0.01'} disabled={getStatus(approved)} />
         </Col>
         <Col md={6} className='mt-2'>
-            <InputNumComp register={register} name='vol' control={control} label='Container #' width={"100%"} step={'0.00001'} disabled={getStatus(approved)}/>
+            <InputNumComp register={register} name='bkg' control={control} width={"100%"} label='Net Weight' step={'0.01'} disabled={getStatus(approved)} />
+        </Col>
+        <Col md={12} className='py-1'>
+          <SelectComp register={register} name='incoTerms' control={control} label='Inco Terms' width={"100%"} disabled={getStatus(approved)}
+            options={[
+              { id: 'EXW', name: 'EXW' },
+              { id: 'FCP', name: 'FCP' },
+              { id: 'FAS', name: 'FAS' },
+              { id: 'FOB', name: 'FOB' },
+              { id: 'CFR', name: 'CFR' },
+              { id: 'CIF', name: 'CIF' },
+              { id: 'CIP', name: 'CIP' },
+              { id: 'CPT', name: 'CPT' },
+              { id: 'DAP', name: 'DAP' },
+              { id: 'DPU', name: 'DPU' },
+              { id: 'DDP', name: 'DDP' },
+              { id: 'CNI', name: 'CNI' },
+              { id: 'DTP', name: 'DTP' },
+              { id: 'DPP', name: 'DPP' },
+              { id: 'DAT', name: 'DAT' },
+              { id: 'DDU', name: 'DDU' },
+              { id: 'DES', name: 'DES' },
+              { id: 'DEQ', name: 'DEQ' },
+              { id: 'DAF', name: 'DAF' },
+              { id: 'CNF', name: 'CNF' },
+            ]} />
         </Col>
         <Col md={4} className='mt-2'>
             <InputNumComp register={register} name='pcs' control={control}  label='PCS' width={"100%"} disabled={getStatus(approved)} />
@@ -46,6 +71,8 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
             {"id":"BOATS"  , "name":"BOATS"}
             ]} />
         </Col>
+
+     
     </Row>
     )
 }

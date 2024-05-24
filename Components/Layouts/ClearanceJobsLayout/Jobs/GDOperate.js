@@ -20,26 +20,16 @@ import Weights from './WeightComp';
 import BLInfo from './BLInfo';
 import airports from "/jsonData/airports";
 import Carrier from './Carrier';
-import EquipmentInfo from './EquipmentInfo';
 
 const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
   const tabs = useSelector((state)=>state.tabs.tabs)
-  //const companyId = useSelector((state) => state.company.value);
   const dispatchNew = useDispatch();
-  const transportCheck = useWatch({control, name:"transportCheck"});
-  const transporterId = useWatch({control, name:"transporterId"});
-  const customCheck = useWatch({control, name:"customCheck"});
-  const customAgentId = useWatch({control, name:"customAgentId"});
   const vesselId = useWatch({control, name:"vesselId"});
   const VoyageId = useWatch({control, name:"VoyageId"});
   const ClientId = useWatch({control, name:"ClientId"});
   const shipperId = useWatch({control, name:"shipperId"});
   const consigneeId = useWatch({control, name:"consigneeId"});
-  const overseasAgentId = useWatch({control, name:"overseasAgentId"});
-  const airLineId = useWatch({control, name:"airLineId"});
-  const forwarderId = useWatch({control, name:"forwarderId"});
-  const shippingLineId = useWatch({control, name:"shippingLineId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
   let allValues = useWatch({control});
@@ -107,7 +97,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
   <>
     <Row style={{fontSize:12}}>
       <Col md={2} className='py-1'>     
-        <DateComp register={register} name='gd' control={control} label='GD #' width={"100%"} disabled={getStatus(approved)} />
+        <InputComp register={register} name='gd' control={control} label='GD #' width={"100%"} disabled={getStatus(approved)} />
         {errors.registerDate && <div className='error-line'>Required*</div>}
       </Col>
       <Col md={2} className='py-1'>
@@ -132,6 +122,10 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <div className='custom-link mt-2' onClick={()=>pageLinking("client", consigneeId)} >Consignee *</div>
         <SelectSearchComp register={register} name='consigneeId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
           options={state.fields.party.consignee} /><Space/>
+        <div style={{ marginTop: 13 }}></div>
+          <Weights register={register} control={control} equipments={state.equipments}
+            type={type} approved={approved} useWatch={useWatch}
+          />
       </Col>
       <Col md={3}>
         <Space/>
@@ -146,38 +140,51 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <div className='my-2'></div>
         <SelectSearchComp register={register} name='customAgentId' control={control} label='Freight Forwarder' width={"100%"}
           options={state.fields.vendor.chaChb} 
-        />
-        {(type=="CSE"||type=="CSI") &&<>
-          <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", shippingLineId)} >Sline/Carrier</div>
-          <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
-        </>
-        }        
-        {/* <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
+        />       
+        <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
           getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
-        /> */}
+        />
       </Col>
-      
-      <Col md={3}><Space />
-          <div className='mt-2' />
-          <Row>
-            <Col md={1}>
-              <CheckGroupComp register={register} name='transportCheck' control={control} label='' disabled={getStatus(approved)}
-                options={[{ label: "", value: "Transport" }]} />
-            </Col>
-            <Col md={3}>
-              <div className='custom-link' onClick={() => pageLinking("vendor", transporterId)} >Transport</div>
-            </Col>
-            <Col>.</Col>
-          </Row>
-          <SelectSearchComp register={register} name='transporterId' control={control} label=''
-            options={state.fields.vendor.transporter} disabled={getStatus(approved) || transportCheck.length == 0} width={"100%"} 
-          />
-          <div style={{ marginTop: 13 }}></div>
-          <Weights register={register} control={control} equipments={state.equipments}
-            type={type} approved={approved} useWatch={useWatch}
-          />
+        <Col md={4}>
+        <Row>
+        <Col md={6}>
+            <SelectSearchComp register={register} name='pol' control={control} 
+                label={(type=="CSE"||type=="CSI")?'Port Of Loading':'Airport of Loading'} 
+                width={"100%"}
+                options={(type=="CSE"||type=="CSI")?ports.ports:airports} />
+            <Space/>
         </Col>
-      <Col md={3}>
+        <Col md={6} style={{paddingTop:19}}> 
+            <DateComp register={register} name='polDate' control={control} label=''  /> <Space/>
+        </Col>
+        <Col md={6}>
+            <SelectSearchComp register={register} name='pod' control={control} 
+                label={(type=="CSE"||type=="CSI")?'Port Of Discharge':'Airport of Discharge'} width={"100%"}
+                options={(type=="CSE"||type=="CSI")?ports.ports:airports} />
+            <Space/>
+        </Col>
+        <Col md={6} style={{paddingTop:19}}> 
+            <DateComp register={register} name='podDate' control={control} label='' /> <Space/>
+        </Col>
+        <Col md={6}>
+            <SelectSearchComp register={register} name='fd' control={control} label='Final Destination' width={"100%"}
+                options={ports.ports} />
+            <Space/>
+        </Col>
+        <Col md={6}></Col>
+        <Col md={6}>
+            <SelectSearchComp register={register} name='terminal' control={control} label='Terminal' width={"100%"}
+                options={[  
+                    {id:'Direct', name:'Direct'},
+                ]}
+            />
+            <Space/>
+        </Col>
+        
+        <div style={{minHeight:158}}></div>
+      </Row>
+        </Col>
+        <Col md={2}>
       {state.edit &&<Notes state={state} dispatch={dispatch} />}
         {approved=="1" && <img src={'/approve.png'} height={100} />}
         <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
@@ -206,8 +213,6 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
       </div>
       </Col>
     </Row>
-    <hr className='' />
-    <EquipmentInfo state={state} dispatch={dispatch} />
     {(state.voyageVisible && approved[0]!="1") && 
       <CustomBoxSelect reset={reset} useWatch={useWatch} control={control} state={state} dispatch={dispatch}/>
     }
