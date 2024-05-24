@@ -84,15 +84,11 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
         }
         {(type=="AE"||type=="AI") && <>
         <Row>
-            <Col md={12} className='pt-2'>
-                <InputComp register={register} name='flightNo' control={control} label='Flight No.' disabled={getStatus(approved)} />
-            </Col>
+          <Col md={12} className='pt-2'>
+            <InputComp register={register} name='flightNo' control={control} label='Flight No.' disabled={getStatus(approved)} />
+          </Col>
         </Row>
         <Row>
-        {/* arrivalDate:'',  
-        arrivalTime:'',
-        departureDate:'',
-        departureTime:'' */}
             <Col md={6}>
                 <div className='my-2'></div>
                 <DateComp register={register} name='arrivalDate' control={control} label='Arrival' disabled={getStatus(approved)} />
@@ -100,9 +96,7 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
             <Col md={6}>
                 <div className='my-2'></div>
                 <TimeComp register={register} name='arrivalTime' control={control} label='.'  width={100} disabled={getStatus(approved)} />
-                
             </Col>
-
             <Col md={6}>
                 <div className='my-2'></div>
                 <DateComp register={register} name='departureDate' control={control} label='Departure' disabled={getStatus(approved)} />

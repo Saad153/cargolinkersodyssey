@@ -38,22 +38,37 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
         <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
         </>}
         {(type=="CAE"||type=="CAI") &&<>
-        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", airLineId)} >Air line *</div>
-        <SelectSearchComp register={register} name='airLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.airLine} width={"100%"} />
-        </>}
-        
-        <div className='custom-link mt-2' onClick={()=>pageLinking("vessel")} >Vessel *</div>
-        <SelectSearchComp register={register} name='vesselId' control={control} label=''disabled={getStatus(approved)} width={"100%"}
-            options={filterVessels(state.fields.vessel)} 
-        />
-        <div className='mt-2'>Voyage *</div>
-        <div className="dummy-input"
-            onClick={()=>{
-                if(vesselId!=undefined && vesselId!=''){
-                    dispatch({type:'voyageSelection', payload:vesselId})
-                }
-            }}
-        >{getVoyageNumber(VoyageId)}</div>
+          <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", airLineId)} >Air line *</div>
+          <SelectSearchComp 
+            label='' 
+            width={"100%"} 
+            register={register} 
+            name='airLineId' 
+            control={control} 
+            disabled={getStatus(approved)} options={state.fields.vendor.airLine} 
+          />
+
+          <Col md={12} className='pt-2'>
+            <InputComp register={register} name='flightNo' control={control} label='Flight No.' disabled={getStatus(approved)} />
+          </Col>
+        </>
+        }
+        {(type=="CSE"||type=="CSI") &&
+          <>
+            <div className='custom-link mt-2' onClick={()=>pageLinking("vessel")} >Vessel *</div>
+            <SelectSearchComp register={register} name='vesselId' control={control} label=''disabled={getStatus(approved)} width={"100%"}
+                options={filterVessels(state.fields.vessel)} 
+            />
+            <div className='mt-2'>Voyage *</div>
+            <div className="dummy-input"
+                onClick={()=>{
+                    if(vesselId!=undefined && vesselId!=''){
+                        dispatch({type:'voyageSelection', payload:vesselId})
+                    }
+                }}
+            >{getVoyageNumber(VoyageId)}</div>
+          </>
+        }
     </div> 
     </>
   )}

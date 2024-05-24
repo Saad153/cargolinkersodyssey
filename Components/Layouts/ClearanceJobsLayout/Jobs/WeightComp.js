@@ -22,21 +22,15 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
           }
         });
         return {weight, teu, qty}
-      }
+    }
 
     return(
-    <Row style={{border:'1px solid silver', paddingBottom:15, margin:0}}>
+    <Row>
         <Col md={6} className='mt-2'>
-        <InputNumComp register={register} name='weight' control={control} width={"100%"} label='Weight' step={'0.01'} disabled={getStatus(approved)} />
+        <InputNumComp register={register} name='weight' control={control} width={"100%"} label='Truck #' step={'0.01'} disabled={getStatus(approved)} />
         </Col>
         <Col md={6} className='mt-2'>
-            <InputNumComp register={register} name='bkg' control={control} width={"100%"} label='BKG Weight' step={'0.01'} disabled={getStatus(approved)} />
-        </Col>
-        <Col md={6} className='mt-2'>
-            <InputNumComp register={register} name='shpVol' control={control} label='Shp Vol' width={"100%"} step={'0.01'} disabled={getStatus(approved)} />
-        </Col>
-        <Col md={6} className='mt-2'>
-            <InputNumComp register={register} name='vol' control={control} label='Vol' width={"100%"} step={'0.00001'} disabled={getStatus(approved)}/>
+            <InputNumComp register={register} name='vol' control={control} label='Container #' width={"100%"} step={'0.00001'} disabled={getStatus(approved)}/>
         </Col>
         <Col md={4} className='mt-2'>
             <InputNumComp register={register} name='pcs' control={control}  label='PCS' width={"100%"} disabled={getStatus(approved)} />
@@ -52,8 +46,6 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
             {"id":"BOATS"  , "name":"BOATS"}
             ]} />
         </Col>
-
-     
     </Row>
     )
 }

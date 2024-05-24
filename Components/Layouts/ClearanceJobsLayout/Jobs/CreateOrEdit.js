@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import EquipmentInfo from './EquipmentInfo';
 import LoadingProgram from './Loading Program';
+import GDOperate from './GDOperate';
 import DelieveryOrder from './Delievery Order';
 import { useForm, useWatch } from "react-hook-form";
 import { incrementTab, removeTab } from '/redux/tabs/tabSlice';
@@ -194,11 +195,12 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
           errors={errors} state={state} useWatch={useWatch} dispatch={dispatch} reset={reset} id={id} type={type}
         />
       </Tabs.TabPane>
-      {(subType=="FCL" && (type=="SE" || type=="SI")) &&
-        <Tabs.TabPane tab="Equipment" key="2">
-          <EquipmentInfo control={control} register={register} errors={errors} state={state} dispatch={dispatch} useWatch={useWatch}/>
+        <Tabs.TabPane tab="GD Entry" key="2">
+          <GDOperate 
+             handleSubmit={handleSubmit} onEdit={onEdit} companyId={companyId} control={control} register={register} 
+             errors={errors} state={state} useWatch={useWatch} dispatch={dispatch} reset={reset} id={id} type={type}
+          />
         </Tabs.TabPane>
-      }
         <Tabs.TabPane tab="Routing" key="3">
           <Routing control={control} register={register} errors={errors} state={state} useWatch={useWatch} type={type} />
         </Tabs.TabPane>

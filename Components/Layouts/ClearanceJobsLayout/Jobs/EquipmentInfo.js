@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Select, Input, InputNumber  } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import PopConfirm from '../../../Shared/PopConfirm';
+import PopConfirm from '/Components/Shared/PopConfirm';
 
 const EquipmentInfo = ({state, dispatch}) => {
 
@@ -15,7 +15,7 @@ const EquipmentInfo = ({state, dispatch}) => {
   }
 
   return (
-  <div style={{minHeight:630, maxHeight:630}}>
+  <div style={{width:"70%"}}>
     <button type='button' className='btn-custom fw-8' onClick={addEquipment}>Add +</button>
     <Table className='mt-2'>
       <thead>

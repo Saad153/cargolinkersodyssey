@@ -98,9 +98,8 @@ const OpeningBalance = ({id, voucherData}) => {
             <div className='mt-2'>Company</div>
             <Select style={{width:"100%"}} value={companyId} disabled={id!="new"}
               options={[
-                { value:1, label:'SEA NET LOGISTICS'  },
-                { value:2, label:'CARGO LINKERS'      },
-                { value:3, label:'AIR CARGO SERVICES' },
+                { value:1, label:'Int. Freight Aviation' },
+                { value:2, label:'CARGO LINKERS' },
               ]}
               onChange={(e)=>{
                 setCompanyId(e);

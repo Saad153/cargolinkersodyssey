@@ -22,7 +22,7 @@ import airports from "/jsonData/airports";
 import Carrier from './Carrier';
 import EquipmentInfo from './EquipmentInfo';
 
-const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
+const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
   const tabs = useSelector((state)=>state.tabs.tabs)
   //const companyId = useSelector((state) => state.company.value);
@@ -106,45 +106,19 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
   return (
   <>
     <Row style={{fontSize:12}}>
-      <Col md={2} className=''>
-        <div className="mt-1">Job No.</div>
-        <div className="dummy-input">
-          {state.edit?(state.selectedRecord?.jobNo):<span style={{color:'white'}}>.</span>}
-        </div>
-      </Col>
       <Col md={2} className='py-1'>     
-        <DateComp register={register} name='jobDate' control={control} label='Job Date' width={"100%"} disabled={getStatus(approved)} />
+        <DateComp register={register} name='gd' control={control} label='GD #' width={"100%"} disabled={getStatus(approved)} />
         {errors.registerDate && <div className='error-line'>Required*</div>}
       </Col>
       <Col md={2} className='py-1'>
-        <SelectComp register={register} name='jobType' control={control} label='Job Type' width={"100%"} disabled={getStatus(approved)}
-          options={[  
-            {id:'Clearing Only', name:'Clearing Only'},
-            {id:'Clearing + Tpt', name:'Clearing + Tpt'},
-            {id:'Tpt Only', name:'Tpt Only'},
-        ]}/>
-      </Col>
-      <Col md={2} className='py-1'>
-        <SelectComp register={register} name='jobKind' control={control} label='Shipment Type' width={"100%"} disabled={getStatus(approved)}
-          options={[  
-            {id:'FCL', name:'FCL'},
-            {id:'LCL', name:'LCL'},
-            {id:'Part', name:'Part'},
-            {id:'EPZ', name:'EPZ'},
-          ]}/>
-      </Col>
-      {/* <Col md={2} className='py-1'>
-        <SelectComp register={register} name='shipStatus' control={control} label='Ship Status:' width={"100%"} disabled={getStatus(approved)}
-          options={[  
-            {id:'Hold', name:'Hold'},
-            {id:'Booked', name:'Booked'},
-            {id:'Delivered', name:'Delivered'},
-            {id:'Shipped', name:'Shipped'},
-            {id:'Closed', name:'Closed'}
-          ]} />
-      </Col> */}
-      <Col md={2} className='py-1'>
         <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"} disabled={getStatus(approved)} />
+      </Col>
+      <Col md={2} className='py-1'>
+        <InputComp register={register} name='fileNo' control={control} label='FORM E #' width={"100%"} disabled={getStatus(approved)} />
+      </Col>
+      <Col md={2} className='py-1'>     
+          <DateComp register={register} name='shipDate' control={control} label='GD Date' disabled={getStatus(approved)} width={"100%"} />
+          {errors.registerDate && <div className='error-line'>Required*</div>}
       </Col>
     </Row>
     <hr className='' />
@@ -155,34 +129,9 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
           options={state.fields.party.client} />
         {/* {(type=="SE" || type=="AE") && <ShipperComp/>} */}
         <Space/>
-        {/* <div className='custom-link mt-2' onClick={()=>pageLinking("client", consigneeId)} >Consignee *</div>
+        <div className='custom-link mt-2' onClick={()=>pageLinking("client", consigneeId)} >Consignee *</div>
         <SelectSearchComp register={register} name='consigneeId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
-          options={state.fields.party.consignee} /><Space/> */}
-        {/* {(type=="SI" || type=="AI") && <ShipperComp/>} */}
-
-        {(type=="CSE" || type=="CSI") && <>
-        <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading' disabled={getStatus(approved)} width={"100%"}
-          options={ports.ports} /><Space/>
-        <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge *' disabled={getStatus(approved)} width={"100%"}
-          options={ports.ports} /><Space/>
-        </>
-        }
-        {(type=="CAE" || type=="CAI") &&<>
-        <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading *' disabled={getStatus(approved)} width={"100%"}
-          options={airports} /><Space/>
-        <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge *' disabled={getStatus(approved)} width={"100%"}
-          options={airports} /><Space/>
-        </>}
-        <SelectSearchComp register={register} name='fd' control={control} label='Final Destination *' disabled={getStatus(approved)} width={"100%"}
-          options={destinations} 
-          />
-          <Space/>
-        {/* <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", forwarderId)} >Forwarder/Coloader *</div>
-        <SelectSearchComp register={register} name='forwarderId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
-          options={state.fields.vendor.forwarder} />
-          <Space/> */}
-        {/* <SelectSearchComp register={register} name='salesRepresentatorId' control={control} label='Sales Representator' disabled={getStatus(approved)}
-          options={state.fields.sr} width={"100%"} /> */}
+          options={state.fields.party.consignee} /><Space/>
       </Col>
       <Col md={3}>
         <Space/>
@@ -267,4 +216,4 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
     </Modal>
   </>
 )}
-export default React.memo(BookingInfo)
+export default React.memo(GDOperate)
