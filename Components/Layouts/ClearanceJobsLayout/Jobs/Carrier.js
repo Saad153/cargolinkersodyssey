@@ -47,27 +47,21 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
             control={control} 
             disabled={getStatus(approved)} options={state.fields.vendor.airLine} 
           />
-
           <Col md={12} className='pt-2'>
             <InputComp register={register} name='flightNo' control={control} label='Flight No.' disabled={getStatus(approved)} />
           </Col>
+          <Col md={12}>
+            <div className='mt-2'>
+              <DateComp register={register} name='aesDate' width={'100%'} control={control} label='Flight Date' />
+            </div>
+          </Col>
+          
         </>
         }
         {(type=="CSE"||type=="CSI") &&
-          <>
-            <div className='custom-link mt-2' onClick={()=>pageLinking("vessel")} >Vessel *</div>
-            <SelectSearchComp register={register} name='vesselId' control={control} label=''disabled={getStatus(approved)} width={"100%"}
-                options={filterVessels(state.fields.vessel)} 
-            />
-            <div className='mt-2'>Voyage *</div>
-            <div className="dummy-input"
-                onClick={()=>{
-                    if(vesselId!=undefined && vesselId!=''){
-                        dispatch({type:'voyageSelection', payload:vesselId})
-                    }
-                }}
-            >{getVoyageNumber(VoyageId)}</div>
-          </>
+          <div className='mt-2'>
+            <DateComp register={register} name='aesDate' width={'100%'} control={control} label='Vessel Date' />
+          </div>
         }
     </div> 
     </>

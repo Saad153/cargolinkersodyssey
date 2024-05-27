@@ -6,33 +6,24 @@ import PopConfirm from '/Components/Shared/PopConfirm';
 
 const EquipmentInfo = ({state, dispatch}) => {
 
-  const width = 162;
-  
-  const addEquipment = () => {
-    let tempState = [...state.equipments];
-    tempState.push({size:'', qty:'', dg:'', gross:'', teu:''});
-    dispatch({type:'toggle', fieldName:'equipments', payload:tempState});
-  }
+  const width = '100%';
 
   return (
-  <div style={{width:"70%"}}>
-    <button type='button' className='btn-custom fw-8' onClick={addEquipment}>Add +</button>
+  <div style={{width:"60%"}}>
     <Table className='mt-2'>
       <thead>
         <tr>
           <th>Size/Type</th>
           <th>Qty</th>
-          <th>DG/Non-DG</th>
           <th>Gross WT/CNT</th>
-          <th>TEU</th>
-          <th>Modify</th>
+          <th>VGM</th>
         </tr>
       </thead>
       <tbody>
       {state.equipments.map((x, i) => {
       return(
         <tr className='f' key={i}>
-          <td>
+          <td className='px-0'>
           <Select style={{width:width}} value={x.size}
             onChange={(e)=>{
               let tempState = [...state.equipments];
@@ -62,7 +53,7 @@ const EquipmentInfo = ({state, dispatch}) => {
             ]}
           />
           </td>
-          <td>
+          <td className='px-0'>
             <InputNumber placeholder="Basic usage" value={x.qty} style={{width:width}}
               min={1}
               onChange={(e)=>{
@@ -86,38 +77,14 @@ const EquipmentInfo = ({state, dispatch}) => {
                 dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
               }} />
           </td>
-          <td>
-            <Select style={{ width: width }} value={x.dg}
-              onChange={(e)=>{
-                let tempState = [...state.equipments];
-                tempState[i].dg = e;
-                dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
-              }} 
-              options={[
-                {value:'non-DG', label:'non-DG'},
-                {value:'DG', label:'DG'},
-              ]}
-            />
-          </td>
-          <td>
-            {(state.selectedRecord.operation=="SE"||state.selectedRecord.operation=="AE")? 
+          <td className='px-0'>
+            {(state.selectedRecord.operation=="CSE"||state.selectedRecord.operation=="CAE")? 
               <Input placeholder="" style={{width:width}} value={x.gross} />:
               <Input placeholder="" style={{width:width}} disabled />
             }
           </td>
-          <td><Input placeholder="" style={{width:width}} value={x.teu} /></td>
-          <td>
-            <CloseCircleOutlined className='mx-3 cross-icon' onClick={()=>{
-              PopConfirm(
-                "Confirmation",
-                "Are You Sure To Delete This Equipment",
-                ()=>{
-                  let tempState = [...state.equipments];
-                  tempState.splice(i, 1);
-                  dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
-                })
-              }}
-            />
+          <td className='px-0'>
+            <Input placeholder="" style={{width:width}} value={x.teu} />
           </td>
         </tr>
       )})}

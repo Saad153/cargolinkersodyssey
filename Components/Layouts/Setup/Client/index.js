@@ -5,7 +5,7 @@ import { HistoryOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { incrementTab } from '/redux/tabs/tabSlice';
 import axios from 'axios';
-import {Input, Select} from 'antd'
+import { Input, Select } from 'antd'
 
 function recordsReducer(state, action){
     switch (action.type) {

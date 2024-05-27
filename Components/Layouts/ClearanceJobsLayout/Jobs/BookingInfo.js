@@ -17,7 +17,6 @@ import { getStatus } from './states';
 import Router from 'next/router';
 import InputComp from '/Components/Shared/Form/InputComp';
 import { addBlCreationId } from '/redux/BlCreation/blCreationSlice';
-import BLInfo from './BLInfo';
 import airports from "/jsonData/airports";
 import Carrier from './Carrier';
 import EquipmentInfo from './EquipmentInfo';
@@ -87,21 +86,6 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
     dispatchNew(incrementTab(obj));
     Router.push(route);
   }
-
-  const ShipperComp = () => {
-    return(
-    <>
-      <div className='custom-link mt-2' onClick={()=>pageLinking("client",shipperId)}>
-        Shipper *
-      </div>
-      <SelectSearchComp register={register} name='shipperId' control={control} label='' 
-        disabled={getStatus(approved)} width={"100%"}
-        options={state.fields.party.shipper} 
-      />
-      <Space/>
-    </>
-    )
-  }
   
   return (
   <>
@@ -114,7 +98,9 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
       </Col>
       <Col md={2} className='py-1'>     
         <DateComp register={register} name='jobDate' control={control} label='Job Date' width={"100%"} disabled={getStatus(approved)} />
-        {errors.registerDate && <div className='error-line'>Required*</div>}
+      </Col>
+      <Col md={2} className='py-1'>     
+        <DateComp register={register} name='shipDate' control={control} label='Shipment Date' disabled={getStatus(approved)} width={"100%"} />
       </Col>
       <Col md={2} className='py-1'>
         <SelectComp register={register} name='jobType' control={control} label='Job Type' width={"100%"} disabled={getStatus(approved)}
@@ -133,16 +119,6 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
             {id:'EPZ', name:'EPZ'},
           ]}/>
       </Col>
-      {/* <Col md={2} className='py-1'>
-        <SelectComp register={register} name='shipStatus' control={control} label='Ship Status:' width={"100%"} disabled={getStatus(approved)}
-          options={[  
-            {id:'Hold', name:'Hold'},
-            {id:'Booked', name:'Booked'},
-            {id:'Delivered', name:'Delivered'},
-            {id:'Shipped', name:'Shipped'},
-            {id:'Closed', name:'Closed'}
-          ]} />
-      </Col> */}
       <Col md={2} className='py-1'>
         <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"} disabled={getStatus(approved)} />
       </Col>
@@ -153,45 +129,34 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
         <div className='custom-link mt-2' onClick={()=>pageLinking("client", ClientId)} >Client *</div>
         <SelectSearchComp register={register} name='ClientId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
           options={state.fields.party.client} />
-        {/* {(type=="SE" || type=="AE") && <ShipperComp/>} */}
         <Space/>
-        {/* <div className='custom-link mt-2' onClick={()=>pageLinking("client", consigneeId)} >Consignee *</div>
-        <SelectSearchComp register={register} name='consigneeId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
-          options={state.fields.party.consignee} /><Space/> */}
-        {/* {(type=="SI" || type=="AI") && <ShipperComp/>} */}
 
         {(type=="CSE" || type=="CSI") && <>
         <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading' disabled={getStatus(approved)} width={"100%"}
           options={ports.ports} /><Space/>
-        <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge *' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge' disabled={getStatus(approved)} width={"100%"}
           options={ports.ports} /><Space/>
         </>
         }
         {(type=="CAE" || type=="CAI") &&<>
-        <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading *' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading' disabled={getStatus(approved)} width={"100%"}
           options={airports} /><Space/>
-        <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge *' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge' disabled={getStatus(approved)} width={"100%"}
           options={airports} /><Space/>
         </>}
-        <SelectSearchComp register={register} name='fd' control={control} label='Final Destination *' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='fd' control={control} label='Final Destination' disabled={getStatus(approved)} width={"100%"}
           options={destinations} 
-          />
-          <Space/>
-        {/* <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", forwarderId)} >Forwarder/Coloader *</div>
-        <SelectSearchComp register={register} name='forwarderId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
-          options={state.fields.vendor.forwarder} />
-          <Space/> */}
-        {/* <SelectSearchComp register={register} name='salesRepresentatorId' control={control} label='Sales Representator' disabled={getStatus(approved)}
-          options={state.fields.sr} width={"100%"} /> */}
+        />
+        <Space/>
       </Col>
       <Col md={3}>
         <Space/>
-        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", localVendorId)} >Local Vendor *</div>
+        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", localVendorId)} >Local Vendor</div>
         <SelectSearchComp register={register} name='localVendorId' control={control} label='' 
           disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
         />
         <div className='my-2'></div>
-        <SelectSearchComp register={register} name='commodityId' control={control} label='Commodity *' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='commodityId' control={control} label='Commodity' disabled={getStatus(approved)} width={"100%"}
           options={state.fields.commodity} 
         />
         <div className='my-2'></div>
@@ -202,52 +167,47 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
           <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", shippingLineId)} >Sline/Carrier</div>
           <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
         </>
-        }        
-        {/* <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
-          getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
-        /> */}
+        }
       </Col>
-      
       <Col md={3}><Space />
-          <div className='mt-2' />
-          <Row>
-            <Col md={1}>
-              <CheckGroupComp register={register} name='transportCheck' control={control} label='' disabled={getStatus(approved)}
-                options={[{ label: "", value: "Transport" }]} />
-            </Col>
-            <Col md={3}>
-              <div className='custom-link' onClick={() => pageLinking("vendor", transporterId)} >Transport</div>
-            </Col>
-            <Col>.</Col>
-          </Row>
-          <SelectSearchComp register={register} name='transporterId' control={control} label=''
-            options={state.fields.vendor.transporter} disabled={getStatus(approved) || transportCheck.length == 0} width={"100%"} 
-          />
-          <div style={{ marginTop: 13 }}></div>
-          <Row>
+        <div className='mt-2' />
+        <Row>
+          <Col md={1}>
+            <CheckGroupComp register={register} name='transportCheck' control={control} label='' disabled={getStatus(approved)}
+              options={[{ label: "", value: "Transport" }]} />
+          </Col>
+          <Col md={3}>
+            <div className='custom-link' onClick={() => pageLinking("vendor", transporterId)} >Transport</div>
+          </Col>
+          <Col>.</Col>
+        </Row>
+        <SelectSearchComp register={register} name='transporterId' control={control} label=''
+          options={state.fields.vendor.transporter} disabled={getStatus(approved) || transportCheck.length == 0} width={"100%"} 
+        />
+        <Row>
+        <Col md={6} className='mt-2'>
+          <InputNumComp register={register} name='truck' control={control} width={"100%"} label='Truck #' step={'0.01'} disabled={getStatus(approved)} />
+          </Col>
           <Col md={6} className='mt-2'>
-            <InputNumComp register={register} name='truck' control={control} width={"100%"} label='Truck #' step={'0.01'} disabled={getStatus(approved)} />
-            </Col>
-            <Col md={6} className='mt-2'>
-                <InputNumComp register={register} name='container' control={control} label='Container #' width={"100%"} step={'0.00001'} disabled={getStatus(approved)}/>
-            </Col>
-            <Col md={4} className='mt-2'>
-                <InputNumComp register={register} name='pcs' control={control}  label='PCS' width={"100%"} disabled={getStatus(approved)} />
-            </Col>
-            <Col md={8} className='mt-2'>
-              <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"} disabled={getStatus(approved)}
-                options={[  
-                {"id":"BAGS"   , "name":"BAGS"},
-                {"id":"BALES"  , "name":"BALES"},
-                {"id":"BARRELS", "name":"BARRELS"},
-                {"id":"CARTONS", "name":"CARTONS"},
-                {"id":"BLOCKS" , "name":"BLOCKS"},
-                {"id":"BOATS"  , "name":"BOATS"}
-                ]} 
-              />
-            </Col>
-          </Row>
-        </Col>
+              <InputNumComp register={register} name='container' control={control} label='Container #' width={"100%"} step={'0.00001'} disabled={getStatus(approved)}/>
+          </Col>
+          <Col md={3} className='mt-2'>
+              <InputNumComp register={register} name='pcs' control={control}  label='No of ' width={"100%"} disabled={getStatus(approved)} />
+          </Col>
+          <Col md={9} className='mt-2'>
+            <SelectComp register={register} name='pkgUnit' control={control} label='Packages' width={"100%"} disabled={getStatus(approved)}
+              options={[  
+              {"id":"BAGS"   , "name":"BAGS"},
+              {"id":"BALES"  , "name":"BALES"},
+              {"id":"BARRELS", "name":"BARRELS"},
+              {"id":"CARTONS", "name":"CARTONS"},
+              {"id":"BLOCKS" , "name":"BLOCKS"},
+              {"id":"BOATS"  , "name":"BOATS"}
+              ]} 
+            />
+          </Col>
+        </Row>
+      </Col>
       <Col md={3}>
       {state.edit &&<Notes state={state} dispatch={dispatch} type={type} />}
         {approved=="1" && <img src={'/approve.png'} height={100} />}

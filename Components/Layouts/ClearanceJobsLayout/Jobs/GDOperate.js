@@ -4,20 +4,16 @@ import SelectComp from '/Components/Shared/Form/SelectComp';
 import SelectSearchComp from '/Components/Shared/Form/SelectSearchComp';
 import CheckGroupComp from '/Components/Shared/Form/CheckGroupComp';
 import DateComp from '/Components/Shared/Form/DateComp';
-import TimeComp from '/Components/Shared/Form/TimeComp';
 import { Row, Col } from 'react-bootstrap';
 import CustomBoxSelect from '/Components/Shared/Form/CustomBoxSelect';
 import Notes from "./Notes";
 import ports from "/jsonData/ports";
-import destinations from "/jsonData/destinations";
 import { useSelector, useDispatch } from 'react-redux';
 import { incrementTab, removeTab } from '/redux/tabs/tabSlice';
 import { getStatus } from './states';
 import Router from 'next/router';
 import InputComp from '/Components/Shared/Form/InputComp';
-import { addBlCreationId } from '/redux/BlCreation/blCreationSlice';
 import Weights from './WeightComp';
-import BLInfo from './BLInfo';
 import airports from "/jsonData/airports";
 import Carrier from './Carrier';
 
@@ -76,29 +72,13 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
     //dispatchNew(incrementTab({ "label":label, "key":key, "id":(value!="" && value!==null)?value:"new" }));
     dispatchNew(incrementTab(obj));
     Router.push(route);
-  }
-
-  const ShipperComp = () => {
-    return(
-    <>
-      <div className='custom-link mt-2' onClick={()=>pageLinking("client",shipperId)}>
-        Shipper *
-      </div>
-      <SelectSearchComp register={register} name='shipperId' control={control} label='' 
-        disabled={getStatus(approved)} width={"100%"}
-        options={state.fields.party.shipper} 
-      />
-      <Space/>
-    </>
-    )
-  }
+  };
   
   return (
   <>
     <Row style={{fontSize:12}}>
       <Col md={2} className='py-1'>     
         <InputComp register={register} name='gd' control={control} label='GD #' width={"100%"} disabled={getStatus(approved)} />
-        {errors.registerDate && <div className='error-line'>Required*</div>}
       </Col>
       <Col md={2} className='py-1'>
         <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"} disabled={getStatus(approved)} />
@@ -107,17 +87,15 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <InputComp register={register} name='fileNo' control={control} label='FORM E #' width={"100%"} disabled={getStatus(approved)} />
       </Col>
       <Col md={2} className='py-1'>     
-          <DateComp register={register} name='shipDate' control={control} label='GD Date' disabled={getStatus(approved)} width={"100%"} />
-          {errors.registerDate && <div className='error-line'>Required*</div>}
+        <DateComp register={register} name='gdDate' control={control} label='GD Date' disabled={getStatus(approved)} width={"100%"} />
       </Col>
     </Row>
-    <hr className='' />
+    <hr />
     <Row style={{fontSize:12}}>
-      <Col md={3} className=''>
+      <Col md={3}>
         <div className='custom-link mt-2' onClick={()=>pageLinking("client", ClientId)} >Client *</div>
         <SelectSearchComp register={register} name='ClientId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
           options={state.fields.party.client} />
-        {/* {(type=="SE" || type=="AE") && <ShipperComp/>} */}
         <Space/>
         <div className='custom-link mt-2' onClick={()=>pageLinking("client", consigneeId)} >Consignee *</div>
         <SelectSearchComp register={register} name='consigneeId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
@@ -129,12 +107,12 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
       </Col>
       <Col md={3}>
         <Space/>
-        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", localVendorId)} >Local Vendor *</div>
+        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", localVendorId)} >Local Vendor</div>
         <SelectSearchComp register={register} name='localVendorId' control={control} label='' 
           disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
         />
         <div className='my-2'></div>
-        <SelectSearchComp register={register} name='commodityId' control={control} label='Commodity *' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='commodityId' control={control} label='Commodity' disabled={getStatus(approved)} width={"100%"}
           options={state.fields.commodity} 
         />
         <div className='my-2'></div>
@@ -145,47 +123,43 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
         />
       </Col>
-        <Col md={4}>
+      <Col md={3}>
         <Row>
-        <Col md={6}>
+          <Col md={12}>
             <SelectSearchComp register={register} name='pol' control={control} 
-                label={(type=="CSE"||type=="CSI")?'Port Of Loading':'Airport of Loading'} 
-                width={"100%"}
-                options={(type=="CSE"||type=="CSI")?ports.ports:airports} />
-            <Space/>
-        </Col>
-        <Col md={6} style={{paddingTop:19}}> 
-            <DateComp register={register} name='polDate' control={control} label=''  /> <Space/>
-        </Col>
-        <Col md={6}>
-            <SelectSearchComp register={register} name='pod' control={control} 
-                label={(type=="CSE"||type=="CSI")?'Port Of Discharge':'Airport of Discharge'} width={"100%"}
-                options={(type=="CSE"||type=="CSI")?ports.ports:airports} />
-            <Space/>
-        </Col>
-        <Col md={6} style={{paddingTop:19}}> 
-            <DateComp register={register} name='podDate' control={control} label='' /> <Space/>
-        </Col>
-        <Col md={6}>
-            <SelectSearchComp register={register} name='fd' control={control} label='Final Destination' width={"100%"}
-                options={ports.ports} />
-            <Space/>
-        </Col>
-        <Col md={6}></Col>
-        <Col md={6}>
-            <SelectSearchComp register={register} name='terminal' control={control} label='Terminal' width={"100%"}
-                options={[  
-                    {id:'Direct', name:'Direct'},
-                ]}
+              label={(type=="CSE"||type=="CSI")?'Port Of Loading':'Airport of Loading'} 
+              width={"100%"}
+              options={(type=="CSE"||type=="CSI")?ports.ports:airports}
             />
             <Space/>
-        </Col>
-        
-        <div style={{minHeight:158}}></div>
-      </Row>
-        </Col>
-        <Col md={2}>
-      {state.edit &&<Notes state={state} dispatch={dispatch} />}
+          </Col>
+          <Col md={12}>
+            <SelectSearchComp register={register} name='pod' control={control} 
+              label={(type=="CSE"||type=="CSI")?'Port Of Discharge':'Airport of Discharge'} width={"100%"}
+              options={(type=="CSE"||type=="CSI")?ports.ports:airports}
+            />
+            <Space/>
+          </Col>
+          <Col md={12}>
+            <SelectSearchComp 
+              register={register} name='fd' control={control} label='Final Destination' width={"100%"}
+              options={ports.ports}
+            />
+            <Space/>
+          </Col>
+          <Col md={12}>
+            <SelectSearchComp register={register} name='terminal' control={control} label='Terminal' width={"100%"}
+              options={[  
+                {id:'Direct', name:'Direct'},
+              ]}
+            />
+            <Space/>
+          </Col>
+          <div style={{minHeight:158}}></div>
+        </Row>
+      </Col>
+      <Col md={3}>
+        {state.edit &&<Notes state={state} dispatch={dispatch} />}
         {approved=="1" && <img src={'/approve.png'} height={100} />}
         <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
           <CheckGroupComp register={register} name='approved' control={control} label='' 
@@ -194,23 +168,23 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         </div>
         <hr className='' />
         <div>
-        <Popover
-          content={
-          <>{state.InvoiceList?.map((x, i) => 
-            (<div key={i} className='my-1'>
-              <Tag color="geekblue" style={{fontSize:15, cursor:"pointer", width:130, textAlign:'center'}}
-                onClick={()=>{
-                dispatch({ type:'set',
-                  payload:{ selectedInvoice:x.invoice_No, tabState:"5" }
-                })
-              }}>
-                {x.invoice_No}
-              </Tag>
-            </div>))}
-          </>}>
-          <button type="button" className="btn-custom">Invoice/Bills {`(${state.InvoiceList.length})`}</button>
-        </Popover>
-      </div>
+          <Popover
+            content={
+            <>{state.InvoiceList?.map((x, i) => 
+              (<div key={i} className='my-1'>
+                <Tag color="geekblue" style={{fontSize:15, cursor:"pointer", width:130, textAlign:'center'}}
+                  onClick={()=>{
+                  dispatch({ type:'set',
+                    payload:{ selectedInvoice:x.invoice_No, tabState:"5" }
+                  })
+                }}>
+                  {x.invoice_No}
+                </Tag>
+              </div>))}
+            </>}>
+            <button type="button" className="btn-custom">Invoice/Bills {`(${state.InvoiceList.length})`}</button>
+          </Popover>
+        </div>
       </Col>
     </Row>
     {(state.voyageVisible && approved[0]!="1") && 

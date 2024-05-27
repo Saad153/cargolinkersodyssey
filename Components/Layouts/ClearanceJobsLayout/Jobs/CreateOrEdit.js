@@ -1,28 +1,26 @@
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm, useWatch } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useQueryClient } from '@tanstack/react-query';
+import Router from "next/router";
+import Cookies from 'js-cookie';
+import { Tabs } from "antd";
 import axios from 'axios';
 import moment from 'moment';
-import { Tabs } from "antd";
-import Routing from './Routing';
-import Cookies from 'js-cookie';
 import Invoice from './Invoice';
-import Router from "next/router";
 import BookingInfo from './BookingInfo';
-import React, { useEffect } from 'react';
 import ChargesComp from './ChargesComp/';
-import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
-import EquipmentInfo from './EquipmentInfo';
 import LoadingProgram from './Loading Program';
 import GDOperate from './GDOperate';
 import DelieveryOrder from './Delievery Order';
-import { useForm, useWatch } from "react-hook-form";
 import { incrementTab, removeTab } from '/redux/tabs/tabSlice';
 import { SignupSchema, getInvoices, baseValues } from './states';
-import { yupResolver } from "@hookform/resolvers/yup";
 import PopConfirm from '/Components/Shared/PopConfirm';
 import { createNotification } from '/functions/notifications';
 import openNotification from '/Components/Shared/Notification';
 import FullScreenLoader from '/Components/Shared/FullScreenLoader';
-import { useQueryClient } from '@tanstack/react-query';
 
 const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) => {
 
@@ -31,10 +29,9 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
     resolver:yupResolver(SignupSchema), defaultValues:state.values
   });
   const approved = useWatch({control, name:"approved"});
-  const subType = useWatch({control, name:"subType"});
+  const tabs = useSelector((state)=>state.tabs.tabs);
   const allValues = useWatch({control});
   const dispatchNew = useDispatch();
-  const tabs = useSelector((state)=>state.tabs.tabs)
 
   useEffect(() => {
     let tempState = {...baseValues, ...jobData};
@@ -200,19 +197,11 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
              errors={errors} state={state} useWatch={useWatch} dispatch={dispatch} reset={reset} id={id} type={type}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Routing" key="3">
-          <Routing control={control} register={register} errors={errors} state={state} useWatch={useWatch} type={type} />
-        </Tabs.TabPane>
       {state.edit &&
         <Tabs.TabPane tab="Charges" key="4">
           <ChargesComp state={state} dispatch={dispatch} type={type} allValues={allValues} />
         </Tabs.TabPane>
       }
-      {/* {state.edit &&
-        <Tabs.TabPane tab="Charge" key="8">
-          <Charges state={state} dispatch={dispatch} type={type} allValues={allValues} />
-        </Tabs.TabPane>
-      } */}
       {(state.selectedInvoice!='') &&
         <Tabs.TabPane tab="Invoice / Bills" key="5">
           <Invoice state={state} dispatch={dispatch} companyId={companyId} />
@@ -235,24 +224,20 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
           {state.load?<Spinner animation="border" size='sm' className='mx-3' />:'Save Job'}
         </button>
         <button type="button" disabled //disabled={allValues.approved==1?true:false} 
-        className={allValues.approved==1?"btn-red-disabled mt-3 mx-3":"btn-red mt-3 mx-3"}
-          onClick={()=>{
+          className={allValues.approved==1?"btn-red-disabled mt-3 mx-3":"btn-red mt-3 mx-3"}
+          onClick={()=>
             PopConfirm("Confirmation", "Are You Sure You Want To Delete This Job?",
-                () => {
-                  axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_JOBS,{
-                    id:allValues.id
-                  }).then(async(x)=>{
-                    let oldTabs = await type=="SE"?tabs.filter((x)=> {return x.key!="4-3" }):
-                    await type=="SI"?tabs.filter((x)=> {return x.key!="4-6" }):
-                    await type=="AE"?tabs.filter((x)=> {return x.key!="7-2" }):
-                    await tabs.filter((x)=> {return x.key!="7-5" })
-                    dispatchNew(await removeTab(oldTabs)); // First deleting Job Tab
-                    Router.push(type=="SE"?"/seaJobs/seJobList":type=="SI"?"/seaJobs/siJobList":type=="AE"?"/airJobs/aeJobList":"/airJobs/aiJobList")
-                  })
-              })
-          }}
-        >
-          Delete Job {allValues.approved}
+              () => axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_JOBS,
+                { id:allValues.id }).then(async(x)=>{
+                  let oldTabs = await type=="SE"?tabs.filter((x)=> {return x.key!="4-3" }):
+                  await type=="SI"?tabs.filter((x)=> {return x.key!="4-6" }):
+                  await type=="AE"?tabs.filter((x)=> {return x.key!="7-2" }):
+                  await tabs.filter((x)=> {return x.key!="7-5" })
+                  dispatchNew(await removeTab(oldTabs)); // First deleting Job Tab
+                  Router.push(type=="SE"?"/seaJobs/seJobList":type=="SI"?"/seaJobs/siJobList":type=="AE"?"/airJobs/aeJobList":"/airJobs/aiJobList")
+              }))
+            }
+        > Delete Job {allValues.approved}
         </button>
       </>
       }

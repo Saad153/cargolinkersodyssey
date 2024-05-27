@@ -25,6 +25,10 @@ const Main = ({sessionData, chartData}) => {
     data;
   }, [sessionData]);
 
+  useEffect(() => {
+    console.log(data)
+  }, [data]);
+
   return (
   <div className='home-styles'>
   </div>

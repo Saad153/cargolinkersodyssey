@@ -5,14 +5,14 @@ export function getJobValues() {
     .then((x)=>x.data)
 }
 export async function getJobById({id, type}) {
-    if(id=="new"){
-        return {status:"success", result:{}}
-    } else {
-        return await axios.get(`${process.env.NEXT_PUBLIC_CLIMAX_MAIN_URL}/seaJob/getSEJobById`,{
-            headers: {"id":`${id}`, operation:`${type}`}
-        })
-        .then((x)=>x.data)
-    }
+  if(id=="new"){
+    return {status:"success", result:{}}
+  } else {
+    return await axios.get(`${process.env.NEXT_PUBLIC_CLIMAX_MAIN_URL}/seaJob/getSEJobById`,{
+      headers: {"id":`${id}`, operation:`${type}`}
+    })
+    .then((x)=>x.data)
+  }
 }
 
 const calculateChargeHeadsTotal = (chageHeads, type) => {

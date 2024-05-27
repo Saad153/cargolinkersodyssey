@@ -84,12 +84,12 @@ const initialState = {
     { label: "Air Export", value: "Air Export" }
   ],
   Types:[
-    { label: "Shipper", value: "Shipper" },
-    { label: "Consignee", value: "Consignee" },
-    { label: "Notify", value: "Notify" },
-    { label: "Potential Customer", value: "Potential Customer" },
-    { label: "Invoice Party", value: "Invoice Party" },
-    { label: "Non operational Party", value: "Non operational Party" },
+    // { label: "Shipper", value: "Shipper" },
+    // { label: "Consignee", value: "Consignee" },
+    // { label: "Notify", value: "Notify" },
+    // { label: "Potential Customer", value: "Potential Customer" },
+    // { label: "Invoice Party", value: "Invoice Party" },
+    // { label: "Non operational Party", value: "Non operational Party" },
     { label: "Forwarder/Coloader", value: "Forwarder/Coloader" },
     { label: "Local Vendor", value: "Local Vendor" },
     { label: "Overseas Agent", value: "Overseas Agent" },
