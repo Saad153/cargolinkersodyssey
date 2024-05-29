@@ -19,6 +19,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
 
   useEffect(() => {
     if(jobsData.status=="success"){
+      console.log(jobsData.result)
       setRecords(jobsData.result);
     }
   }, []);

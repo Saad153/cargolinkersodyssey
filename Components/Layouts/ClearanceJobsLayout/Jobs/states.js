@@ -89,7 +89,6 @@ const baseValues = {
   weight:'',
   weightUnit:'',
   bkg:'',
-  container:'',
   shpVol:'',
   billVol:'',
   teu:'',
@@ -128,7 +127,7 @@ const initialState = {
   viewHistory:false,
   invoiceData : [],
   InvoiceList : [],
-
+  container:[{truck:'', container:''}],
   selection:{
     partyId:null,
     InvoiceId:null

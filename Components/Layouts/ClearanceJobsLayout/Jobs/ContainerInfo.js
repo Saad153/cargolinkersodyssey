@@ -5,80 +5,43 @@ import { Select, Input, InputNumber  } from 'antd';
 const ContainerInfo = ({state, dispatch}) => {
 
   const width = '100%';
+  const addEquipment = () => {
+    let tempState = [...state.container];
+    tempState.push({truck:'', container:''});
+    dispatch({type:'toggle', fieldName:'container', payload:tempState});
+  }
 
   return (
   <>
-    <Table>
+    <hr/>
+    <Table borderless>
       <thead>
         <tr>
-          <th>Size/Type</th>
-          <th>Quantity</th>
-          <th>Gross Weight</th>
-          <th>VGM</th>
+          <th>#</th>
+          <th>Container #</th>
+          <th>Truck #</th>
         </tr>
       </thead>
       <tbody>
-      {state.equipments.map((x, i) => {
+      {state.container?.map((x, i) => {
       return(
-        <tr className='f' key={i}>
-          <td className='px-0'>
-          <Select style={{width:width}} value={x.size}
-            onChange={(e)=>{
-              let tempState = [...state.equipments];
-              tempState[i].size = e;
-              dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
-            }}
-            options={[
-              {label:'40HC', value:'40HC'},
-              {label:'20HC', value:'20HC'},
-              {label:'30HC', value:'30HC'},
-              {value:'20SD', label:'20SD'},
-              {value:'20FR', label:'20FR'},
-              {value:'40SD', label:'40SD'},
-              {value:'45HC', label:'45HC'},
-              {value:'40HV', label:'40HV'},
-              {value:'45BK', label:'45BK'},
-              {value:'45OT', label:'45OT'},
-              {value:'45TK', label:'45TK'},
-              {value:'45VH', label:'45VH'},
-              {value:'M3', label:'M3'},
-              {value:'40OT', label:'40OT'},
-              {value:'20RE', label:'20RE'},
-              {value:'20TK', label:'20TK'},
-              {value:'40FR', label:'40FR'},
-              {value:'40BK', label:'40BK'},
-              {value:'40HCRF', label:'40HCRF'},
-              {value:'20BK', label:'20BK'},
-              {value:'20OT', label:'20OT'},
-              {value:'20FT', label:'20FT'},
-            ]}
-          />
-          </td>
-          <td className='px-0'>
-            <InputNumber placeholder="Basic usage" value={x.qty} style={{width:width}}
-              min={1}
+        <tr className='p-0' key={i}>
+          <td className=''>{i+1}</td>
+          <td className='px-0 py-0'>
+          <Input placeholder="truck #" value={x.truck} style={{width:width}}
               onChange={(e)=>{
-                let tempState = [...state.equipments];
-                tempState[i].qty = e;
-                dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
+                let tempState = [...state.container];
+                tempState[i].truck = e.target.value;
+                dispatch({type:'toggle', fieldName:'container', payload:tempState})
               }}
             />
           </td>
-          <td className='px-0'>
-            <InputNumber placeholder="" style={{width:width}} value={x.gross}
+          <td className='px-0 py-0'>
+            <Input placeholder="container #" value={x.container} style={{width:width}}
               onChange={(e)=>{
-                let tempState = [...state.equipments];
-                tempState[i].gross = e;
-                dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
-              }}
-            />
-          </td>
-          <td className='px-0'>
-            <InputNumber style={{width:width}} value={x.teu} 
-              onChange={(e)=>{
-                let tempState = [...state.equipments];
-                tempState[i].teu = e;
-                dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
+                let tempState = [...state.container];
+                tempState[i].container = e.target.value;
+                dispatch({type:'toggle', fieldName:'container', payload:tempState})
               }}
             />
           </td>
@@ -86,6 +49,7 @@ const ContainerInfo = ({state, dispatch}) => {
       )})}
       </tbody>
     </Table>
+    <button type='button' className='btn-custom-blue fw-8' onClick={addEquipment}>Add +</button>
   </>
   )
 }

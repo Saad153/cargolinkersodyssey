@@ -75,6 +75,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       exRate:tempState.exRate,
       equipments:tempEquipments,
       voyageList:tempVoyageList,
+      container: tempState.container,
     }});
     getInvoices(tempState.id, dispatch);
     reset({...tempState});
@@ -97,6 +98,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
     data.shippingLineId = data.shippingLineId!=""?data.shippingLineId:null;
     data.approved = data.approved[0]=="1"?true:false;
     data.companyId = companyId;
+    data.container = state.container;
     data.operation = type
     let loginId = Cookies.get('loginId');
     data.createdById = loginId;
@@ -144,6 +146,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
     data.shippingLineId = data.shippingLineId!=""?data.shippingLineId:null;
     data.approved = data.approved[0]=="1"?true:false;
     data.companyId = companyId;
+    data.container = state.container;
   
     dispatch({type:'toggle', fieldName:'load', payload:true});
 
