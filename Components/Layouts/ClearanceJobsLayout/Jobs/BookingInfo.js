@@ -85,7 +85,61 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
     //dispatchNew(incrementTab({ "label":label, "key":key, "id":(value!="" && value!==null)?value:"new" }));
     dispatchNew(incrementTab(obj));
     Router.push(route);
-  }
+  };
+
+  const packages = [
+    {id:'BAGS', value:'BAGS'},
+    {id:'BALES', value:'BALES'},
+    {id:'BARRELS', value:'BARRELS'},
+    {id:'CARTONS', value:'CARTONS'},
+    {id:'BLOCKS', value:'BLOCKS'},
+    {id:'BOATS', value:'BOATS'},
+    {id:'BOBBIN', value:'BOBBIN'},
+    {id:'BOTTLES', value:'BOTTLES'},
+    {id:'BOXES', value:'BOXES'},
+    {id:'BRIQUETTES', value:'BRIQUETTES'},
+    {id:'BUNDLES', value:'BUNDLES'},
+    {id:'CABLE DRUM', value:'CABLE DRUM'},
+    {id:'CANS', value:'CANS'},
+    {id:'CARBOY', value:'CARBOY'},
+    {id:'CARTONS', value:'CARTONS'},
+    {id:'CASE', value:'CASE'},
+    {id:'CASKS', value:'CASKS'},
+    {id:'COILS', value:'COILS'},
+    {id:'COLLI', value:'COLLI'},
+    {id:'CRATES', value:'CRATES'},
+    {id:'CYLINDERS', value:'CYLINDERS'},
+    {id:'DOZENS', value:'DOZENS'},
+    {id:'DRUMS', value:'DRUMS'},
+    {id:'FUBRE DRUMS', value:'FUBRE DRUMS'},
+    {id:'ITEMS', value:'ITEMS'},
+    {id:'JOTTAS', value:'JOTTAS'},
+    {id:'KEGS', value:'KEGS'},
+    {id:'LOOSE', value:'LOOSE'},
+    {id:'METAL DRUMS', value:'METAL DRUMS'},
+    {id:'METERS', value:'METERS'},
+    {id:'MODULES', value:'MODULES'},
+    {id:'PACKETS', value:'PACKETS'},
+    {id:'PACKAGES', value:'PACKAGES'},
+    {id:'PAILS', value:'PAILS'},
+    {id:'PALLETS', value:'PALLETS'},
+    {id:'PARCELS', value:'PARCELS'},
+    {id:'PIECES', value:'PIECES'},
+    {id:'PLASTIC DRUMS', value:'PLASTIC DRUMS'},
+    {id:'REELS', value:'REELS'},
+    {id:'ROLLS', value:'ROLLS'},
+    {id:'SACKS', value:'SACKS'},
+    {id:'SETS', value:'SETS'},
+    {id:'SHEETS', value:'SHEETS'},
+    {id:'SKIDS', value:'SKIDS'},
+    {id:'SLABS', value:'SLABS'},
+    {id:'STEEL PACKAGES', value:'STEEL PACKAGES'},
+    {id:'STEEL PLATES', value:'STEEL PLATES'},
+    {id:'STEEL TRUNKS', value:'STEEL TRUNKS'},
+    {id:'TES CHESTS', value:'TES CHESTS'},
+    {id:'TONS', value:'TONS'},
+    {id:'UNIT', value:'UNIT'}
+  ]
   
   return (
   <>
@@ -198,17 +252,10 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
             </Col>
             <Col md={9} className='mt-2'>
               <SelectComp register={register} name='pkgUnit' control={control} label='Packages' width={"100%"} disabled={getStatus(approved)}
-                options={[  
-                {"id":"BAGS"   , "name":"BAGS"},
-                {"id":"BALES"  , "name":"BALES"},
-                {"id":"BARRELS", "name":"BARRELS"},
-                {"id":"CARTONS", "name":"CARTONS"},
-                {"id":"BLOCKS" , "name":"BLOCKS"},
-                {"id":"BOATS"  , "name":"BOATS"}
-                ]} 
+                options={packages} 
               />
             </Col>
-            
+
             <Col md={6} className='mt-2'>
               <InputComp register={register} name='truck' control={control} width={"100%"} label='Truck #' disabled={getStatus(approved)} />
             </Col>

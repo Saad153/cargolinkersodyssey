@@ -73,7 +73,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
     dispatchNew(incrementTab(obj));
     Router.push(route);
   };
-  
+
   return (
   <>
     <Row style={{fontSize:12}}>
