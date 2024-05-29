@@ -7,9 +7,8 @@ import { RiShipLine } from "react-icons/ri";
 
 function setAccesLevels(dispatch, collapsed){
   let items = [];
-  let obj = { seaJobs:false, ae:false, setup:false, accounts:false, admin:false }
+  let obj = { setup:false, accounts:false, admin:false }
   let levels = Cookies.get("access");
-  let company = Cookies.get("companyId");
 
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
     getItem('Home', '1-1',<></>, null, {
@@ -150,44 +149,6 @@ function setAccesLevels(dispatch, collapsed){
     }),
   ]
   )
-  const seaJobs = getParentItem('Sea Jobs', '4', <span className=''><RiShipLine /><IoMdArrowDropleft className='flip' /></span>,
-  [
-    getItem('Export Job List', '4-1',<></>, null, {
-      label: `Export Jobs`,
-      key: '4-1',
-      children: `Content of Tab Pane 2`,
-    }),
-    getItem('Import Job List', '4-5',<></>, null, {
-      label: `Import Jobs`,
-      key: '4-5',
-      children: `Content of Tab Pane 2`,
-    }),
-  ]
-  )
-  const airJobs = getParentItem('Air Jobs', '7', <span className=''><RiShipLine /><IoMdArrowDropleft className='flip' /></span>,
-  [
-    getItem('Export Job List', '7-1',<></>, null, {
-      label: `Air Export Jobs`,
-      key: '7-1',
-      children: `Content of Tab Pane 2`,
-    }),
-    getItem('Import Job List', '7-4',<></>, null, {
-      label: `Air Import Jobs`,
-      key: '7-4',
-      children: `Content of Tab Pane 2`,
-    }),
-    getItem('Manifest List', '7-7',<></>, null, {
-      label: `Manifest List`,
-      key: '7-7',
-      children: `Content of Tab Pane 2`,
-    }),
-    // getItem('AWB List', '7-2',<></>, null, {
-    //   label: `Air AWBs`,
-    //   key: '7-2',
-    //   children: `Content of Tab Pane 2`,
-    // }),
-  ]
-  )
   const tasks = getParentItem('Tasks', '6', <UnorderedListOutlined  />,
     [
       getItem('Riders List', '6-1',<></>, null, {
@@ -246,12 +207,6 @@ function setAccesLevels(dispatch, collapsed){
     levels = levels.split(", ")
     levels.forEach(x => {
     switch (x) {
-      case "se":
-        obj.seaJobs = true;
-        break;
-      case "ae":
-        obj.airJobs = true;
-        break;
       case "setup":
         obj.setup = true;
         break;
@@ -266,22 +221,11 @@ function setAccesLevels(dispatch, collapsed){
       }
     });
   }
-  if(company!='2'){
-    obj.seaJobs?
-    items.push(seaJobs):null;
-    obj.airJobs?
-    items.push(airJobs):null;
-  } else {
-    obj.seaJobs?
-    items.push(exportJobs):null;
-    obj.airJobs?
-    items.push(importJobs):null;
-  }
   
   obj.accounts?
   items = [
-    seaJobs,
-    airJobs,
+    importJobs,
+    exportJobs,
     accounts,
     reports
   ]:null
@@ -292,8 +236,6 @@ function setAccesLevels(dispatch, collapsed){
       importJobs,
       setup,
       accounts,
-      seaJobs,
-      airJobs,
       reports
   ]:null
   obj.setup?items.push(setup):null

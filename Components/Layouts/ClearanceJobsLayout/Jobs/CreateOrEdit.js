@@ -48,6 +48,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       departureTime: tempState.departureTime==""?"":moment(tempState.departureTime),
       polDate: tempState.polDate==""?"":moment(tempState.polDate),
       podDate: tempState.podDate==""?"":moment(tempState.podDate),
+      gdDate: tempState.gdDate==""?"":moment(tempState.gdDate),
       aesDate: tempState.aesDate==""?"":moment(tempState.aesDate),
       aesTime: tempState.aesTime==""?"":moment(tempState.aesTime),
       eRcDate: tempState.eRcDate==""?"":moment(tempState.eRcDate),

@@ -1,21 +1,20 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Select, Input, InputNumber  } from 'antd';
-import { CloseCircleOutlined } from '@ant-design/icons';
-import PopConfirm from '/Components/Shared/PopConfirm';
 
 const EquipmentInfo = ({state, dispatch}) => {
 
   const width = '100%';
 
   return (
-  <div style={{width:"60%"}}>
-    <Table className='mt-2'>
+  <div>
+    <hr/>
+    <Table>
       <thead>
         <tr>
           <th>Size/Type</th>
-          <th>Qty</th>
-          <th>Gross WT/CNT</th>
+          <th>Quantity</th>
+          <th>Gross Weight</th>
           <th>VGM</th>
         </tr>
       </thead>
