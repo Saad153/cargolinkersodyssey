@@ -5,43 +5,32 @@ import SelectSearchComp from '/Components/Shared/Form/SelectSearchComp';
 import CheckGroupComp from '/Components/Shared/Form/CheckGroupComp';
 import DateComp from '/Components/Shared/Form/DateComp';
 import InputNumComp from "/Components/Shared/Form/InputNumComp";
-import TimeComp from '/Components/Shared/Form/TimeComp';
 import { Row, Col } from 'react-bootstrap';
-import CustomBoxSelect from '/Components/Shared/Form/CustomBoxSelect';
 import Notes from "./Notes";
 import ports from "/jsonData/ports";
 import destinations from "/jsonData/destinations";
-import { useSelector, useDispatch } from 'react-redux';
-import { incrementTab, removeTab } from '/redux/tabs/tabSlice';
+import { useDispatch } from 'react-redux';
+import { incrementTab } from '/redux/tabs/tabSlice';
 import { getStatus } from './states';
 import Router from 'next/router';
 import InputComp from '/Components/Shared/Form/InputComp';
-import { addBlCreationId } from '/redux/BlCreation/blCreationSlice';
 import airports from "/jsonData/airports";
-import Carrier from './Carrier';
 import EquipmentInfo from './EquipmentInfo';
+import ContainerInfo from './ContainerInfo';
 
-const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
+const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
-  const tabs = useSelector((state)=>state.tabs.tabs)
-  //const companyId = useSelector((state) => state.company.value);
   const dispatchNew = useDispatch();
+
+  let allValues = useWatch({control});
+
   const transportCheck = useWatch({control, name:"transportCheck"});
   const transporterId = useWatch({control, name:"transporterId"});
-  const customCheck = useWatch({control, name:"customCheck"});
-  const customAgentId = useWatch({control, name:"customAgentId"});
-  const vesselId = useWatch({control, name:"vesselId"});
-  const VoyageId = useWatch({control, name:"VoyageId"});
   const ClientId = useWatch({control, name:"ClientId"});
-  const shipperId = useWatch({control, name:"shipperId"});
-  const consigneeId = useWatch({control, name:"consigneeId"});
-  const overseasAgentId = useWatch({control, name:"overseasAgentId"});
-  const airLineId = useWatch({control, name:"airLineId"});
-  const forwarderId = useWatch({control, name:"forwarderId"});
   const shippingLineId = useWatch({control, name:"shippingLineId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
-  let allValues = useWatch({control});
+
   const Space = () => <div className='mt-2'/>
 
   useEffect(() => {
@@ -139,7 +128,7 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
     {id:'TES CHESTS', value:'TES CHESTS'},
     {id:'TONS', value:'TONS'},
     {id:'UNIT', value:'UNIT'}
-  ]
+  ];
   
   return (
   <>
@@ -162,20 +151,22 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
             {id:'Clearing Only', name:'Clearing Only'},
             {id:'Clearing + Tpt', name:'Clearing + Tpt'},
             {id:'Tpt Only', name:'Tpt Only'},
-        ]}/>
+          ]}
+        />
       </Col>
       <Col md={2} className='py-1'>
         <SelectComp register={register} name='subType' control={control} label='Shipment Type' width={"100%"} disabled={getStatus(approved)}
           options={[  
             {id:'FCL', name:'FCL'},
             {id:'LCL', name:'LCL'}
-          ]}/>
+          ]}
+        />
       </Col>
       <Col md={2} className='py-1'>
         <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"} disabled={getStatus(approved)} />
       </Col>
     </Row>
-    <hr className='' />
+    <hr />
     <Row style={{fontSize:12}}>
       <Col md={6}>
         <Row>
@@ -251,18 +242,17 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
               <InputNumComp register={register} name='pcs' control={control}  label='No of ' width={"100%"} disabled={getStatus(approved)} />
             </Col>
             <Col md={9} className='mt-2'>
-              <SelectComp register={register} name='pkgUnit' control={control} label='Packages' width={"100%"} disabled={getStatus(approved)}
-                options={packages} 
-              />
+              <SelectComp register={register} name='pkgUnit' control={control} label='Packages' width={"100%"} disabled={getStatus(approved)} options={packages}  />
             </Col>
-
-            <Col md={6} className='mt-2'>
+            {/* <Col md={6} className='mt-2'>
               <InputComp register={register} name='truck' control={control} width={"100%"} label='Truck #' disabled={getStatus(approved)} />
             </Col>
             <Col md={6} className='mt-2'>
               <InputComp register={register} name='container' control={control} label='Container #' width={"100%"} disabled={getStatus(approved)}/>
+            </Col> */}
+            <Col md={12}>
+              <ContainerInfo state={state} dispatch={dispatch} />
             </Col>
-
           </Row>
         </Col>
         <Col md={6}>

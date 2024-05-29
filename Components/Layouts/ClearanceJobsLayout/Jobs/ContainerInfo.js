@@ -2,13 +2,12 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Select, Input, InputNumber  } from 'antd';
 
-const EquipmentInfo = ({state, dispatch}) => {
+const ContainerInfo = ({state, dispatch}) => {
 
   const width = '100%';
 
   return (
-  <div>
-    <hr/>
+  <>
     <Table>
       <thead>
         <tr>
@@ -87,8 +86,8 @@ const EquipmentInfo = ({state, dispatch}) => {
       )})}
       </tbody>
     </Table>
-  </div>
+  </>
   )
 }
 
-export default React.memo(EquipmentInfo)
+export default React.memo(ContainerInfo)
