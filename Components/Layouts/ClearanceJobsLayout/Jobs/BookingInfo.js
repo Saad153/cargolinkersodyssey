@@ -28,6 +28,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
   const transporterId = useWatch({control, name:"transporterId"});
   const ClientId = useWatch({control, name:"ClientId"});
   const shippingLineId = useWatch({control, name:"shippingLineId"});
+  const commodityId = useWatch({control, name:"commodityId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
 
@@ -67,11 +68,10 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
       route=`/setup/vendor/${(value!="" && value!==null)?value:"new"}`
       obj={"label":"Vendor", "key":"2-8", "id":(value!="" && value!==null)?value:"new"}
       
-    } else if(pageType="vessel"){
-      route=`/setup/voyage/`
-      obj={"label":"Voyages", "key":"2-4"}
-    }
-    //dispatchNew(incrementTab({ "label":label, "key":key, "id":(value!="" && value!==null)?value:"new" }));
+    } else if(pageType=="commodity"){
+      route=`/commodity/`
+      obj={"label":"commodity", "key":"2-3"}
+    };
     dispatchNew(incrementTab(obj));
     Router.push(route);
   };
@@ -200,8 +200,8 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
             <SelectSearchComp register={register} name='localVendorId' control={control} label='' 
               disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
             />
-            <div className='my-2'></div>
-            <SelectSearchComp register={register} name='commodityId' control={control} label='Commodity' disabled={getStatus(approved)} width={"100%"}
+            <div className='custom-link mt-2' onClick={()=>pageLinking("commodity", commodityId)} >Commodity</div>
+            <SelectSearchComp register={register} name='commodityId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
               options={state.fields.commodity} 
             />
             <div className='my-2'></div>

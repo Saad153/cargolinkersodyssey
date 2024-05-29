@@ -1,6 +1,8 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { Select, Input, InputNumber  } from 'antd';
+import { Input } from 'antd';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import PopConfirm from '../../../Shared/PopConfirm';
 
 const ContainerInfo = ({state, dispatch}) => {
 
@@ -14,12 +16,14 @@ const ContainerInfo = ({state, dispatch}) => {
   return (
   <>
     <hr/>
+    <button type='button' className='btn-custom-blue fw-8' onClick={addEquipment}>Add Containers +</button>
     <Table borderless>
       <thead>
         <tr>
           <th>#</th>
           <th>Container #</th>
           <th>Truck #</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -45,11 +49,23 @@ const ContainerInfo = ({state, dispatch}) => {
               }}
             />
           </td>
+          <td>
+            <CloseCircleOutlined className='mx-3 cross-icon' onClick={()=>{
+              PopConfirm(
+                "Confirmation",
+                "Are You Sure To Delete This Equipment",
+                ()=>{
+                  let tempState = [...state.equipments];
+                  tempState.splice(i, 1);
+                  dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
+                })
+              }}
+            />
+          </td>
         </tr>
       )})}
       </tbody>
     </Table>
-    <button type='button' className='btn-custom-blue fw-8' onClick={addEquipment}>Add +</button>
   </>
   )
 }
