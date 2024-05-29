@@ -154,7 +154,7 @@ const BookingInfo = ({handleSubmit, onEdit, companyId, register, control, errors
         <DateComp register={register} name='jobDate' control={control} label='Job Date' width={"100%"} disabled={getStatus(approved)} />
       </Col>
       <Col md={2} className='py-1'>     
-        <DateComp register={register} name='shipDate' control={control} label='Shipment Date' disabled={getStatus(approved)} width={"100%"} />
+        <DateComp register={register} name='shipDate' control={control} label='Sailing/Flight Date' disabled={getStatus(approved)} width={"100%"} />
       </Col>
       <Col md={2} className='py-1'>
         <SelectComp register={register} name='jobType' control={control} label='Job Type' width={"100%"} disabled={getStatus(approved)}
