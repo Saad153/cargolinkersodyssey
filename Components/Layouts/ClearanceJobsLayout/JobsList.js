@@ -15,7 +15,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
   const [records, setRecords] = useState([]);
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
-  const keys = ["jobNo","weight","Client","name","truck","container","gd","customerRef"]
+  const keys = ["jobNo","weight","Client","name","gd","customerRef"]
 
   useEffect(() => {
     if(jobsData.status=="success"){
@@ -30,7 +30,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
         if (key === "Client" && item[key] && item[key].name) {
           return item[key].name.toLowerCase().includes(query.toLowerCase());
         } else if (item[key]) {
-          return item[key].toLowerCase().includes(query.toLowerCase());
+          return item[key]?.toLowerCase().includes(query.toLowerCase());
         } else {
           return false;
         }
@@ -55,7 +55,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
           </h5>
         </Col>
         <Col md={3}>
-          <Input type="text" placeholder="Search by Client, Job, Truck, Container, Invoice" size='sm' onChange={e => setQuery(e.target.value)} />
+          <Input type="text" placeholder="Search by Client, Job, Invoice" size='sm' onChange={e => setQuery(e.target.value)} />
         </Col>
         <Col md={1}>
         <button className='btn-custom right px-4'
@@ -141,9 +141,9 @@ const JobsList = ({ jobsData, sessionData, type }) => {
             </td>
             <td>
               Transportion: <span className='blue-txt fw-5'>{x.transportCheck!=''?'Yes':'No'}</span><br/>
-              Container #: <span className='blue-txt fw-5'>{x.container}</span><br/>
+              {/* Container #: <span className='blue-txt fw-5'>{x.container}</span><br/> */}
               Invoice #: <span className='blue-txt fw-5'>{x.customerRef}</span><br/>
-              Truck #: <span className='blue-txt fw-5'>{x.truck}</span>
+              {/* Truck #: <span className='blue-txt fw-5'>{x.truck}</span> */}
             </td>
             <td>
               {x.approved=="true"?<img src={'/approve.png'} height={70} className='' />:"Not Approved"}
