@@ -66,23 +66,16 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       vgmCutOffTime:tempState.vgmCutOffTime==""?"":moment(tempState.vgmCutOffTime)
     }
     let tempEquipments = [];
-    let tempContainers = [];
     if(tempState.SE_Equipments?.length>0){
       tempEquipments = tempState.SE_Equipments
     }else{
-      tempEquipments = [{id:'', size:'', qty:'', dg:tempState.dg=="Mix"?"DG":tempState.dg, gross:'', teu:''}]
+      tempEquipments = [{id:'', container:'', size:'', qty:'', dg:tempState.dg=="Mix"?"DG":tempState.dg, gross:'', teu:''}]
     }
 
-    if(tempState.container?.length>0){
-      tempContainers = tempState.container
-    }else{
-      tempContainers = [{truck:'', container:''}]
-    }
     dispatch({type:"set",payload:{
       exRate:tempState.exRate,
       equipments:tempEquipments,
-      voyageList:tempVoyageList,
-      container: tempContainers
+      voyageList:tempVoyageList
     }});
     getInvoices(tempState.id, dispatch);
     reset({...tempState});
@@ -105,7 +98,6 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
     data.shippingLineId = data.shippingLineId!=""?data.shippingLineId:null;
     data.approved = data.approved[0]=="1"?true:false;
     data.companyId = companyId;
-    data.container = state.container;
     data.operation = type
     let loginId = Cookies.get('loginId');
     data.createdById = loginId;
@@ -153,7 +145,6 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
     data.shippingLineId = data.shippingLineId!=""?data.shippingLineId:null;
     data.approved = data.approved[0]=="1"?true:false;
     data.companyId = companyId;
-    data.container = state.container;
   
     dispatch({type:'toggle', fieldName:'load', payload:true});
 

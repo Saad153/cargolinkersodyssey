@@ -16,6 +16,8 @@ import InputComp from '/Components/Shared/Form/InputComp';
 import Weights from './WeightComp';
 import airports from "/jsonData/airports";
 import Carrier from './Carrier';
+import polAir from "/jsonData/polAir.json";
+import polSea from "/jsonData/polSea.json";
 
 const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
@@ -24,7 +26,8 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
   const vesselId = useWatch({control, name:"vesselId"});
   const VoyageId = useWatch({control, name:"VoyageId"});
   const ClientId = useWatch({control, name:"ClientId"});
-  const shipperId = useWatch({control, name:"shipperId"});
+  const customAgentId = useWatch({control, name:"customAgentId"});
+  const commodityId = useWatch({control, name:"commodityId"});
   const consigneeId = useWatch({control, name:"consigneeId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
@@ -65,11 +68,10 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
       route=`/setup/vendor/${(value!="" && value!==null)?value:"new"}`
       obj={"label":"Vendor", "key":"2-8", "id":(value!="" && value!==null)?value:"new"}
       
-    } else if(pageType="vessel"){
-      route=`/setup/voyage/`
-      obj={"label":"Voyages", "key":"2-4"}
-    }
-    //dispatchNew(incrementTab({ "label":label, "key":key, "id":(value!="" && value!==null)?value:"new" }));
+    } else if(pageType=="commodity"){
+      route=`/commodity`
+      obj={"label":"Commodity", "key":"2-3"}
+    };
     dispatchNew(incrementTab(obj));
     Router.push(route);
   };
@@ -111,14 +113,15 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <SelectSearchComp register={register} name='localVendorId' control={control} label='' 
           disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
         />
-        <div className='my-2'></div>
-        <SelectSearchComp register={register} name='commodityId' control={control} label='Commodity' disabled={getStatus(approved)} width={"100%"}
+        <div className='custom-link mt-2' onClick={()=>pageLinking("commodity", commodityId)} >Commodity</div>
+        <SelectSearchComp register={register} name='commodityId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
           options={state.fields.commodity} 
         />
-        <div className='my-2'></div>
-        <SelectSearchComp register={register} name='customAgentId' control={control} label='Freight Forwarder' width={"100%"}
+        {/* <div className='my-2'></div> */}
+        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Freight Forwarder {"(CHA/CHB)"}</div>
+        <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
           options={state.fields.vendor.chaChb} 
-        />       
+        />     
         <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
           getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
         />
@@ -127,9 +130,9 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <Row>
           <Col md={12}>
             <SelectSearchComp register={register} name='pol' control={control} 
-              label={(type=="CSE"||type=="CSI")?'Port Of Loading':'Airport of Loading'} 
+              label={(type=="CSE"||type=="CSI")?'Port Of Shipment':'Airport of Shipment'} 
               width={"100%"}
-              options={(type=="CSE"||type=="CSI")?ports.ports:airports}
+              options={(type=="CSE"||type=="CSI")?polSea.ports:polAir.ports}
             />
             <Space/>
           </Col>
@@ -149,8 +152,18 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           </Col>
           <Col md={12}>
             <SelectSearchComp register={register} name='terminal' control={control} label='Terminal' width={"100%"}
-              options={[  
-                {id:'Direct', name:'Direct'},
+              options={[
+                {id:'QICT', name:'QICT'},
+                {id:'KICT', name:'KICT'},
+                {id:'KGTL', name:'KGTL'},
+                {id:'SAPT', name:'SAPT'},
+                {id:'QFS', name:'QFS'},
+                {id:'Fast Track', name:'Fast Track'},
+                {id:'Shaheen (PQ)', name:'Shaheen (PQ)'},
+                {id:'Pak Shaheen (KPT)', name:'Pak Shaheen (KPT)'},
+                {id:'Badaruddin', name:'Badaruddin'},
+                {id:'Bay West', name:'Bay West'},
+                {id:'Supreme Off Dock', name:'Supreme Off Dock'},
               ]}
             />
             <Space/>

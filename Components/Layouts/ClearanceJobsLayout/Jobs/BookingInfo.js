@@ -15,8 +15,9 @@ import { getStatus } from './states';
 import Router from 'next/router';
 import InputComp from '/Components/Shared/Form/InputComp';
 import airports from "/jsonData/airports";
+import polAir from "/jsonData/polAir.json";
+import polSea from "/jsonData/polSea.json";
 import EquipmentInfo from './EquipmentInfo';
-import ContainerInfo from './ContainerInfo';
 
 const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
@@ -28,6 +29,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
   const transporterId = useWatch({control, name:"transporterId"});
   const ClientId = useWatch({control, name:"ClientId"});
   const shippingLineId = useWatch({control, name:"shippingLineId"});
+  const customAgentId = useWatch({control, name:"customAgentId"});
   const commodityId = useWatch({control, name:"commodityId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
@@ -156,9 +158,11 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
       </Col>
       <Col md={2} className='py-1'>
         <SelectComp register={register} name='subType' control={control} label='Shipment Type' width={"100%"} disabled={getStatus(approved)}
-          options={[  
+          options={[
             {id:'FCL', name:'FCL'},
-            {id:'LCL', name:'LCL'}
+            {id:'LCL', name:'LCL'},
+            {id:'Pant', name:'Pant'},
+            {id:'EPZ', name:'EPZ'},
           ]}
         />
       </Col>
@@ -177,16 +181,16 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
             <Space/>
 
             {(type=="CSE" || type=="CSI") && <>
-            <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading' disabled={getStatus(approved)} width={"100%"}
-              options={ports.ports} /><Space/>
+            <SelectSearchComp register={register} name='pol' control={control} label='Port Of Shipment' disabled={getStatus(approved)} width={"100%"}
+              options={polSea.ports} /><Space/>
             <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge' disabled={getStatus(approved)} width={"100%"}
               options={ports.ports} /><Space/>
             </>
             }
             {(type=="CAE" || type=="CAI") &&<>
-            <SelectSearchComp register={register} name='pol' control={control} label='Port Of Loading' disabled={getStatus(approved)} width={"100%"}
-              options={airports} /><Space/>
-            <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='pol' control={control} label='Airport Of Shipment' disabled={getStatus(approved)} width={"100%"}
+              options={polAir.ports} /><Space/>
+            <SelectSearchComp register={register} name='pod' control={control} label='Airport Of Discharge' disabled={getStatus(approved)} width={"100%"}
               options={airports} /><Space/>
             </>}
             <SelectSearchComp register={register} name='fd' control={control} label='Final Destination' disabled={getStatus(approved)} width={"100%"}
@@ -204,8 +208,9 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
             <SelectSearchComp register={register} name='commodityId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
               options={state.fields.commodity} 
             />
-            <div className='my-2'></div>
-            <SelectSearchComp register={register} name='customAgentId' control={control} label='Freight Forwarder' width={"100%"}
+            {/* <div className='my-2'></div> */}
+            <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Freight Forwarder {"(CHA/CHB)"}</div>
+            <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
               options={state.fields.vendor.chaChb} 
             />
             {(type=="CSE"||type=="CSI") &&<>
@@ -213,9 +218,6 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
               <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
             </>
             }
-          </Col>
-          <Col md={12}>
-          <EquipmentInfo state={state} dispatch={dispatch} />
           </Col>
         </Row>
       </Col>
@@ -243,9 +245,6 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
               </Col>
               <Col md={8} className='mt-2'>
                 <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"} disabled={getStatus(approved)} options={packages}  />
-              </Col>
-              <Col md={12}>
-                <ContainerInfo state={state} dispatch={dispatch} />
               </Col>
             </Row>
           </Col>
@@ -278,6 +277,9 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
           </div>
           </Col>
         </Row>
+      </Col>
+      <Col md={7}>
+        <EquipmentInfo state={state} dispatch={dispatch} />
       </Col>
     </Row>
     <Modal open={state.isModalOpen} onOk={handleOk} onCancel={handleCancel} maskClosable={false}>
