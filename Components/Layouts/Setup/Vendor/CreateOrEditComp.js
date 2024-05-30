@@ -46,7 +46,7 @@ const baseValues = {
   website:"",
   infoMail:"",
   accountsMail:"",
-  operations:[],
+  operations:["Sea Import","Sea Export", "Air Import", "Air Export"],
   types: [],
   companies:[1,2,3],
   //Bank Info

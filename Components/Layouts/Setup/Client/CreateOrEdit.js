@@ -237,11 +237,11 @@ const CreateOrEdit = ({state, dispatch, baseValues, clientData, id}) => {
                 <InputComp register={register} name='strn' control={control} label='STRN No.' />
                 {errors.strn && <div className='error-line'>{errors.strn.message}*</div>}
             </Col>
-            <Col md={12} className='py-1'>
+            {/* <Col md={12} className='py-1'>
                 <CheckGroupComp register={register} name='operations' control={control} label='Operations'
                 options={state.Operations}/>
                 {errors.operations && <div className='error-line'>{errors.operations.message}*</div>}
-            </Col>
+            </Col> */}
             <Col md={12} className='py-1'>
                 <CheckGroupComp register={register} name='types' control={control} label='Type'
                     options={state.Types}/>
