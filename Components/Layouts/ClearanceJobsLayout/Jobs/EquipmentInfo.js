@@ -10,7 +10,7 @@ const EquipmentInfo = ({state, dispatch}) => {
   
   const addEquipment = () => {
     let tempState = [...state.equipments];
-    tempState.push({size:'', qty:'', dg:'', gross:'', teu:'', container:''});
+    tempState.push({size:'', qty:'', dg:'', gross:0.01, teu:0.01, container:''});
     dispatch({type:'toggle', fieldName:'equipments', payload:tempState});
   };
 
@@ -26,8 +26,8 @@ const EquipmentInfo = ({state, dispatch}) => {
               <th>Size</th>
               <th>Container #</th>
               <th>Truck #</th>
-              <th>DG/Non-DG</th>
-              <th>Gross WT/CNT</th>
+              {/*<th>DG/Non-DG</th>*/}
+              <th>Gross Weight</th>
               <th>VGM</th>
               <th> </th>
             </tr>
@@ -72,7 +72,7 @@ const EquipmentInfo = ({state, dispatch}) => {
                     dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
                   }} />
               </td>
-              <td className='p-0'>
+              {/*<td className='p-0'>
                 <Select style={{ width: width }} value={x.dg}
                   onChange={(e)=>{
                     let tempState = [...state.equipments];
@@ -84,21 +84,23 @@ const EquipmentInfo = ({state, dispatch}) => {
                     {value:'DG', label:'DG'},
                   ]}
                 />
-              </td>
+              </td>*/}
               <td className='p-0'>
-                <Input placeholder="Weight" style={{width:width}} value={x.gross}
+                <InputNumber placeholder="Weight" style={{width:width}} value={x.gross}
+                  min={0.01}
                   onChange={(e)=>{
                     let tempState = [...state.equipments];
-                    tempState[i].gross = e.target.value;
+                    tempState[i].gross = e!=null?e:0.01;
                     dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
                   }} 
                 />
               </td>
               <td className='p-0'>
-                <Input placeholder="VGM" style={{width:width}} value={x.teu} 
+                <InputNumber placeholder="VGM" style={{width:width}} value={x.teu} 
+                  min={0.01}
                   onChange={(e)=>{
                     let tempState = [...state.equipments];
-                    tempState[i].teu = e.target.value;
+                    tempState[i].teu = e!=null?e:0.01;
                     dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
                   }} 
                 />

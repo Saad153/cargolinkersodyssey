@@ -62,10 +62,14 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
     {id:'UNIT', value:'UNIT'}
   ];
 
+  useEffect(()=>{
+  }, [])
+
   return(
   <Row style={{border:'1px solid silver', paddingBottom:15, margin:0}}>
     <Col md={6} className='mt-2'>
-      <InputNumComp register={register} name='weight' control={control} width={"100%"} label='Gross Weight' step={'0.01'} disabled={getStatus(approved)} />
+      <div>Gross Weight</div>
+      <InputNumber value={equipments.reduce((a, b) => a + parseFloat(b.gross),0,)} />
     </Col>
     <Col md={6} className='mt-2'>
       <InputNumComp register={register} name='bkg' control={control} width={"100%"} label='Net Weight' step={'0.01'} disabled={getStatus(approved)} />
