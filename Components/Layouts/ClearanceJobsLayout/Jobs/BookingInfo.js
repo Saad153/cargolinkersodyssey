@@ -161,7 +161,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
           options={[
             {id:'FCL', name:'FCL'},
             {id:'LCL', name:'LCL'},
-            {id:'Part FCL', name:'Part FCL'},
+            {id:'PART', name:'PART'},
             {id:'EPZ', name:'EPZ'},
           ]}
         />
