@@ -158,12 +158,12 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
             if((x.Invoice==null || x.Invoice?.status==null || x.Invoice?.approved=="0")) {
               PopConfirm("Confirmation", "Are You Sure To Remove This Charge?",
               () => {
-                        let tempState = [...chargeList];
-                        let tempDeleteList = [...state.deleteList];
-                        tempDeleteList.push(tempState[index].id);
-                        tempState.splice(index, 1);
-                        reset({ chargeList: tempState });
-                        dispatch({ type: 'toggle', fieldName: 'deleteList', payload: tempDeleteList });
+                let tempState = [...chargeList];
+                let tempDeleteList = [...state.deleteList];
+                tempDeleteList.push(tempState[index].id);
+                tempState.splice(index, 1);
+                reset({ chargeList: tempState });
+                dispatch({ type: 'toggle', fieldName: 'deleteList', payload: tempDeleteList });
             })}}}
           />
         </td>
@@ -195,9 +195,8 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
               let tempChargeList = [...chargeList];
               state.fields.chargeList.forEach(async (y, i) => {
                 if (y.code == e) {
-                  console.log(y.pricing)
                   let tempChargePerPiece = 1;
-                  if(y?.pricing?.length>0){
+                  if(y?.pricing?.length>0 && y.calculationType=="Per Package"){
                     for (let priceIndex = 0; priceIndex < y?.pricing?.length; priceIndex++) {
                       if(priceIndex+1 != y.pricing.length){
                         if(tempChargeList[index].qty<=y.pricing[priceIndex].minimum){

@@ -138,15 +138,15 @@ const CreateOrEdit = ({state, dispatch, baseValues}) => {
         <Col md={12} className="my-2">
           <RadioComp register={register} name='calculationType' control={control} label='Calculation Type'
             options={[
-              { label: "Per Unit", value: "Per Unit" },
-              { label: "Per Shipment", value: "Per Shipment" },
               { label: "Per Container", value: "Per Container" },
+              { label: "Per Gd", value: "Per Gd" },
+              { label: "Per Package", value: "Per Package" },
             ]}
           />
           {errors.calculationType && <div className='error-line'>{errors.calculationType.message}*</div>}
         </Col>
         <Col md={4} className='my-2'>
-          {calculationType=="Per Container"?
+          {calculationType=="Per Package"?
           <>
           <hr/>
           <button className='btn-custom-blue' type='button'
@@ -243,13 +243,13 @@ const CreateOrEdit = ({state, dispatch, baseValues}) => {
         <Col md={4} className="my-2">
           <SelectComp register={register} name='defaultRecivableParty' control={control} label='Default Receivable Party Type' width={180}
             options={[
-              {id:'Local-Agent', name:'Terminal'},
-              // {id:'Local-Agent', name:'Local-Agent'},
-              // {id:'Overseas-Agent', name:'Overseas-Agent'},
-              // {id:'Transport-Agent', name:'Transport-Agent'},
-              // {id:'Forwarding-Agent', name:'Forwarding-Agent'},
-              // {id:'Custom-Agent', name:'Custom-Agent'},
-              // {id:'Shipping-Line', name:'Shipping-Line'},
+              {id:'Terminal', name:'Terminal'},
+              {id:'Local-Agent', name:'Local-Agent'},
+              {id:'Overseas-Agent', name:'Overseas-Agent'},
+              {id:'Transport-Agent', name:'Transport-Agent'},
+              {id:'Forwarding-Agent', name:'Forwarding-Agent'},
+              {id:'Custom-Agent', name:'Custom-Agent'},
+              {id:'Shipping-Line', name:'Shipping-Line'},
             ]} 
           />
           {errors.defaultPaybleParty && <div className='error-line'>{errors.defaultPaybleParty.message}*</div>}
