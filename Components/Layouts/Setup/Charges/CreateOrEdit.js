@@ -44,14 +44,18 @@ const CreateOrEdit = ({state, dispatch, baseValues}) => {
     if(state.edit){
       let tempState = {...state.selectedRecord};
       reset(tempState);
-      let tempPricing = [...state.selectedRecord?.pricing];
-      tempPricing.forEach((x)=>{
-        x.id = uuidv4()
-      })
-      //generateUuid
-      dispatch({type:'toggle', fieldName:'pricing', payload:tempPricing});
+      if(state.selectedRecord?.pricing){
+        let tempPricing = [...state.selectedRecord?.pricing];
+        tempPricing.forEach((x)=>{
+          x.id = uuidv4()
+        })
+        //generateUuid
+        dispatch({type:'toggle', fieldName:'pricing', payload:tempPricing});
+      }
     }
-    if(!state.edit){ reset(baseValues) }
+    if(!state.edit){
+      reset(baseValues);
+    }
   }, [state.selectedRecord])
 
   const onSubmit = async(fields) => {
@@ -62,7 +66,7 @@ const CreateOrEdit = ({state, dispatch, baseValues}) => {
     }
     setTimeout(async() => {
       await axios.post(process.env.NEXT_PUBLIC_CLIMAX_CREATE_CHARGE,{
-            data
+        data
       }).then((x)=>{
         if(x.data.status=='success'){
           let tempRecords = [...state.records];
