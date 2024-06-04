@@ -5,7 +5,10 @@ import { Row, Col } from 'react-bootstrap';
 import { setHeadsCache } from '../states';
 import { useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
-import Charges from './Charges';
+import dynamic from 'next/dynamic'
+const Charges = dynamic(() => import('./Charges'), {
+  loading: () => <p>Loading...</p>,
+});
 import { Tabs } from 'antd';
 
 const ChargesComp = ({state, dispatch, type, allValues}) => {

@@ -38,10 +38,10 @@ const baseValues = {
   //Basic Info
   id:'',
   code:"",
-  currency:"",
+  currency:"PKR",
   name:"",
   short:"",
-  calculationType:"",
+  calculationType:"Per Container",
   defaultPaybleParty:"",
   defaultRecivableParty:"",
   taxApply:"No",
@@ -50,14 +50,16 @@ const baseValues = {
 }
 
 const initialState = {
-    records: [],
-    load:false,
-    visible:false,
-    edit:false,
-    search:"",
-    values:baseValues,
-    // Editing Records
-    selectedRecord:{},
+  records: [],
+  pricing: [],
+  load:false,
+  visible:false,
+  edit:false,
+  search:"",
+  values:baseValues,
+
+  // Editing Records
+  selectedRecord:{}
 };
 
 const Charges = ({chargeData}) => {
