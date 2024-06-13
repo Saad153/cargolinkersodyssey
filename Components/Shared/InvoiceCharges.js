@@ -12,7 +12,7 @@ import CLPrint from './CLPrint';
 const { TextArea } = Input;
 
 const InvoiceCharges = ({data, companyId}) => {
-  console.log(data)
+    
   const commas = (a) =>  { return parseFloat(a).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
 
   let inputRef = useRef(null);
@@ -98,9 +98,10 @@ const InvoiceCharges = ({data, companyId}) => {
     setLoad(true);
     let tempInv = {...invoice};
     await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_SE_JOB_CHILDS,{
-        headers:{ title:JSON.stringify(["FCL FREIGHT INCOME", "FCL FREIGHT EXPENSE"]), companyid:companyId }
+        headers:{ title:JSON.stringify(["JOB INCOME", "JOB EXPENSE"]), companyid:2 }
     }).then((x)=>{
         if(x.data.status=="success"){
+            // console.log(x.data.result)
             x.data.result.forEach((y)=>{
                 if(y.title.endsWith("INCOME")){ 
                     income = y
@@ -244,6 +245,7 @@ const InvoiceCharges = ({data, companyId}) => {
             ChildAccountId:income.id
         })
     }
+    // console.log(vouchers)
     await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_INVOICE_APPROVE_DISAPPROVE,{
         id:tempInv.id,
         total:tempInv.total,

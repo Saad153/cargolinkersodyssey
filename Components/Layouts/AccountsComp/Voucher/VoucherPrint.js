@@ -58,7 +58,7 @@ const VoucherPrint = ({ compLogo, voucherData }) => {
         </Col>
         <Col className='mt-4'>
           <div className='text-center '>
-            <div style={{ fontSize: 20 }}><b>{compLogo == "1" ? "International Freight Aviation & LOGISTICS" : "AIR CARGO SERVICES"}</b></div>
+            <div style={{ fontSize: 20 }}><b>CARGO LINKERS SERVICES</b></div>
             <div style={paraStyles}>House# D-213, DMCHS, Siraj Ud Daula Road, Karachi</div>
             <div style={paraStyles}>Tel: 9221 34395444-55-66   Fax: 9221 34385001</div>
             <div style={paraStyles}>Email: {compLogo == "1" ? "info@ifa.com" : "info@acs.com.pk"}   Web: {compLogo == "1" ? "www.ifa.com.pk" : "www.acs.com.pk"}</div>

@@ -109,14 +109,15 @@ const CreateOrEditComp = ({id, representativeData, clientData}) => {
 
   useEffect(() => {
     axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ACCOUNTS_FOR_PARTY_SETUP,{
-      headers:{"id": `1`}
+      headers:{"id": `2`}
     }).then((x)=>{
       let tempParentAccount = ''
       x.data.result.forEach((x)=>{
         if(x.title=="ACCOUNT RECEIVABLE"){
           tempParentAccount = x.id
         }
-      })
+      });
+      console.log(tempParentAccount)
       dispatch({type:'set', payload:{
         parentAccount:id=="new"?tempParentAccount:clientData?.Client_Associations[0]?.Parent_Account?.id,
         accountList:x.data.result,

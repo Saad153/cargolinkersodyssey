@@ -13,7 +13,7 @@ const TrialBalance = () => {
 
   const [records, setRecords] = useState([]);
   const [debitAccount, setDebitAccount] = useState("");
-  const [company, setCompany] = useState(1);
+  const [company, setCompany] = useState(2);
   const [from, setFrom] = useState(moment("2023-07-01").format("YYYY-MM-DD"));
   const [to, setTo] = useState(moment().format("YYYY-MM-DD"));
   const [currency, setCurrency] = useState("PKR");
@@ -37,7 +37,6 @@ const TrialBalance = () => {
     if (filters) {
       setFrom(values.from);
       setTo(values.to);
-      setCompany(values.company);
       setDebitAccount(values.debitAccount);
     }
   }, [filters]);
@@ -90,9 +89,7 @@ const TrialBalance = () => {
               setCompany(e.target.value);
             }}
           >
-            <Radio value={1}>International Freight Aviation & LOGISTICS</Radio>
             <Radio value={2}>CARGO LINKERS</Radio>
-            <Radio value={3}>AIR CARGO SERVICES</Radio>
           </Radio.Group>
         </Col>
         <Col md={9} className="mb-3">

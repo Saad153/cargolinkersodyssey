@@ -7,14 +7,7 @@ const NewPrintVoucehr = ({state, companyId}) => {
     let border1 = "1px solid black";
     let inputRef = useRef(null);
     let companyName = () => {
-      let name;
-      if (companyId == 1) {
-        return (name = "International Freight Aviation");
-      } else if (companyId == 2) {
-        return (name = "Cargo linkers");
-      } else if (companyId == 3) {
-        return (name = "Air Cargo Service");
-      }
+      let name = "Cargo linkers";
     };
   return (
     <div>

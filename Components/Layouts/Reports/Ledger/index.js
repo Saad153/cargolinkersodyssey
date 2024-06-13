@@ -12,7 +12,7 @@ const Ledger = () => {
 
   const [from, setFrom] = useState(moment("2023-07-01").format("YYYY-MM-DD"));
   const [to, setTo] = useState(moment().format("YYYY-MM-DD"));
-  const [company, setCompany] = useState(1);
+  const [company, setCompany] = useState(2);
   const [account, setAccount] = useState("");
   const [currency, setCurrency] = useState("PKR");
   const [records, setRecords] = useState([]);
@@ -49,7 +49,6 @@ const Ledger = () => {
     if(filters){
       setFrom(values.from),
       setTo(values.to),
-      setCompany(values.company),
       setAccount(values.account),
       setCurrency(values.currency)
     }
@@ -72,9 +71,7 @@ const Ledger = () => {
         <Col md={3} className="my-3">
           <b>Company</b>
           <Radio.Group className="mt-1" value={company} onChange={(e) => setCompany(e.target.value)}>
-            <Radio value={1}>International Freight Aviation & LOGISTICS</Radio>
             <Radio value={2}>CARGO LINKERS</Radio>
-            <Radio value={3}>AIR CARGO SERVICES</Radio>
           </Radio.Group>
         </Col>
         <Col md={7}></Col>

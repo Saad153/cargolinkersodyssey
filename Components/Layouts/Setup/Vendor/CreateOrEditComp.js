@@ -131,7 +131,7 @@ const CreateOrEditComp = ({sessionData, representativeData, vendorData, id}) => 
     }).then((x)=>{
       let tempParentAccount = ''
       x.data.result.forEach((x)=>{
-        if(x.title=="ACCOUNT PAYABLE "){
+        if(x.title=="ACCOUNT PAYABLE"){
           tempParentAccount = x.id
         }
       });

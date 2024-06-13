@@ -17,7 +17,7 @@ const AccountActivity = () => {
   const [voucherRecords, setVoucherRecords] = useState([]);
   const [debitAccount, setDebitAccount] = useState("");
   const [creditAccount, setCreditAccount] = useState("");
-  const [company, setCompany] = useState(1);
+  const [company, setCompany] = useState(2);
   const [from, setFrom] = useState(moment("2023-07-01").format("YYYY-MM-DD"));
   const [to, setTo] = useState(moment().format("YYYY-MM-DD"));
   const dispatch = useDispatch()
@@ -124,9 +124,7 @@ const AccountActivity = () => {
               setCompany(e.target.value);
             }}
           >
-            <Radio value={1}>International Freight Aviation & LOGISTICS</Radio>
             <Radio value={2}>CARGO LINKERS</Radio>
-            <Radio value={3}>AIR CARGO SERVICES</Radio>
           </Radio.Group>
         </Col>
         <Col md={8}></Col>

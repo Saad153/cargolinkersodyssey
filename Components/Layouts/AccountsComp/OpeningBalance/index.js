@@ -13,7 +13,7 @@ const OpeningBalance = ({id, voucherData}) => {
   const [ exRate, setExRate ] = useState("1");
   const [ accounts, setAccounts ] = useState([]);
   const [ currency, setCurrency ] = useState("PKR");
-  const [ companyId, setCompanyId ] = useState("");
+  const [ companyId, setCompanyId ] = useState(2);
   const [ voucherAccounts, setVoucherAccounts ] = useState([]);
 
   const [ deleteList, setDeleteList ] = useState([]);
@@ -23,7 +23,6 @@ const OpeningBalance = ({id, voucherData}) => {
       setExRate(voucherData.exRate)
       setCurrency(voucherData.currency)
       setVoucher_Id(voucherData.voucher_Id)
-      setCompanyId(parseInt(voucherData.CompanyId))
       setVoucherAccounts(voucherData.Voucher_Heads)
     }
   }, [])
@@ -98,7 +97,6 @@ const OpeningBalance = ({id, voucherData}) => {
             <div className='mt-2'>Company</div>
             <Select style={{width:"100%"}} value={companyId} disabled={id!="new"}
               options={[
-                { value:1, label:'Int. Freight Aviation' },
                 { value:2, label:'CARGO LINKERS' },
               ]}
               onChange={(e)=>{

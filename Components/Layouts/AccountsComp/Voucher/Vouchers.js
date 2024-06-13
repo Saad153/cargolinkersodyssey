@@ -231,7 +231,7 @@ const Vouchers = ({ register, control, errors, CompanyId, child, settlement, res
           </Col>
           <Col md={12} className="mb-2">
             <div>Company</div>
-            <div style={box}>{CompanyId == 1 ? "International Freight Aviation" : CompanyId == 2 ? "CARGO LINKERS" : "AIR CARGO SERVICES"}</div>
+            <div style={box}>CARGO LINKERS</div>
           </Col>
           <Col md={12}>
             <SelectSearchComp className="form-select" name="ChildAccountId" label="Settlement Account" register={register} control={control} width={"100%"}

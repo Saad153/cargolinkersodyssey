@@ -1,48 +1,46 @@
 import { Row, Col, Table } from 'react-bootstrap';
 import React, { useEffect, useReducer, useState } from 'react';
 import Router from 'next/router';
-import { HistoryOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { incrementTab } from '/redux/tabs/tabSlice';
-import axios from 'axios';
 import { Input, Select } from 'antd'
 
 function recordsReducer(state, action){
-    switch (action.type) {
-      case 'toggle': { 
-        return { ...state, [action.fieldName]: action.payload } 
-      }
-      case 'create': {
-        return {
-            ...state,
-            edit: false,
-            visible: true,
-        }
-      }
-      case 'history': {
-        return {
-            ...state,
-            edit: false,
-            viewHistory:true,
-            visible: true,
-        }
-      }
-      case 'edit': {
-        return {
-            ...state,
-            selectedRecord:{},
-            edit: true,
-            visible: true,
-            selectedRecord:action.payload
-        }
-      }
-      case 'modalOff': {
-        let returnVal = { ...state, visible: false, edit: false, viewHistory:false };
-        state.edit?returnVal.selectedRecord={}:null
-        return returnVal
-      }
-      default: return state 
+  switch (action.type) {
+    case 'toggle': { 
+      return { ...state, [action.fieldName]: action.payload } 
     }
+    case 'create': {
+      return {
+        ...state,
+        edit: false,
+        visible: true,
+      }
+    }
+    case 'history': {
+      return {
+        ...state,
+        edit: false,
+        viewHistory:true,
+        visible: true,
+      }
+    }
+    case 'edit': {
+      return {
+        ...state,
+        selectedRecord:{},
+        edit: true,
+        visible: true,
+        selectedRecord:action.payload
+      }
+    }
+    case 'modalOff': {
+      let returnVal = { ...state, visible: false, edit: false, viewHistory:false };
+      state.edit?returnVal.selectedRecord={}:null
+      return returnVal
+    }
+    default: return state 
+  }
 }
 
 const initialState = {
@@ -65,24 +63,10 @@ const Client = ({sessionData, clientData}) => {
     setRecords(); 
   }, [sessionData]);
 
-  const getHistory = async(recordid,type) => {
-    dispatch({type:'toggle', fieldName:'load', payload:true});
-    dispatch({ type: 'history'})
-    await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_HISTORY,{
-      headers:{ recordid:recordid, type:type }
-    }).then((x)=>{
-      setTimeout(async() => {
-        dispatch({type:'toggle', fieldName:'load', payload:false});
-        dispatch({type:'toggle', fieldName:'history', payload:x.data.result});
-    }, 2000);
-    })
-  }
-
   const setRecords = () => {
     dispatch({type:'toggle', fieldName:'records', payload:clientData.result});
     dispatch({type:'toggle', fieldName:'allClients', payload:clientData.result});
   }
-
 
   const onSearch = (event) => {
     const data = searchBy == 'name' ? allClients.filter((x) => x.name.toLowerCase().includes(event.target.value.toLowerCase())) : allClients .filter((x) => x.code.includes(event.target.value))

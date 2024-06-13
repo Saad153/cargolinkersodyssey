@@ -5,7 +5,7 @@ import { Select, Radio, Modal } from 'antd';
 
 const Report = () => {
 
-  const [company, setCompany] = useState(1);
+  const [company, setCompany] = useState(2);
   const [load, setLoad] = useState(false);
   const [visible, setVisible] = useState(false);
 

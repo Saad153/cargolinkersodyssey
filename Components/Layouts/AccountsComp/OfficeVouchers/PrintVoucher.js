@@ -8,18 +8,7 @@ const PrintVoucehr = ({ state, companyId }) => {
   let inputRef = useRef(null);
 
   const lineHeight = (x) => {
-    console.log(Math.ceil(x.length / 69))
     return Math.ceil(x.length / 69) * 22
-  }
-
-  let companyName = () => {
-    if (companyId == 1) {
-      return "International Freight Aviation";
-    } else if (companyId == 2) {
-      return "Cargo linkers";
-    } else if (companyId == 3) {
-      return "Air Cargo Service";
-    }
   };
 
   return (
@@ -30,7 +19,7 @@ const PrintVoucehr = ({ state, companyId }) => {
       {/* heading */}
       <div style={{ padding:"2rem", display:"flex", flexDirection: "column", alignItems: "center" }}>
         <h3 style={{ textAlign:"center", borderBottom:border }}>
-          {companyName()}
+          Cargo linkers
         </h3>
         <p style={{ textAlign:"center" }}>FREIGHT, FORWARDING & SHIPPING AGENTS</p>
         <p style={{textAlign:"center", borderBottom:border, marginTop:"-10px" }}>

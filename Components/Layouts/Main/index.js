@@ -1,18 +1,12 @@
 "use client"
 
 import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
 import { getJobValues } from '/apis/jobs';
 import React, { useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import Router from 'next/router';
-const DynamicComponent = dynamic(() => import("./ChartComp"), {
-  loading: () => <p>Loading..</p>,
-});
 
-const Main = ({sessionData, chartData}) => {
+const Main = ({sessionData}) => {
 
-  const companyId = useSelector((state) => state.company.value);
   const { data, status, error, refetch } = useQuery({
     queryKey:['values'],
     queryFn:getJobValues

@@ -6,7 +6,7 @@ import Router from 'next/router';
 
 const BalanceSheet = () => {
 
-    const [company, setCompany] = useState(1);
+    const [company, setCompany] = useState(2);
     const [load, setLoad] = useState(false);
     const [visible, setVisible] = useState(false);
 
@@ -179,9 +179,7 @@ const BalanceSheet = () => {
                     setCompany(e.target.value);
                 }} 
             >
-                <Radio value={1}>International Freight Aviation & LOGISTICS</Radio>
                 <Radio value={2}>CARGO LINKERS</Radio>
-                <Radio value={3}>AIR CARGO SERVICES</Radio>
             </Radio.Group>
         </Col>
     </Row>
