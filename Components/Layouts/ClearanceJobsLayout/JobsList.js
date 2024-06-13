@@ -10,38 +10,26 @@ import { Input } from 'antd';
 const JobsList = ({ jobsData, sessionData, type }) => {
 
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
   const changedValues = useSelector((state)=>state.persistValues);
   const companyId = useSelector((state) => state.company.value);
+
   const [records, setRecords] = useState([]);
-  const dispatch = useDispatch();
   const [query, setQuery] = useState("");
-  const keys = ["jobNo","weight","Client","name","gd","customerRef"]
 
   useEffect(() => {
     if(jobsData.status=="success"){
-      console.log(jobsData.result)
-      setRecords(jobsData.result);
-    }
-  }, []);
-
-  const search = (data) => {
-    return data?.filter(item => {
-      return keys.some(key => {
-        if (key === "Client" && item[key] && item[key].name) {
-          return item[key].name.toLowerCase().includes(query.toLowerCase());
-        } else if (item[key]) {
-          return item[key]?.toLowerCase().includes(query.toLowerCase());
-        } else {
-          return false;
+      let temp = [...jobsData.result];
+      temp = temp.map((x)=>{
+        return {
+          ...x,
+          containers:x.SE_Equipments.map((y)=>{ return `${y.container}` }).join(",")
         }
       });
-    });
-  };
-
-  useEffect(() => {
-    const filteredData = search(jobsData.result);
-    setRecords(filteredData)
-  }, [jobsData, query])
+      setRecords(temp);
+    }
+  }, []);
 
   return(
   <>
@@ -96,6 +84,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
           <tr>
             <th>Sr.</th>
             <th>Basic Info</th>
+            <th>Container Info</th>
             <th>Shipment Info</th>
             <th>Weight Info</th>
             <th>Other Info</th>
@@ -104,7 +93,15 @@ const JobsList = ({ jobsData, sessionData, type }) => {
           </tr>
         </thead>
         <tbody>
-        {records?.map((x, index) => {
+        {records.filter((x)=>{
+         return x?.Client?.name?.toLowerCase().includes(query.toLowerCase()) ||
+                x?.jobNo?.toLowerCase().includes(query.toLowerCase()) ||
+                x?.gd?.toLowerCase().includes(query.toLowerCase()) ||
+                x?.containers?.toLowerCase().includes(query.toLowerCase()) ||
+                x?.pcs?.includes(query) ||
+                x?.customerRef?.includes(query) ||
+                x?.created_by?.name?.includes(query)
+        })?.map((x, index) => {
         return (
           <tr key={index} className='f row-hov' onClick={() => {
             queryClient.removeQueries({ queryKey: ['jobData',{ type }] })
@@ -128,6 +125,16 @@ const JobsList = ({ jobsData, sessionData, type }) => {
               Job #<span className='blue-txt fw-7'> {x.jobNo}</span><br/>
               GD #<span className='blue-txt fw-7'> {x.gd}</span><br/>
               Party:<span className='blue-txt fw-5'> {x.Client===null?"":x.Client.name}</span>
+            </td>
+            <td>
+              {x.SE_Equipments.length>0 &&
+                x.SE_Equipments.map((y, j)=>{
+                  return(
+                    <div key={j} className='blue-txt'>{y.container}</div>
+                  )
+                })
+              }
+              {x.SE_Equipments.length==0 && <div className='grey-txt'>{"(Empty)"}</div>}
             </td>
             <td>
               POL: <span className='grey-txt'>{x.pol}</span><br/>

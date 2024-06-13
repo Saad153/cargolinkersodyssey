@@ -113,7 +113,7 @@ const InvoiceBalaincing = () => {
                                 <Select defaultValue="" style={{ width: '100%', marginBottom: 5 }} size='small'
                                     onChange={(e) => { setPayType(e) }} value={payType}
                                     options={[
-                                        { value: "Recievable", label: "Recievable" },
+                                        { value: "Recievable", label: "Receivable" },
                                         { value: "Payble", label: "Payble" },
                                         { value: "All", label: "All" },
                                     ]}

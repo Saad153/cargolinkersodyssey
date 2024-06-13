@@ -49,7 +49,7 @@ const AgentTransactionInfo = ({state, dispatch}) => {
             disabled={state.transaction=="Cash"?true:false} onChange={(e)=>set('checkNo',e.target.value)} />
         </Col>
         <Col className="mt-3" md={6}>
-            <span className="grey-txt fs-14">{state.payType=="Recievable"?"Recieving":"Paying"} Account #</span>
+            <span className="grey-txt fs-14">{state.payType=="Recievable"?"Receiving":"Paying"} Account #</span>
             <span style={{marginLeft:6, position:'relative', bottom:2}} className='close-btn'>
                 <CloseCircleOutlined onClick={()=>{
                     set('payAccountRecord', {});

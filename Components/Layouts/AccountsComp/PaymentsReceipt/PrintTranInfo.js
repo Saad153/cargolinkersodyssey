@@ -46,7 +46,7 @@ const PrintTranInfo = ({state}) => {
         />
       </Col>
       <Col className="mt-3" md={6}>
-          <span className="grey-txt fs-14">{state.payType=="Recievable"?"Recieving":"Paying"} Account</span>
+          <span className="grey-txt fs-14">{state.payType=="Recievable"?"Receiving":"Paying"} Account</span>
           <div className="custom-select-input-small">
             {state.payAccountRecord!=null && Object.keys(state.payAccountRecord).length==0?
               <span style={{color:'silver'}}>Select Account</span>:

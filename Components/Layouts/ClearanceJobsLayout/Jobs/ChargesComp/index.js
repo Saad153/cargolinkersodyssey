@@ -57,7 +57,7 @@ const ChargesComp = ({state, dispatch, type, allValues}) => {
       <Col md={9}>
         <Row className='my-1'>
           <Col style={{maxWidth:100}} className="py-4">
-            Recievable:
+            Receivable:
           </Col>
           <Col>
             <div className='text-center'>PP</div>
