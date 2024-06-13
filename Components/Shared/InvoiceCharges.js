@@ -5,7 +5,6 @@ import moment from "moment";
 import axios from 'axios';
 import openNotification from '../Shared/Notification';
 import FullScreenLoader from './FullScreenLoader';
-import InvoicePrint from './InvoicePrint';
 import { Checkbox, Popover, Input, Radio, Select } from 'antd';
 import { useQueryClient } from '@tanstack/react-query';
 import CLPrint from './CLPrint';
@@ -111,16 +110,7 @@ const InvoiceCharges = ({data, companyId}) => {
             })
         }
     });
-    // await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_SE_JOB_CLIENT_CHILDS,{
-    //     headers:{ 
-    //         title:tempInv.payType=="Recievable"?"ACCOUNT RECEIVABLE":"ACCOUNT PAYABLE", 
-    //         companyid:companyId, 
-    //         clientid:tempInv.party_Id, 
-    //         partytype:tempInv.partyType 
-    //     }
-    // }).then((x)=>{
-    //     party = x.data.result
-    // });
+    
     await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ACCOUNTS_FOR_APPROVAL,{
         headers:{
             title:tempInv.payType=="Recievable"?"ACCOUNT RECEIVABLE":"ACCOUNT PAYABLE", 
@@ -525,61 +515,50 @@ return (
             </div>
         </Col>
         <Col className='mt-5 p-0' md={2}>
-            <Radio.Group onChange={(e)=>setBank(e.target.value)} value={bank}>
-                <Radio value={1}>BANK-A {"(ACS)"}</Radio>
-                <Radio value={4}>BANK-B {"(ACS)"}</Radio>
-                <Radio value={2}>BANK-C {"(SNS)"}</Radio>
-                <Radio value={3}>BANK-D {"(SNS)"}</Radio>
-            </Radio.Group>
+          <Radio.Group onChange={(e)=>setBank(e.target.value)} value={bank}>
+            <Radio value={1}>BANK-A {"(ACS)"}</Radio>
+            <Radio value={4}>BANK-B {"(ACS)"}</Radio>
+            <Radio value={2}>BANK-C {"(SNS)"}</Radio>
+            <Radio value={3}>BANK-D {"(SNS)"}</Radio>
+          </Radio.Group>
         </Col>
     </Row>
     <hr className='mb-1' />
     <div>
-        <Row>
-            <Col md={6} className=" ">
-            <div className=''>
-                {invoice?.currency!="PKR" && 
-                <>
+      <Row>
+        <Col md={6} className=" ">
+          <div className=''>
+            {invoice?.currency!="PKR" && 
+            <>
                     <span className='inv-label mx-2'>Total Amount {`(${invoice?.currency})`}: </span>
                     <span className='inv-value charges-box'> 
                         {" "}
                         {commas((parseFloat(invoice?.total)/parseFloat(invoice?.ex_rate)).toFixed(2))}
                     </span>
                     <span className='mx-4'></span>
-                </>
-                }
-                <span className='inv-label mx-2'>Total Amount {"(Local)"}:</span>
-                <span className='inv-value charges-box'> 
+            </>
+            }
+            <span className='inv-label mx-2'>Total Amount {"(Local)"}:</span>
+            <span className='inv-value charges-box'> 
                     {" "}
                     {commas((parseFloat(invoice?.total) + parseFloat(invoice?.roundOff)).toFixed(2))}
-                </span>
-            </div>
-            </Col>
-        </Row>
+            </span>
+          </div>
+        </Col>
+      </Row>
     </div>
     </div>
     }
-    {/* Printing Component */}
-    <div style={{
-            display:"none"
-        }}>
+      {/* Printing Component */}
+      <div 
+        style={{
+          display:"none"
+        }}
+      >
         <div ref={(response)=>(inputRef=response)}>
-            {invoice && companyId !== "2" 
-            ?
-                <InvoicePrint 
-                    logo={logo} 
-                    compLogo={compLogo} 
-                    records={records} 
-                    bank={bank} 
-                    bankDetails={bankDetails} 
-                    invoice={invoice} 
-                    calculateTotal={calculateTotal} 
-                /> 
-            :
-            <CLPrint records={records} invoice={invoice} />
-            }
+          <CLPrint records={records} invoice={invoice} />
         </div>
-    </div>
+      </div>
     </div>
   </>
 )}
