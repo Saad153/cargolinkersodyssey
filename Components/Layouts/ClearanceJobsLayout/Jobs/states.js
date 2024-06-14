@@ -353,16 +353,23 @@ const getStatus = (val) => {
 
 const setHeadsCache = (chargesData, dispatch, reset) => {
   chargesData.status=="success"?
-  dispatch({type:'set', 
-  payload:{
-    reciveableCharges:chargesData.data.reciveableCharges,
-    paybleCharges:chargesData.data.paybleCharges,
-    ...chargesData.data
-    //...tempChargeHeadsArray
-  }}):null;
-  chargesData.status=="success"?
-  reset({chargeList:[ ...chargesData.data.charges ]}):
-  null;
+    dispatch({type:'set', 
+      payload:{
+        reciveableCharges:chargesData.data.reciveableCharges,
+        paybleCharges:chargesData.data.paybleCharges,
+        ...chargesData.data
+        //...tempChargeHeadsArray
+      }
+    }):null;
+  if(chargesData.status=="success"){
+    let tempCharges = chargesData.data.charges.map((x) => {
+      return {
+        ...x,
+        chargeDate:x?.chargeDate!=null?moment(x?.chargeDate):null
+      }
+    });
+    reset({chargeList:[ ...tempCharges ]})
+  }
 }
 
 export {

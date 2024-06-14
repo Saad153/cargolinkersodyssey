@@ -32,7 +32,15 @@ const NumComp = (props) => {
   return (
     <>
       <div>{props.label}</div>
-      <DatePicker name={fieldName} onChange={onChange} value={value} ref={ref} onBlur={onBlur} style={{minWidth:props.width, fontSize:12}} />
+      <DatePicker 
+        ref={ref} 
+        name={fieldName} 
+        onChange={onChange} 
+        value={value} 
+        onBlur={onBlur} 
+        size="sm"
+        style={{minWidth:props.width, fontSize:12}} 
+      />
     </>
   )
 }
