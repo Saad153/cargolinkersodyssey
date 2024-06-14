@@ -132,7 +132,7 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
       <th style={{minWidth:90}}>Ref</th>
       {(operationType=="SE"||operationType=="SI") &&<th>SizeType</th>}
       {(operationType=="SE"||operationType=="SI") &&<th style={{minWidth:95}}>DG Type</th>}
-      <th>Qty/Weight</th>
+      <th>Quantity</th>
       {(operationType=="AI"||operationType=="AE")&&<th>Rate</th>}
       <th>Currency</th>
       <th>Amount</th>
@@ -140,7 +140,7 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
       <th style={{minWidth:60}}>Tax</th>
       <th style={{minWidth:100}}>Tax Amount</th>
       <th style={{minWidth:100}}>Net Amount</th>
-      <th>Ex.Rate</th>
+      <th>Ref#</th>
       <th style={{minWidth:110}}>Local Amount</th>
       <th>Name</th>
       <th>Status</th>

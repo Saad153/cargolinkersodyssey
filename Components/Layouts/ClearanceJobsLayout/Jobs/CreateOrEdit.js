@@ -225,7 +225,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
         <button type="submit" disabled={state.load?true:false} className='btn-custom mt-3'>
           {state.load?<Spinner animation="border" size='sm' className='mx-3' />:'Save Job'}
         </button>
-        <button type="button" disabled //disabled={allValues.approved==1?true:false} 
+        {/* <button type="button" disabled //disabled={allValues.approved==1?true:false} 
           className={allValues.approved==1?"btn-red-disabled mt-3 mx-3":"btn-red mt-3 mx-3"}
           onClick={()=>
             PopConfirm("Confirmation", "Are You Sure You Want To Delete This Job?",
@@ -240,7 +240,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
               }))
             }
         > Delete Job {allValues.approved}
-        </button>
+        </button> */}
       </>
       }
     </form>
