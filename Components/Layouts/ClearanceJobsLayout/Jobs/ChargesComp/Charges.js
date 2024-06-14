@@ -1,19 +1,20 @@
+import React, { useEffect } from 'react';
 import { useWatch } from "react-hook-form";
 import { CloseCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
-import SelectSearchComp from "../../../../Shared/Form//SelectSearchComp";
-import InputNumComp from "../../../../Shared/Form/InputNumComp";
+import SelectSearchComp from "/Components/Shared/Form/SelectSearchComp";
+import InputNumComp from "/Components/Shared/Form/InputNumComp";
+import InputComp from "/Components/Shared/Form/InputComp";
 import { Select, Modal, Tag, InputNumber } from 'antd';
 import { getVendors, getClients } from '../states';
-import SelectComp from "../../../../Shared/Form/SelectComp";
+import SelectComp from "/Components/Shared/Form/SelectComp";
 import { Row, Col, Table, Spinner } from 'react-bootstrap';
-import PopConfirm from '../../../../Shared/PopConfirm';
-import React, { useEffect } from 'react';
+import PopConfirm from '/Components/Shared/PopConfirm';
 import PartySearch from './PartySearch';
-import { saveHeads, calculateChargeHeadsTotal, makeInvoice, getHeadsNew } from "../states";
+import { saveHeads, calculateChargeHeadsTotal, makeInvoice } from "../states";
 import { useQueryClient } from '@tanstack/react-query';
 import { delay } from "/functions/delay";
 
-const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, remove, control, register, companyId, operationType, allValues, chargesData}) => {
+const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, control, register, companyId, operationType, chargesData}) => {
     
   const queryClient = useQueryClient();
   const { permissions } = state;
@@ -49,10 +50,10 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
     reset({ chargeList: tempChargeList });
   };
 
-  const permissionAssign=(perm, x)=>x.Invoice?.approved=="1"?true:false;
+  const permissionAssign=(per, x)=>x.Invoice?.approved=="1"?true:false;
 
   return(
-    <>
+  <>
     <Row>
       <Col style={{maxWidth:150}} className="">
         <div className='div-btn-custom text-center py-1 fw-8'
@@ -72,48 +73,48 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
       </Col>
       <Col>
         <div className='div-btn-custom text-center mx-0 py-1 px-3' style={{float:'right'}} 
-            onClick={async () => {
-                if(!state.chargeLoad){
-                    dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
-                    await calculate();
-                    await saveHeads(chargeList, state, dispatch, reset);
-                    await queryClient.removeQueries({ queryKey: ['charges'] })
-                    await chargesData.refetch();
-                    dispatch({type:'set', payload:{
-                        //chargeLoad:false,
-                        selection:{InvoiceId:null, partyId:null}
-                    }})
-                    await delay(1000);
-                    await queryClient.removeQueries({ queryKey: ['charges'] })
-                    await chargesData.refetch();
-                    dispatch({type:'set', payload:{
-                        chargeLoad:false,
-                        //selection:{InvoiceId:null, partyId:null}
-                    }})
-                }
-            }}
+          onClick={async () => {
+            if(!state.chargeLoad){
+              dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
+              await calculate();
+              await saveHeads(chargeList, state, dispatch, reset);
+              await queryClient.removeQueries({ queryKey: ['charges'] })
+              await chargesData.refetch();
+              dispatch({type:'set', payload:{
+                //chargeLoad:false,
+                selection:{InvoiceId:null, partyId:null}
+              }})
+              await delay(1000);
+              await queryClient.removeQueries({ queryKey: ['charges'] })
+              await chargesData.refetch();
+              dispatch({type:'set', payload:{
+                  chargeLoad:false,
+                  //selection:{InvoiceId:null, partyId:null}
+              }})
+            }
+          }}
         >Save Charges</div>
         <div className='div-btn-custom-green text-center py-1 mx-2 px-3' style={{float:'right'}}
-            onClick={async () => {
-                if(!state.chargeLoad){
-                    await dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
-                    let status = await  makeInvoice(chargeList, companyId, reset, operationType);
-                    if(status=="success"){
-                        await queryClient.removeQueries({ queryKey: ['charges'] })
-                        await chargesData.refetch();
-                    }  
-                    await dispatch({type:'set', payload:{
-                        //chargeLoad:false,
-                        selection:{InvoiceId:null, partyId:null}
-                    }})
-                    await delay(1000);
-                    await chargesData.refetch();
-                    await dispatch({type:'set', payload:{
-                        chargeLoad:false,
-                        //selection:{InvoiceId:null, partyId:null}
-                    }})
-                }
-            }}
+          onClick={async () => {
+            if(!state.chargeLoad){
+              await dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
+              let status = await  makeInvoice(chargeList, companyId, reset, operationType);
+              if(status=="success"){
+                await queryClient.removeQueries({ queryKey: ['charges'] })
+                await chargesData.refetch();
+              }  
+              await dispatch({type:'set', payload:{
+                //chargeLoad:false,
+                selection:{InvoiceId:null, partyId:null}
+              }})
+              await delay(1000);
+              await chargesData.refetch();
+              await dispatch({type:'set', payload:{
+                chargeLoad:false,
+                //selection:{InvoiceId:null, partyId:null}
+              }})
+            }
+          }}
         >Generate Invoice No</div>
       </Col>
     </Row>
@@ -128,7 +129,7 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
       <th>Charge</th>
       <th>Particular</th>
       <th>Basis</th>
-      <th>PP/CC</th>
+      <th style={{minWidth:90}}>Ref</th>
       {(operationType=="SE"||operationType=="SI") &&<th>SizeType</th>}
       {(operationType=="SE"||operationType=="SI") &&<th style={{minWidth:95}}>DG Type</th>}
       <th>Qty/Weight</th>
@@ -274,16 +275,12 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
         <td>{x.basis} {/* Basis */}
         </td>
         <td style={{ padding: 3, minWidth: 50 }}> {/* PP?CC */}
-          <SelectComp register={register} name={`chargeList.${index}.pp_cc`} control={control} width={60} font={13} 
+          <InputComp register={register} name={`chargeList.${index}.pp_cc`} control={control} width={60} font={13} 
             disabled={permissionAssign(permissions, x)}
-            options={[
-              { id: 'PP', name: 'PP' },
-              { id: 'CC', name: 'CC' }
-            ]}
           />
         </td>
         {(operationType=="SE"||operationType=="SI") &&<td style={{ padding: 3 }}> {/* Size/Type */}
-          <SelectSearchComp register={register} name={`chargeList.${index}.size_type`} control={control} width={100} font={13} 
+          <SelectSearchComp register={register} name={`chargeList.${index}.size_type`} control={control} width={'100%'} font={13} 
             disabled={permissionAssign(permissions, x)}
               options={[
                 { id: '40HC', name: '40HC' },
@@ -377,8 +374,14 @@ const ChargesList = ({state, dispatch, type, append, reset, fields, chargeList, 
     >{state.headVisible && <PartySearch state={state} dispatch={dispatch} reset={reset} useWatch={useWatch} control={control} />}
     </Modal>
     </div>
-    <div className='div-btn-custom-green text-center py-1 px-3 mt-3' style={{float:'right'}} onClick={()=>{calculate(chargeList)}}>Calculate</div>
-    </>
+    <div 
+      style={{float:'right'}}
+      onClick={()=>{calculate(chargeList)}}
+      className='div-btn-custom-green text-center py-1 px-3 mt-3'
+    >
+      Calculate
+    </div>
+  </>
   )
 }
 export default React.memo(ChargesList)

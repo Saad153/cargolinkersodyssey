@@ -276,28 +276,28 @@ const InvoiceCharges = ({data, companyId}) => {
   }
 
   const PrintOptions = (
-    <div className=''>
-        <Checkbox onChange={()=>setRef(!ref)} checked={ref} className='mb-2'>Hide Ref & Sales Rep</Checkbox><br/>
-        <Checkbox onChange={()=>setLogo(!logo)} checked={logo} className='mb-2'>Hide Logo</Checkbox><br/>
-        <Checkbox onChange={()=>setBalance(!balance)} checked={balance} className='mb-2'>Hide Balance</Checkbox><br/>
-        Logo: {" "}
-        <Radio.Group optionType="button" buttonStyle="solid" value={compLogo}
-            options={[{ label: 'SNS', value: '1' }, { label: 'ACS', value: '2' }]}
-            onChange={(e)=>setCompLogo(e.target.value)}
-        />
-        <br/>
-        <div className='mt-3'></div>
-        <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
-    </div>
+    <>
+      <Checkbox onChange={()=>setRef(!ref)} checked={ref} className='mb-2'>Hide Ref & Sales Rep</Checkbox><br/>
+      <Checkbox onChange={()=>setLogo(!logo)} checked={logo} className='mb-2'>Hide Logo</Checkbox><br/>
+      <Checkbox onChange={()=>setBalance(!balance)} checked={balance} className='mb-2'>Hide Balance</Checkbox><br/>
+      Logo: {" "}
+      <Radio.Group optionType="button" buttonStyle="solid" value={compLogo}
+          options={[{ label: 'SNS', value: '1' }, { label: 'ACS', value: '2' }]}
+          onChange={(e)=>setCompLogo(e.target.value)}
+      />
+      <br/>
+      <div className='mt-3'></div>
+      <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
+    </>
   )
 
   const updateNote = async() => {
     await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_INVOICE_NOTE_UPDATE,{
-        id:invoice.id, note:invoice.note, currency:invoice.currency
+      id:invoice.id, note:invoice.note, currency:invoice.currency
     }).then((x)=>{
-        if(x.data.status=="success"){
-            openNotification("Success", "Note Saved!", "green")
-        }
+      if(x.data.status=="success"){
+        openNotification("Success", "Note Saved!", "green")
+      }
     })
   }
 
@@ -306,126 +306,113 @@ return (
     {load && <FullScreenLoader/>}
     <div className='invoice-styles '>
     {Object.keys(data).length>0 &&
-    <div className='fs-12' 
-        style={{maxHeight:660, overflowY:'auto', overflowX:'hidden'}}
-    >
+    <div className='fs-12' style={{maxHeight:660, overflowY:'auto', overflowX:'hidden'}}>
     <div style={{maxWidth:70}}>
     <Popover content={PrintOptions} placement="bottom" title="Printing Options">
-        <div className='div-btn-custom text-center p-2'>Print</div>
+      <div className='div-btn-custom text-center p-2'>Print</div>
     </Popover>
     </div>
     <Row className='py-3'>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Invoice No#:</span>
-                <span className='inv-value'>{" "}{invoice?.invoice_No}</span>
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Party Name:</span>
-                <span className='inv-value'>{" "}{invoice?.party_Name}</span>
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Pay Type:</span>
-                <span className='inv-value'>{" "}{invoice?.payType}</span>
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Currency:</span>
-                {" "}
-                {/* <span className='inv-value'>{" "}{invoice.currency}</span> */}
-                <Select
-                    size='small'
-                    value={invoice?.currency} onChange={(e)=>setInvoice({...invoice, currency:e})}
-                    style={{
-                        width: 80,
-                    }}
-                    options={[
-                        {value: 'PKR', label: 'PKR'},
-                        {value: 'USD', label: 'USD'},
-                        {value: 'EUR', label: 'EUR'},
-                        {value: 'CHF', label: 'CHF'},
-                        {value: 'GBP', label: 'GBP'},
-                        {value: 'OMR', label: 'OMR'},
-                    ]}
-                />
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Invoice/Bill:</span>
-                <span className='inv-value'>{" "}{invoice?.type}</span>
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Created:</span>
-                <span className='inv-value'>{" "}{ moment(invoice?.createdAt).format("DD / MMM / YY")}</span>
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Round Off:</span>
-                <span className='inv-value mx-2'>
-                    <input className='cur' type={"checkbox"}
-                    disabled={invoice?.type=="Agent Invoice"?true:invoice?.type=="Agent Bill"?true:invoice?.approved=="1"?true:false} checked={invoice?.roundOff!="0"} 
-                    onChange={async () => {
-                        setLoad(true);
-                        let tempInv = {...invoice};
-                        let before = parseFloat(calculateTotal(records));
-                        let after = parseFloat(parseInt(before));
-                        let remaining = before - after;
-                        if(remaining>0){
-                            if(invoice?.roundOff=="0"){
-                                if(remaining<=0.5 && remaining>0){
-                                    tempInv.roundOff = `-${(remaining).toFixed(2)}`;
-                                }else{
-                                    tempInv.roundOff = `+${(1-remaining).toFixed(2)}`;
-                                }
+      <Col md={3} className="mb-3">
+          <span className='inv-label'>Invoice No#:</span>
+          <span className='inv-value'>{" "}{invoice?.invoice_No}</span>
+      </Col>
+      <Col md={3} className="mb-3">
+          <span className='inv-label'>Party Name:</span>
+          <span className='inv-value'>{" "}{invoice?.party_Name}</span>
+      </Col>
+      <Col md={3} className="mb-3">
+          <span className='inv-label'>Pay Type:</span>
+          <span className='inv-value'>{" "}{invoice?.payType}</span>
+      </Col>
+      <Col md={3} className="mb-3">
+          <span className='inv-label'>Currency:</span>
+          {" "}
+          {/* <span className='inv-value'>{" "}{invoice.currency}</span> */}
+          <Select
+            size='small'
+            value={invoice?.currency} onChange={(e)=>setInvoice({...invoice, currency:e})}
+            style={{ width: 80 }}
+            options={[
+              {value: 'PKR', label: 'PKR'},
+              {value: 'USD', label: 'USD'},
+              {value: 'EUR', label: 'EUR'},
+              {value: 'CHF', label: 'CHF'},
+              {value: 'GBP', label: 'GBP'},
+              {value: 'OMR', label: 'OMR'},
+            ]}
+          />
+      </Col>
+      <Col md={3} className="mb-3">
+          <div>
+            <span className='inv-label'>Invoice/Bill:</span>
+            <span className='inv-value'>{" "}{invoice?.type}</span>
+          </div>
+      </Col>
+      <Col md={3} className="mb-3">
+          <span className='inv-label'>Created:</span>
+          <span className='inv-value'>{" "}{ moment(invoice?.createdAt).format("DD / MMM / YY")}</span>
+      </Col>
+      <Col md={3} className="mb-3">
+          <span className='inv-label'>Round Off:</span>
+          <span className='inv-value mx-2'>
+                <input className='cur' type={"checkbox"}
+                disabled={invoice?.type=="Agent Invoice"?true:invoice?.type=="Agent Bill"?true:invoice?.approved=="1"?true:false} checked={invoice?.roundOff!="0"} 
+                onChange={async () => {
+                    setLoad(true);
+                    let tempInv = {...invoice};
+                    let before = parseFloat(calculateTotal(records));
+                    let after = parseFloat(parseInt(before));
+                    let remaining = before - after;
+                    if(remaining>0){
+                        if(invoice?.roundOff=="0"){
+                            if(remaining<=0.5 && remaining>0){
+                                tempInv.roundOff = `-${(remaining).toFixed(2)}`;
                             }else{
-                                tempInv.roundOff = "0"
+                                tempInv.roundOff = `+${(1-remaining).toFixed(2)}`;
                             }
-                            await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_ROUNDOFF_INVOICE, {
-                                id:tempInv.id,
-                                total:tempInv.total,
-                                roundOff:tempInv.roundOff,
-                                approved:tempInv.approved
-                            }).then((x)=>{
-                                if(x.data.status=="success"){
-                                    openNotification("Success", "Invoice Successfully Rounded Off!", "green");
-                                    setInvoice(tempInv);
-                                }else{
-                                    openNotification("Ops", "An Error Occured!", "red");
-                                }
-                            })
+                        }else{
+                            tempInv.roundOff = "0"
                         }
-                        setLoad(false);
-                    }} 
-                    />
-                </span>
-            </div>
-        </Col>
-        <Col md={3} className="mb-3">
-            <div>
-                <span className='inv-label'>Approved:</span>
-                <span className='inv-value mx-2'>
-                    <input className='cur' type={"checkbox"} checked={invoice?.approved!="0"} 
-                        disabled={checkApprovability(invoice)}
-                        onChange={approve}
-                    />
-                </span>
-            </div>
-        </Col>
+                        await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_ROUNDOFF_INVOICE, {
+                            id:tempInv.id,
+                            total:tempInv.total,
+                            roundOff:tempInv.roundOff,
+                            approved:tempInv.approved
+                        }).then((x)=>{
+                            if(x.data.status=="success"){
+                                openNotification("Success", "Invoice Successfully Rounded Off!", "green");
+                                setInvoice(tempInv);
+                            }else{
+                                openNotification("Ops", "An Error Occured!", "red");
+                            }
+                        })
+                    }
+                    setLoad(false);
+                }} 
+                />
+          </span>
+      </Col>
+      <Col md={3} className="mb-3">
+          <div>
+            <span className='inv-label'>Approved:</span>
+            <span className='inv-value mx-2'>
+              <input 
+                className='cur' 
+                type={"checkbox"} 
+                checked={invoice?.approved!="0"} 
+                disabled={checkApprovability(invoice)}
+                onChange={approve}
+              />
+            </span>
+          </div>
+      </Col>
     </Row>
     <div style={{minHeight:250}}>
-        <div className='table-sm-1 mt-3' style={{maxHeight:300, overflowY:'auto', fontSize:11}}>
-        <Table className='tableFixHead' bordered>
+      <div className='table-sm-1 mt-3' style={{maxHeight:300, overflowY:'auto', fontSize:11}}>
+      <Table className='tableFixHead' bordered>
         <thead>
-            <tr className='table-heading-center'>
+          <tr className='table-heading-center'>
             <th></th>
             <th>Charge</th>
             <th>Particular</th>
@@ -442,86 +429,85 @@ return (
             <th>Net</th>
             <th>Ex.</th>
             <th>Total</th>  
-            </tr>
+          </tr>
         </thead>
         <tbody style={{fontSize:11}}>
-            {records?.length>0 &&
-            <>
+          {records?.length>0 &&
+          <>
             {records?.map((x, index) => {
             return (
             <tr key={index} className='f table-row-center-singleLine' style={{lineHeight:0.5}}>
-                <td>{index + 1}</td>
-                <td>{x.charge}</td>
-                <td>{x.particular}</td>
-                <td>{x.basis.slice(0, 8)}</td>
-                <td>{x.pp_cc}</td>
-                <td>{x.size_type}</td>
-                <td>{x.dg_type}</td>
-                <td>{x.qty}</td>
-                <td>{x.currency}</td>
-                <td>{x.amount}</td>
-                <td>{x.discount}</td>
-                <td>{x.tax_apply}</td>
-                <td>{x.tax_amount}</td>
-                <td>{x.net_amount}</td>
-                <td>{x.currency=="PKR"?"1.00":x.ex_rate}</td>
-                <td>{x.local_amount}</td>
+              <td>{index + 1}</td>
+              <td>{x.charge}</td>
+              <td>{x.particular}</td>
+              <td>{x.basis.slice(0, 8)}</td>
+              <td>{x.pp_cc}</td>
+              <td>{x.size_type}</td>
+              <td>{x.dg_type}</td>
+              <td>{x.qty}</td>
+              <td>{x.currency}</td>
+              <td>{x.amount}</td>
+              <td>{x.discount}</td>
+              <td>{x.tax_apply}</td>
+              <td>{x.tax_amount}</td>
+              <td>{x.net_amount}</td>
+              <td>{x.currency=="PKR"?"1.00":x.ex_rate}</td>
+              <td>{x.local_amount}</td>
             </tr>
-                )
-            })}
-            </>
-            }
-            {invoice!=null && <>
-                {invoice?.roundOff!="0" &&
-                <tr style={{lineHeight:0.5}}>
-                    <td>{records.length+1}</td>
-                    <td>ROFC</td>
-                    <td>Round Off</td>
-                    <td> - </td>
-                    <td> - </td>
-                    <td> - </td>
-                    <td> - </td>
-                    <td>1</td>
-                    <td>PKR</td>
-                    <td>{invoice?.roundOff?.slice(1)}</td>
-                    <td> 0 </td>
-                    <td style={{textAlign:'center'}}>No</td>
-                    <td>0.00</td>
-                    <td>{invoice?.roundOff?.slice(1)}</td>
-                    <td>1.00</td>
-                    <td>{invoice?.roundOff}</td>
-                </tr>
-                }
-            </>
-            }
+            )})}
+          </>
+          }
+          {invoice!=null && <>
+              {invoice?.roundOff!="0" &&
+              <tr style={{lineHeight:0.5}}>
+                <td>{records.length+1}</td>
+                <td>ROFC</td>
+                <td>Round Off</td>
+                <td> - </td>
+                <td> - </td>
+                <td> - </td>
+                <td> - </td>
+                <td>1</td>
+                <td>PKR</td>
+                <td>{invoice?.roundOff?.slice(1)}</td>
+                <td> 0 </td>
+                <td style={{textAlign:'center'}}>No</td>
+                <td>0.00</td>
+                <td>{invoice?.roundOff?.slice(1)}</td>
+                <td>1.00</td>
+                <td>{invoice?.roundOff}</td>
+              </tr>
+              }
+          </>
+          }
         </tbody>
-        </Table>
-        </div>
+      </Table>
+      </div>
     </div>
     <Row>
-        <Col className='mx-2 pt-3' md={4}>
-            <h5>Note</h5>
-            <div style={{border:"1px solid silver"}}>
-                <TextArea rows={4} value={invoice?.note} onChange={(e)=>setInvoice({...invoice, note:e.target.value})} />
+      <Col className='mx-2 pt-3' md={4}>
+          <h5>Note</h5>
+          <div style={{border:"1px solid silver"}}>
+            <TextArea rows={4} value={invoice?.note} onChange={(e)=>setInvoice({...invoice, note:e.target.value})} />
+          </div>
+          <button className='btn-custom mt-3' onClick={updateNote} type='button'>Save</button>
+      </Col>
+      <Col md={4} className='mt-4'>
+          <b>Bank Details</b>
+          <div style={{border:"1px solid silver"}}>
+            <div style={{fontSize:12, lineHeight:0.8, whiteSpace:'pre-wrap', paddingBottom:10}}>
+              {bank==1?bankDetails.one:bank==2?bankDetails.two:bank==3?bankDetails.three:bankDetails.four}
             </div>
-            <button className='btn-custom mt-3' onClick={updateNote} type='button'>Save</button>
-        </Col>
-        <Col md={4} className='mt-4'>
-            <b>Bank Details</b>
-            <div style={{border:"1px solid silver"}}>
-                <div style={{fontSize:12, lineHeight:0.8, whiteSpace:'pre-wrap', paddingBottom:10}}>
-                    {bank==1?bankDetails.one:bank==2?bankDetails.two:bank==3?bankDetails.three:bankDetails.four}
-                </div>
-            </div>
-        </Col>
-        <Col className='mt-5 p-0' md={2}>
+          </div>
+      </Col>
+      <Col className='mt-5 p-0' md={2}>
           <Radio.Group onChange={(e)=>setBank(e.target.value)} value={bank}>
             <Radio value={1}>BANK-A {"(ACS)"}</Radio>
             <Radio value={4}>BANK-B {"(ACS)"}</Radio>
             <Radio value={2}>BANK-C {"(SNS)"}</Radio>
             <Radio value={3}>BANK-D {"(SNS)"}</Radio>
           </Radio.Group>
-        </Col>
+      </Col>
     </Row>
     <hr className='mb-1' />
     <div>
