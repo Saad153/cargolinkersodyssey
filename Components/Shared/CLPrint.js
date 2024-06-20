@@ -136,7 +136,7 @@ const CLPrint = ({ records, invoice }) => {
                     <span className='fs-10'>{invoice.SE_Job.pcs ? invoice.SE_Job.pcs : ""} Cartons</span><br />
                     <span className='fs-10'>{invoice.SE_Job.commodity ? invoice.SE_Job.commodity.name : ""}</span><br />
                     <span className='fs-10'>{invoice?.SE_Job?.pol} </span><br/>
-                    <span className='fs-10'>{invoice?.SE_Job?.shipping_line.name}</span><br/>
+                    <span className='fs-10'>{invoice?.SE_Job?.shipping_line?.name}</span><br/>
                     <span className='fs-10'>{moment(invoice?.SE_Job?.shipDate).format("DD-MM-YYYY")}</span>
                 </div>
             </div>

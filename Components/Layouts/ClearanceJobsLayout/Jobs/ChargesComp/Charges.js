@@ -14,17 +14,23 @@ import { saveHeads, calculateChargeHeadsTotal, makeInvoice } from "../states";
 import { useQueryClient } from '@tanstack/react-query';
 import { delay } from "/functions/delay";
 
+
+
 const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, control, register, companyId, operationType, chargesData})=>{
 
+ 
+  console.log("chargeList",chargeList)
   const queryClient = useQueryClient();
   const { permissions } = state;
   const permissionAssign=(per, x)=>x.Invoice?.approved=="1"?true:false;
 
   useEffect(() => {
     if(chargeList){
+
       let list = chargeList.filter((x) => x.check);
       list.length > 0 ? dispatch({ type:'set', payload:{selection:{InvoiceId:list[0].InvoiceId,partyId:list[0].partyId}} }) : null ;
     }
+  
   }, [chargeList])
 
   const calculate  = () => {

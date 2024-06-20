@@ -31,6 +31,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
     }
   }, []);
 
+  console.log(records);
   return(
   <>
     {companyId!='' &&
@@ -139,12 +140,14 @@ const JobsList = ({ jobsData, sessionData, type }) => {
             <td>
               POL: <span className='grey-txt'>{x.pol}</span><br/>
               POD: <span className='grey-txt'>{x.pod}</span><br/>
-              FLD: <span className='grey-txt'> {x.fd}</span>
+              FLD: <span className='grey-txt'> {x.fd}</span><br/>
+              Type: <span className='grey-txt'>{x.jobKind}</span>
             </td>
             <td>
               {/* Container: <span className='grey-txt'>{x.container}</span><br/> */}
               Weight: <span className='grey-txt'>{x.weight}</span><br/>
-              No of Pcs: <span className='grey-txt'>{x.pcs} {x.pkgUnit}</span>
+              No of Pcs: <span className='grey-txt'>{x.pcs} {x.pkgUnit}</span><br/>
+           
             </td>
             <td>
               Transportion: <span className='blue-txt fw-5'>{x.transportCheck!=''?'Yes':'No'}</span><br/>

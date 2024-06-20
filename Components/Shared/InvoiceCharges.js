@@ -79,6 +79,10 @@ const InvoiceCharges = ({data, companyId}) => {
     }
   }, [data])
 
+  // console.log("data",data.resultOne?.approved)
+  // console.log("records",records)
+  
+
   const calculateTotal = (data) => {
     let result = 0;
     data.forEach((x)=>{
@@ -280,12 +284,12 @@ const InvoiceCharges = ({data, companyId}) => {
       <Checkbox onChange={()=>setRef(!ref)} checked={ref} className='mb-2'>Hide Ref & Sales Rep</Checkbox><br/>
       <Checkbox onChange={()=>setLogo(!logo)} checked={logo} className='mb-2'>Hide Logo</Checkbox><br/>
       <Checkbox onChange={()=>setBalance(!balance)} checked={balance} className='mb-2'>Hide Balance</Checkbox><br/>
-      Logo: {" "}
-      <Radio.Group optionType="button" buttonStyle="solid" value={compLogo}
+      {/* Logo: {" "} */}
+      {/* <Radio.Group optionType="button" buttonStyle="solid" value={compLogo}
           options={[{ label: 'SNS', value: '1' }, { label: 'ACS', value: '2' }]}
           onChange={(e)=>setCompLogo(e.target.value)}
-      />
-      <br/>
+      /> */}
+      {/* <br/> */}
       <div className='mt-3'></div>
       <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
     </>
@@ -300,6 +304,7 @@ const InvoiceCharges = ({data, companyId}) => {
       }
     })
   }
+  // const checkApproval =  data.resultOne?.approved; 
 
 return (
   <>
@@ -353,7 +358,7 @@ return (
           <span className='inv-label'>Created:</span>
           <span className='inv-value'>{" "}{ moment(invoice?.createdAt).format("DD / MMM / YY")}</span>
       </Col>
-      <Col md={3} className="mb-3">
+       <Col md={3} className="mb-3">
           <span className='inv-label'>Round Off:</span>
           <span className='inv-value mx-2'>
                 <input className='cur' type={"checkbox"}
@@ -393,6 +398,7 @@ return (
                 />
           </span>
       </Col>
+
       <Col md={3} className="mb-3">
           <div>
             <span className='inv-label'>Approved:</span>
@@ -407,6 +413,7 @@ return (
             </span>
           </div>
       </Col>
+ 
     </Row>
     <div style={{minHeight:250}}>
       <div className='table-sm-1 mt-3' style={{maxHeight:300, overflowY:'auto', fontSize:11}}>
