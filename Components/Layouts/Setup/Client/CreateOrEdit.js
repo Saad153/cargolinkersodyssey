@@ -242,11 +242,11 @@ const CreateOrEdit = ({state, dispatch, baseValues, clientData, id}) => {
                 options={state.Operations}/>
                 {errors.operations && <div className='error-line'>{errors.operations.message}*</div>}
             </Col> */}
-            <Col md={12} className='py-1'>
+            {/* <Col md={12} className='py-1'>
                 <CheckGroupComp register={register} name='types' control={control} label='Type'
                     options={state.Types}/>
                 {errors.types && <div className='error-line'>{errors.types.message}*</div>}
-            </Col>
+            </Col> */}
         </Row>
         </Tabs.TabPane>
         {/* Bank info tab */}
