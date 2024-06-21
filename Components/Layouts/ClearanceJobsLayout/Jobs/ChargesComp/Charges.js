@@ -18,8 +18,6 @@ import { delay } from "/functions/delay";
 
 const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, control, register, companyId, operationType, chargesData})=>{
 
- 
-  console.log("chargeList",chargeList)
   const queryClient = useQueryClient();
   const { permissions } = state;
   const permissionAssign=(per, x)=>x.Invoice?.approved=="1"?true:false;
@@ -56,6 +54,8 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
     reset({ chargeList: tempChargeList });
   };
 
+let isApproved = state.selectedRecord.approved;
+console.log(isApproved)
   return(
   <>
     <Row>
@@ -75,7 +75,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
           }
         >Add +</div>
       </Col>
-      <Col>
+     <Col>
         <div className='div-btn-custom text-center mx-0 py-1 px-3' style={{float:'right'}} 
           onClick={async () => {
             if(!state.chargeLoad){
@@ -98,7 +98,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             }
           }}
         >Save Charges</div>
-        <div className='div-btn-custom-green text-center py-1 mx-2 px-3' style={{float:'right'}}
+        {isApproved=="true" && <div className='div-btn-custom-green text-center py-1 mx-2 px-3' style={{float:'right'}}
           onClick={async () => {
             if(!state.chargeLoad){
               await dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
@@ -119,8 +119,8 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
               }})
             }
           }}
-        >Generate Invoice No</div>
-      </Col>
+        >Generate Invoice No</div>}
+      </Col> 
     </Row>
     <div className='table-sm-1 mt-3' style={{maxHeight:300, overflowY:'auto'}}>
     {!state.chargeLoad &&

@@ -16,7 +16,7 @@ const SeJob = ({id, type}) => {
 
   const companyId = useSelector((state) => state.company.value);
   const [ state, dispatch ] = useReducer(recordsReducer, initialState);
-  
+
   useEffect(() => {
     let tempPerms = JSON.parse(Cookies.get('permissions'));
     if(dataSuccess && newdata) {
