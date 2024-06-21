@@ -21,8 +21,7 @@ function recordsReducer(state, action){
     }
     default: return state 
   }
-}
-
+};
 const baseValues = {
   //Basic Info
   id:'',
@@ -67,8 +66,7 @@ const baseValues = {
 
   parentAccount:'',
   childAccount:'',
-}
-
+};
 const initialState = {
   load:false,
   values:baseValues,
