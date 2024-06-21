@@ -6,7 +6,8 @@ import inWords from '/functions/numToWords';
 const CLPrint = ({ records, invoice }) => {
     const [values, setValues] = useState({
         tax: 0,
-        taxPercent:0,
+        taxPercent:0.00,
+        serviceCharges:0,
         total: 0,
         netBalance: 0,
     });
@@ -33,13 +34,18 @@ const CLPrint = ({ records, invoice }) => {
         });
         setValues({
             tax: temptax,
-            total: result.toFixed(2),
+            total: result,
             netBalance: netBalance,
             taxPercent: taxPercent,
             serviceCharges: tempServiceCharges
         });
     }, [records])
-
+    const totalFloat = values.total;
+    const taxFloat = values.taxPercent;
+    const serviceFloat = values.serviceCharges
+    // + values.serviceCharges;
+    const sum = totalFloat+serviceFloat+taxFloat;
+console.log("sum", sum)
     return (
     <div className='pb-5 px-5 pt-2'>
       <Row>
@@ -97,18 +103,19 @@ const CLPrint = ({ records, invoice }) => {
       <Col md="6" style={{ borderLeft: border, borderBottom: border }}>
         <div className='d-flex justify-content-start'>
             <div className='text-start'>
-                <span className='fs-11 pe-3 fw-bold'>Client:</span><br />
                 <span className='fs-11 pe-3 fw-bold'>Client Ref # :</span><br />
                 <span className='fs-11 pe-3 fw-bold mt-6'>GD:</span><br />
-                <span className='fs-11 pe-3 fw-bold'>Terminal:</span><br />
+                <span className='fs-11 pe-3 fw-bold'>No Of Packages :</span><br />
+                <span className='fs-11 pe-3 fw-bold'>Description # :</span><br />
+              
                 <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} #:</span><br />
                 <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} Date:</span><br />
             </div>
             <div className='text-start'>
-                <span className='fs-12'>{invoice?.SE_Job?.Client?.name}</span><br />
                 <span className='fs-12'></span><br />
                 <span className='fs-12 mt-6'>{invoice?.SE_Job?.gd}</span><br />
-                <span className='fs-12'>{invoice?.SE_Job?.terminal}</span><br />
+                <span className='fs-12'>{invoice.SE_Job.pcs ? invoice.SE_Job.pcs : ""} Cartons</span><br />
+                <span className='fs-12'>{invoice.SE_Job.commodity ? invoice.SE_Job.commodity.name : ""}</span><br />
                 <span className='fs-12'>{invoice?.SE_Job?.fileNo}</span><br />
                 <span className='fs-12'></span><br />
                 <span className='fs-12'></span><br />
@@ -124,18 +131,17 @@ const CLPrint = ({ records, invoice }) => {
             <div className='d-flex justify-content-start'>
                 <div className='text-start'>
                     <span className='fs-11 pe-3 fw-bold'>Job # :</span><br />
-                    <span className='fs-11 pe-3 fw-bold'>No Of Packages :</span><br />
-                    <span className='fs-11 pe-3 fw-bold'>Description # :</span><br />
+
                     <span className='fs-11 pe-3 fw-bold'>Shipment From #:</span><br />
+                    <span className='fs-11 pe-3 fw-bold'>Terminal:</span><br />
                     <span className='fs-11 pe-3 fw-bold'>Vessel :</span><br />
                     <span className='fs-11 pe-3 fw-bold'>Sailing Date :</span><br />
                 </div>
 
                 <div className='text-start'>
                     <span className='fs-12'>{invoice.SE_Job.jobNo ? invoice.SE_Job.jobNo : ""}</span><br />
-                    <span className='fs-12'>{invoice.SE_Job.pcs ? invoice.SE_Job.pcs : ""} Cartons</span><br />
-                    <span className='fs-12'>{invoice.SE_Job.commodity ? invoice.SE_Job.commodity.name : ""}</span><br />
                     <span className='fs-12'>{invoice?.SE_Job?.pol} </span><br/>
+                    <span className='fs-12'>{invoice?.SE_Job?.terminal}</span><br />
                     <span className='fs-12'>{invoice?.SE_Job?.shipping_line?.name}</span><br/>
                     <span className='fs-12'>{moment(invoice?.SE_Job?.shipDate).format("DD-MM-YYYY")}</span>
                 </div>
@@ -155,6 +161,7 @@ const CLPrint = ({ records, invoice }) => {
                 </thead>
                 <tbody>
                     {records.filter((x)=> { return x.charge!='57' }).map((x, i) => {
+                        console.log("x",x)
                         return (
                             <>
                                 <tr key={x.id} className='fs-10 text-start' style={{ lineHeight: 1 }}>
@@ -173,7 +180,7 @@ const CLPrint = ({ records, invoice }) => {
                                Amount in words (Ruppes) :
                             </span>
                             <span className='fs-12'>
-                                {inWords(parseFloat(values.total) + invoice?.roundOff)} Only
+                                {inWords(sum)} Only
                             </span>
                         </td>
                         <td className='text-end'>
@@ -188,9 +195,9 @@ const CLPrint = ({ records, invoice }) => {
                             <span className='fs-12'>{commas(values.total)}</span> <br />
                             <span className='fs-12'>{commas(values.serviceCharges)}</span> <br />
                             <span className='fs-12'>{commas(values.tax)}</span> <br />
-                            <span className='fs-12'>{commas(values.total)}</span> <br />
+                            <span className='fs-12'></span>{commas(sum)} <br />
                             <span className='fs-12'>0.00</span> <br />
-                            <span className='fs-12'>{commas(values.netBalance)}</span> <br />
+                            <span className='fs-12'>{commas(sum)}</span> <br />
                         </td>
                     </tr>
                 </tbody>

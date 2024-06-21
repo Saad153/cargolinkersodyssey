@@ -450,6 +450,8 @@ const MainLayout = ({children}) => {
     toggleTab(item);
   }
 
+  console.log(companies)
+  
   return (
   <Layout className="main-dashboard-layout">
       {/* sidebar  */}
@@ -487,7 +489,12 @@ const MainLayout = ({children}) => {
     <Header className="site-layout-background" style={{padding:0}}>
     {collapsed && <span className="menu-toggler" onClick={() => setCollapsed(!collapsed)}><AiOutlineRight /></span>}
     {!collapsed && <span className="menu-toggler" onClick={() => setCollapsed(!collapsed)} ><AiOutlineLeft /></span>}
-    <Select style={{width: 155, opacity:0.9}} onChange={handleChange} options={companies} value={company} />
+    <Select style={{width: 155, opacity:0.9}} 
+    onChange={handleChange}     
+    options={companies.map((x)=>{
+  return { value:x?.key, label:x?.label }
+    })}
+value={company} />
     {/* //admin links  */}
     {username=="Saad" &&<>
       <span className='mx-3'></span>
