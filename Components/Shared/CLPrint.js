@@ -77,7 +77,7 @@ const CLPrint = ({ records, invoice }) => {
             </div>
         </Col>
         <Col md="6" style={{ borderTop: border, borderRight: border, borderLeft: border, borderBottom: border, textAlign: "center" }}>
-            <div className='d-flex justify-content-center'>
+            <div className='d-flex justify-content-start'>
                 <div className='text-start' style={{ lineHeight: "-20px" }}>
                     <span className='fs-12 pe-3 fw-bold'>Invoice No :</span><br />
                     <span className='fs-12 pe-3 fw-bold'>Invoice Date :</span><br />
@@ -101,8 +101,8 @@ const CLPrint = ({ records, invoice }) => {
                 <span className='fs-11 pe-3 fw-bold'>Client Ref # :</span><br />
                 <span className='fs-11 pe-3 fw-bold mt-6'>GD:</span><br />
                 <span className='fs-11 pe-3 fw-bold'>Terminal:</span><br />
-                <span className='fs-11 pe-3 fw-bold'>FORM {"'E'"} #:</span><br />
-                <span className='fs-11 pe-3 fw-bold'>FORM {"'E'"} Date:</span><br />
+                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} #:</span><br />
+                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} Date:</span><br />
             </div>
             <div className='text-start'>
                 <span className='fs-12'>{invoice?.SE_Job?.Client?.name}</span><br />
@@ -119,8 +119,8 @@ const CLPrint = ({ records, invoice }) => {
         </div>
       </Col>
 
-      <Col md="2" style={{ borderBottom: border }}></Col>
-      <Col md="4" style={{ borderRight: border, borderBottom: border }}>
+      {/* <Col md="2" style={{ borderBottom: border }}></Col> */}
+      <Col md="6" style={{ borderRight: border, borderBottom: border }}>
             <div className='d-flex justify-content-start'>
                 <div className='text-start'>
                     <span className='fs-11 pe-3 fw-bold'>Job # :</span><br />
@@ -170,10 +170,10 @@ const CLPrint = ({ records, invoice }) => {
                     <tr className='fs-12 text-start'>
                         <td colSpan={"4"}>
                             <span className='pe-3 fw-bold'>
-                                Amount in words :
+                               Amount in words (Ruppes) :
                             </span>
                             <span className='fs-12'>
-                                {inWords(parseFloat(values.total) + invoice?.roundOff)}
+                                {inWords(parseFloat(values.total) + invoice?.roundOff)} Only
                             </span>
                         </td>
                         <td className='text-end'>
@@ -185,12 +185,12 @@ const CLPrint = ({ records, invoice }) => {
                             <span className='fw-bold'>Net Balance</span> <br />
                         </td>
                         <td className='text-end'>
-                            <span>{commas(values.total)}</span> <br />
-                            <span>{commas(values.serviceCharges)}</span> <br />
-                            <span>{commas(values.tax)}</span> <br />
-                            <span>{commas(values.total)}</span> <br />
-                            <span>0.00</span> <br />
-                            <span>{commas(values.netBalance)}</span> <br />
+                            <span className='fs-12'>{commas(values.total)}</span> <br />
+                            <span className='fs-12'>{commas(values.serviceCharges)}</span> <br />
+                            <span className='fs-12'>{commas(values.tax)}</span> <br />
+                            <span className='fs-12'>{commas(values.total)}</span> <br />
+                            <span className='fs-12'>0.00</span> <br />
+                            <span className='fs-12'>{commas(values.netBalance)}</span> <br />
                         </td>
                     </tr>
                 </tbody>
