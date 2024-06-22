@@ -20,6 +20,9 @@ const MainLayout = ({children}) => {
 
   const newRouter = useRouter();
   const dispatch = useDispatch();
+  const { Option } = Select;
+  const [fieldValue, setFieldValue] = useState(2);
+  const [defaultVal,setDefaultVal] = useState("Cargo Linkers");
   const [username, setUsername] = useState("");
   const [load, setLoad] = useState(true);
   const [searchingList, setSearchingList] = useState([]);
@@ -71,6 +74,12 @@ const MainLayout = ({children}) => {
     dispatch(companySelect(value))
     Router.push('/')
   };
+
+  useEffect(() => {
+    if (fieldValue) {
+      handleChange(fieldValue);
+    }
+  }, [fieldValue]);
 
   useEffect(() => {
     // When visiting pages inside folders the initial path in url confilts, so to this is mandatory for resolving it
@@ -449,9 +458,6 @@ const MainLayout = ({children}) => {
     })
     toggleTab(item);
   }
-
-  console.log(companies)
-  
   return (
   <Layout className="main-dashboard-layout">
       {/* sidebar  */}
@@ -489,12 +495,15 @@ const MainLayout = ({children}) => {
     <Header className="site-layout-background" style={{padding:0}}>
     {collapsed && <span className="menu-toggler" onClick={() => setCollapsed(!collapsed)}><AiOutlineRight /></span>}
     {!collapsed && <span className="menu-toggler" onClick={() => setCollapsed(!collapsed)} ><AiOutlineLeft /></span>}
-    <Select style={{width: 155, opacity:0.9}} 
-    onChange={handleChange}     
-    options={companies.map((x)=>{
-  return { value:x?.key, label:x?.label }
-    })}
-value={company} />
+    <Select 
+    defaultValue={defaultVal}
+    style={{width: 155, opacity:0.9}} 
+    onChange={handleChange} 
+    options={companies} 
+   >
+    <Option value="Cargo Linkers">Cargo Linkers</Option>
+    </Select>
+
     {/* //admin links  */}
     {username=="Saad" &&<>
       <span className='mx-3'></span>
