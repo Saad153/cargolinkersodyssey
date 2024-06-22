@@ -176,7 +176,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         {approved=="1" && <img src={'/approve.png'} height={100} />}
         <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
           <CheckGroupComp register={register} name='approved' control={control} label='' 
-            options={[{ label:"Approve Job", value:"1" }]} 
+            options={[{ label:"Vessel Sailed", value:"1" }]} 
           />
         </div>
         <hr className='' />
@@ -204,7 +204,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
       <CustomBoxSelect reset={reset} useWatch={useWatch} control={control} state={state} dispatch={dispatch}/>
     }
     <Modal open={state.isModalOpen} onOk={handleOk} onCancel={handleCancel} maskClosable={false}>
-      {approved=="1" ? "Are You Sure You Want To Approve This Job? " : "Are You Sure You Want To Disapprove This Job?"}
+      {approved=="1" ? "Mark Vessel Sailed? " : "Unmark Vessel Sailed? "}
     </Modal>
   </>
 )}

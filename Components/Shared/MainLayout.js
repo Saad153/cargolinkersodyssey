@@ -23,7 +23,7 @@ const MainLayout = ({children}) => {
   const [username, setUsername] = useState("");
   const [load, setLoad] = useState(true);
   const [searchingList, setSearchingList] = useState([]);
-  const [company, setCompany] = useState('');
+  const [company, setCompany] = useState('2');
   const [companies, setCompanies] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
   const items = setAccesLevels(dispatch, collapsed);
@@ -46,12 +46,9 @@ const MainLayout = ({children}) => {
   }, []);
 
   async function getCompanies(){
-    let companyValue = await Cookies.get('companyId');
+    Cookies.set('companyId', '2', { expires: 1000000000 });
     let tempUser = await Cookies.get('username');
-    if(companyValue){
-      dispatch(companySelect(companyValue));
-      setCompany(companyValue);
-    }
+    dispatch(companySelect('2'));
     setUsername(tempUser)
     await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_COMPANIES)
     .then((x)=>{
@@ -64,13 +61,6 @@ const MainLayout = ({children}) => {
       setCompanies(tempState)
     });
   }
-
-  const handleChange = (value) => {
-    Cookies.set('companyId', value, { expires: 1000000000 });
-    setCompany(value);
-    dispatch(companySelect(value))
-    Router.push('/')
-  };
 
   useEffect(() => {
     // When visiting pages inside folders the initial path in url confilts, so to this is mandatory for resolving it
@@ -487,18 +477,6 @@ const MainLayout = ({children}) => {
     <Header className="site-layout-background" style={{padding:0}}>
     {collapsed && <span className="menu-toggler" onClick={() => setCollapsed(!collapsed)}><AiOutlineRight /></span>}
     {!collapsed && <span className="menu-toggler" onClick={() => setCollapsed(!collapsed)} ><AiOutlineLeft /></span>}
-    <Select style={{width: 155, opacity:0.9}} onChange={handleChange} options={companies} value={company} />
-    {/* //admin links  */}
-    {username=="Saad" &&<>
-      <span className='mx-3'></span>
-      <span className='mx-1 my-3 cur p-2' style={{border:'1px solid grey'}} onClick={()=>Router.push("/seaJobs/seJobList")}>SE</span>
-      <span className='mx-1 my-3 cur p-2' style={{border:'1px solid grey'}} onClick={()=>Router.push("/seaJobs/siJobList")}>SI</span>
-      <span className='mx-1 my-3 cur p-2' style={{border:'1px solid grey'}} onClick={()=>Router.push("/airJobs/aeJobList")}>AE</span>
-      <span className='mx-1 my-3 cur p-2' style={{border:'1px solid grey'}} onClick={()=>Router.push("/airJobs/aiJobList")}>AI</span>
-      <span className='mx-1 my-3 cur p-2' style={{border:'1px solid grey'}} onClick={()=>{
-        dispatch(incrementTab({ "label": "Ports of Discharge", "key": "2-10" }))
-        }}>Ports</span>
-    </>}
       <span style={{color:'black'}} className='mx-3' ><b>Welcome, </b> {username} </span>
       <span style={{float:'right', color:'black'}} className='mx-5 cur' onClick={()=>logout()}> 
         <SlLogout className='mx-2' style={{position:'relative', bottom:2}} />Logout

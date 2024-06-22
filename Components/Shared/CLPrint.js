@@ -44,10 +44,12 @@ const CLPrint = ({ records, invoice }) => {
     <div className='pb-5 px-5 pt-2'>
       <Row>
         <Col>
-            <header className='justify-content-center text-center'>
-            <span className='fs-6'><strong>CARGO LINKERS</strong></span> <br />
+          <header className='justify-content-center text-center'>
+            <img src={'/cargolinkers-logo.png'} style={{filter:"invert(1)"}} className='my-2' height={80} />
+            <br/>
+            {/* <span className='fs-6'><strong>CARGO LINKERS</strong></span> <br /> */}
             <span className='fs-12' style={{ lineHeight: "-20px" }}>F-50 BLOCK-6 SHAHRAH-E-FAISAL KARACHI</span>
-            </header>
+          </header>
         </Col>
       </Row>
       <Row>

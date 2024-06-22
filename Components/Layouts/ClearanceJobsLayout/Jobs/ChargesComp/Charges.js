@@ -16,21 +16,18 @@ import { delay } from "/functions/delay";
 
 
 
-const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, control, register, companyId, operationType, chargesData})=>{
+const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, control, register, companyId, operationType, chargesData, allValues})=>{
 
- 
-  console.log("chargeList",chargeList)
+
   const queryClient = useQueryClient();
   const { permissions } = state;
   const permissionAssign=(per, x)=>x.Invoice?.approved=="1"?true:false;
 
   useEffect(() => {
     if(chargeList){
-
       let list = chargeList.filter((x) => x.check);
       list.length > 0 ? dispatch({ type:'set', payload:{selection:{InvoiceId:list[0].InvoiceId,partyId:list[0].partyId}} }) : null ;
     }
-  
   }, [chargeList])
 
   const calculate  = () => {
@@ -55,7 +52,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
     dispatch({type:'set', payload:{...tempChargeHeadsArray}})
     reset({ chargeList: tempChargeList });
   };
-
   return(
   <>
     <Row>
@@ -98,28 +94,34 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             }
           }}
         >Save Charges</div>
-        <div className='div-btn-custom-green text-center py-1 mx-2 px-3' style={{float:'right'}}
-          onClick={async () => {
-            if(!state.chargeLoad){
-              await dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
-              let status = await  makeInvoice(chargeList, companyId, reset, operationType);
-              if(status=="success"){
-                await queryClient.removeQueries({ queryKey: ['charges'] })
+        {allValues.approved.length==1 &&
+          <div 
+            className='div-btn-custom-green text-center py-1 mx-2 px-3' 
+            style={{float:'right'}}
+            onClick={async () => {
+              if(!state.chargeLoad){
+                await dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
+                let status = await  makeInvoice(chargeList, companyId, reset, operationType);
+                if(status=="success"){
+                  await queryClient.removeQueries({ queryKey: ['charges'] })
+                  await chargesData.refetch();
+                }  
+                await dispatch({type:'set', payload:{
+                  //chargeLoad:false,
+                  selection:{InvoiceId:null, partyId:null}
+                }})
+                await delay(1000);
                 await chargesData.refetch();
-              }  
-              await dispatch({type:'set', payload:{
-                //chargeLoad:false,
-                selection:{InvoiceId:null, partyId:null}
-              }})
-              await delay(1000);
-              await chargesData.refetch();
-              await dispatch({type:'set', payload:{
-                chargeLoad:false,
-                //selection:{InvoiceId:null, partyId:null}
-              }})
-            }
-          }}
-        >Generate Invoice No</div>
+                await dispatch({type:'set', payload:{
+                  chargeLoad:false,
+                  //selection:{InvoiceId:null, partyId:null}
+                }})
+              }
+            }}
+          >
+            Generate Invoice No
+          </div>
+        }
       </Col>
     </Row>
     <div className='table-sm-1 mt-3' style={{maxHeight:300, overflowY:'auto'}}>

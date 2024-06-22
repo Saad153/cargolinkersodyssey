@@ -69,7 +69,7 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
   <Row style={{border:'1px solid silver', paddingBottom:15, margin:0}}>
     <Col md={6} className='mt-2'>
       <div>Gross Weight</div>
-      <InputNumber value={equipments.reduce((a, b) => a + parseFloat(b.gross),0,)} />
+      <InputNumber value={equipments.reduce((a, b) => a + parseFloat(b.gross),0,)} disabled />
     </Col>
     <Col md={6} className='mt-2'>
       <InputNumComp register={register} name='bkg' control={control} width={"100%"} label='Net Weight' step={'0.01'} disabled={getStatus(approved)} />
