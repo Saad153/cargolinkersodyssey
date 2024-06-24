@@ -163,7 +163,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
               Transportion: <span className='blue-txt fw-5'>{x.transportCheck!=''?'Yes':'No'}</span><br/>
               {/* Container #: <span className='blue-txt fw-5'>{x.container}</span><br/> */}
               Invoice #: <span className='blue-txt fw-5'>{x.customerRef}</span><br/>
-              <div>
+              {/* <div>
             <Popover
               content={
               <>{state.InvoiceList?.map((x, i) => 
@@ -180,7 +180,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
               </>}>
               <button type="button" className="btn-custom">Invoice/Bills {`(${state.InvoiceList.length})`}</button>
             </Popover>
-          </div>
+          </div> */}
               {/* Truck #: <span className='blue-txt fw-5'>{x.truck}</span> */}
             </td>
             <td>
