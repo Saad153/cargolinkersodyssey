@@ -51,7 +51,9 @@ console.log("sum", sum)
       <Row>
         <Col>
             <header className='justify-content-center text-center'>
-            <span className='fs-6'><strong>CARGO LINKERS</strong></span> <br />
+            {/* <span className='fs-6'><strong>CARGO LINKERS</strong></span> <br /> */}
+            <img src={'/cargolinkers-logo.png'} style={{filter:"invert(1)"}} className='my-2' height={80} />
+            <br/>
             <span className='fs-12' style={{ lineHeight: "-20px" }}>F-50 BLOCK-6 SHAHRAH-E-FAISAL KARACHI</span>
             </header>
         </Col>
@@ -177,7 +179,7 @@ console.log("sum", sum)
                     <tr className='fs-12 text-start'>
                         <td colSpan={"4"}>
                             <span className='pe-3 fw-bold'>
-                               Amount in words (Ruppes) :
+                               Amount in words (Rupees) :
                             </span>
                             <span className='fs-12'>
                                 {inWords(sum)} Only
