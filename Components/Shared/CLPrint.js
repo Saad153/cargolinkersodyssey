@@ -6,7 +6,8 @@ import inWords from '/functions/numToWords';
 const CLPrint = ({ records, invoice }) => {
     const [values, setValues] = useState({
         tax: 0,
-        taxPercent:0,
+        taxPercent:0.00,
+        serviceCharges:0,
         total: 0,
         netBalance: 0,
     });
@@ -33,23 +34,28 @@ const CLPrint = ({ records, invoice }) => {
         });
         setValues({
             tax: temptax,
-            total: result.toFixed(2),
+            total: result,
             netBalance: netBalance,
             taxPercent: taxPercent,
             serviceCharges: tempServiceCharges
         });
     }, [records])
-
+    const totalFloat = values.total;
+    const taxFloat = values.taxPercent;
+    const serviceFloat = values.serviceCharges
+    // + values.serviceCharges;
+    const sum = totalFloat+serviceFloat+taxFloat;
+console.log("sum", sum)
     return (
     <div className='pb-5 px-5 pt-2'>
       <Row>
         <Col>
-          <header className='justify-content-center text-center'>
+            <header className='justify-content-center text-center'>
+            {/* <span className='fs-6'><strong>CARGO LINKERS</strong></span> <br /> */}
             <img src={'/cargolinkers-logo.png'} style={{filter:"invert(1)"}} className='my-2' height={80} />
             <br/>
-            {/* <span className='fs-6'><strong>CARGO LINKERS</strong></span> <br /> */}
             <span className='fs-12' style={{ lineHeight: "-20px" }}>F-50 BLOCK-6 SHAHRAH-E-FAISAL KARACHI</span>
-          </header>
+            </header>
         </Col>
       </Row>
       <Row>
@@ -71,75 +77,75 @@ const CLPrint = ({ records, invoice }) => {
       <Row style={{ paddingLeft: 12, paddingRight: 12, marginTop: "20px" }}>
         <Col md="6" style={{ borderTop: border, borderRight: border, borderLeft: border, borderBottom: border, }}>
             <div className='d-flex'>
-                <div className='fs-10 pe-3 fw-bold'>M/S :</div>
-                <div className='fs-10'>
-                    <span className='fs-10'>{invoice.SE_Job.Client ? invoice.SE_Job.Client.name : ""}</span> <br />
-                    <span className='fs-10'>{invoice.SE_Job.Client ? invoice.SE_Job.Client.address1 : ""}</span> <br />
+                <div className='fs-12 pe-3 fw-bold'>M/S:</div>
+                <div className='fs-12'>
+                    <span className='fs-12'>{invoice.SE_Job.Client ? invoice.SE_Job.Client.name : ""}</span> <br />
+                    <span className='fs-12'>{invoice.SE_Job.Client ? invoice.SE_Job.Client.address1 : ""}</span> <br />
                 </div>
             </div>
         </Col>
         <Col md="6" style={{ borderTop: border, borderRight: border, borderLeft: border, borderBottom: border, textAlign: "center" }}>
-            <div className='d-flex justify-content-center'>
-                <div className='text-end' style={{ lineHeight: "-20px" }}>
-                    <span className='fs-10 pe-3 fw-bold'>Invoice No :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Invoice Date :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Client Ref # :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>GST Invoice # :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Job Type :</span><br />
+            <div className='d-flex justify-content-start'>
+                <div className='text-start' style={{ lineHeight: "-20px" }}>
+                    <span className='fs-12 pe-3 fw-bold'>Invoice No :</span><br />
+                    <span className='fs-12 pe-3 fw-bold'>Invoice Date :</span><br />
+                    <span className='fs-12 pe-3 fw-bold'>GST Invoice # :</span><br />
+                    <span className='fs-12 pe-3 fw-bold'>Job Type :</span><br />
                 </div>
                 <div className='text-start' style={{ lineHeight: "-20px" }}>
-                    <span className='fs-10'>{invoice.invoice_No ? invoice.invoice_No : ""}</span><br />
-                    <span className='fs-10'>{invoice.createdAt ? moment(invoice.createdAt).format("ll") : ""}</span><br />
-                    <span className='fs-10'></span><br />
-                    <span className='fs-10'></span><br />
-                    <span className='fs-10'>{invoice.SE_Job.subType || ""}</span><br />
+                    <span className='fs-12'>{invoice.invoice_No ? invoice.invoice_No : ""}</span><br />
+                    <span className='fs-12'>{invoice.createdAt ? moment(invoice.createdAt).format("ll") : ""}</span><br />
+                    <span className='fs-12'></span><br />
+                    <span className='fs-12'>{invoice.SE_Job.subType || ""}</span><br />
                 </div>
             </div>
         </Col>
       </Row>
       <Row style={{ paddingLeft: 12, paddingRight: 12, }}>
-      <Col md="4" style={{ borderLeft: border, borderBottom: border }}>
+      <Col md="6" style={{ borderLeft: border, borderBottom: border }}>
         <div className='d-flex justify-content-start'>
             <div className='text-start'>
-                <span className='fs-10 pe-3 fw-bold'>Client:</span><br />
-                <span className='fs-10 pe-3 fw-bold mt-6'>GD / Machine:</span><br />
-                <span className='fs-10 pe-3 fw-bold'>Terminal :</span><br />
-                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} # :</span><br />
-                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} Date :</span><br />
+                <span className='fs-11 pe-3 fw-bold'>Client Ref # :</span><br />
+                <span className='fs-11 pe-3 fw-bold mt-6'>GD:</span><br />
+                <span className='fs-11 pe-3 fw-bold'>No Of Packages :</span><br />
+                <span className='fs-11 pe-3 fw-bold'>Description # :</span><br />
+              
+                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} #:</span><br />
+                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} Date:</span><br />
             </div>
             <div className='text-start'>
-                <span className='fs-10'>{invoice?.SE_Job?.Client?.name}</span><br />
-                <span className='fs-10 mt-6'>{invoice?.SE_Job?.gd}</span><br />
-                <span className='fs-10'>{invoice?.SE_Job?.terminal}</span><br />
-                <span className='fs-10'>{invoice?.SE_Job?.fileNo}</span><br />
-                <span className='fs-10'></span><br />
-                <span className='fs-10'></span><br />
-                <span className='fs-10 mt-6'></span><br />
-                <span className='fs-10'></span><br />
-                <span className='fs-10'></span><br />
+                <span className='fs-12'></span><br />
+                <span className='fs-12 mt-6'>{invoice?.SE_Job?.gd}</span><br />
+                <span className='fs-12'>{invoice.SE_Job.pcs ? invoice.SE_Job.pcs : ""} Cartons</span><br />
+                <span className='fs-12'>{invoice.SE_Job.commodity ? invoice.SE_Job.commodity.name : ""}</span><br />
+                <span className='fs-12'>{invoice?.SE_Job?.fileNo}</span><br />
+                <span className='fs-12'></span><br />
+                <span className='fs-12'></span><br />
+                <span className='fs-12 mt-6'></span><br />
+                <span className='fs-12'></span><br />
+                <span className='fs-12'></span><br />
             </div>
         </div>
       </Col>
 
-      <Col md="4" style={{ borderBottom: border }}></Col>
-      <Col md="4" style={{ borderRight: border, borderBottom: border }}>
+      {/* <Col md="2" style={{ borderBottom: border }}></Col> */}
+      <Col md="6" style={{ borderRight: border, borderBottom: border }}>
             <div className='d-flex justify-content-start'>
                 <div className='text-start'>
-                    <span className='fs-10 pe-3 fw-bold'>Job # :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>No Of Packages :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Description # :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Shipment From # :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Vessel :</span><br />
-                    <span className='fs-10 pe-3 fw-bold'>Sailing Date :</span><br />
+                    <span className='fs-11 pe-3 fw-bold'>Job # :</span><br />
+
+                    <span className='fs-11 pe-3 fw-bold'>Shipment From #:</span><br />
+                    <span className='fs-11 pe-3 fw-bold'>Terminal:</span><br />
+                    <span className='fs-11 pe-3 fw-bold'>Vessel :</span><br />
+                    <span className='fs-11 pe-3 fw-bold'>Sailing Date :</span><br />
                 </div>
 
                 <div className='text-start'>
-                    <span className='fs-10'>{invoice.SE_Job.jobNo ? invoice.SE_Job.jobNo : ""}</span><br />
-                    <span className='fs-10'>{invoice.SE_Job.pcs ? invoice.SE_Job.pcs : ""} Cartons</span><br />
-                    <span className='fs-10'>{invoice.SE_Job.commodity ? invoice.SE_Job.commodity.name : ""}</span><br />
-                    <span className='fs-10'>{invoice?.SE_Job?.pol} </span><br/>
-                    <span className='fs-10'>{invoice?.SE_Job?.shipping_line?.name}</span><br/>
-                    <span className='fs-10'>{moment(invoice?.SE_Job?.shipDate).format("DD-MM-YYYY")}</span>
+                    <span className='fs-12'>{invoice.SE_Job.jobNo ? invoice.SE_Job.jobNo : ""}</span><br />
+                    <span className='fs-12'>{invoice?.SE_Job?.pol} </span><br/>
+                    <span className='fs-12'>{invoice?.SE_Job?.terminal}</span><br />
+                    <span className='fs-12'>{invoice?.SE_Job?.shipping_line?.name}</span><br/>
+                    <span className='fs-12'>{moment(invoice?.SE_Job?.shipDate).format("DD-MM-YYYY")}</span>
                 </div>
             </div>
       </Col>
@@ -157,25 +163,26 @@ const CLPrint = ({ records, invoice }) => {
                 </thead>
                 <tbody>
                     {records.filter((x)=> { return x.charge!='57' }).map((x, i) => {
+                        console.log("x",x)
                         return (
                             <>
                                 <tr key={x.id} className='fs-10 text-start' style={{ lineHeight: 1 }}>
-                                    <td >{i + 1}</td>
-                                    <td >{x.particular}</td>
-                                    <td ></td>
-                                    <td >0.00</td>
-                                    <td >{x.net_amount}</td>
+                                    <td className='fs-12' >{i + 1}</td>
+                                    <td className='fs-12'>{x.particular}</td>
+                                    <td className='fs-12'></td>
+                                    <td className='fs-12'>0.00</td>
+                                    <td className='fs-12'>{x.net_amount}</td>
                                 </tr>
                             </>
                         )
                     })}
-                    <tr className='fs-10 text-start'>
+                    <tr className='fs-12 text-start'>
                         <td colSpan={"4"}>
                             <span className='pe-3 fw-bold'>
-                                Amount in words :
+                               Amount in words (Rupees) :
                             </span>
-                            <span>
-                                {inWords(parseFloat(values.total) + invoice?.roundOff)}
+                            <span className='fs-12'>
+                                {inWords(sum)} Only
                             </span>
                         </td>
                         <td className='text-end'>
@@ -187,12 +194,12 @@ const CLPrint = ({ records, invoice }) => {
                             <span className='fw-bold'>Net Balance</span> <br />
                         </td>
                         <td className='text-end'>
-                            <span>{commas(values.total)}</span> <br />
-                            <span>{commas(values.serviceCharges)}</span> <br />
-                            <span>{commas(values.tax)}</span> <br />
-                            <span>{commas(values.total)}</span> <br />
-                            <span>0.00</span> <br />
-                            <span>{commas(values.netBalance)}</span> <br />
+                            <span className='fs-12'>{commas(values.total)}</span> <br />
+                            <span className='fs-12'>{commas(values.serviceCharges)}</span> <br />
+                            <span className='fs-12'>{commas(values.tax)}</span> <br />
+                            <span className='fs-12'></span>{commas(sum)} <br />
+                            <span className='fs-12'>0.00</span> <br />
+                            <span className='fs-12'>{commas(sum)}</span> <br />
                         </td>
                     </tr>
                 </tbody>

@@ -72,6 +72,8 @@ const InvoiceCharges = ({data, companyId}) => {
   }
 
   useEffect(()=>{
+
+
     if(Object.keys(data).length>0){
         setInvoice(data.resultOne);
         setRecords(data.resultOne?.Charge_Heads);
@@ -79,7 +81,7 @@ const InvoiceCharges = ({data, companyId}) => {
     }
   }, [data])
 
-  // console.log("data",data.resultOne?.approved)
+  console.log("data",data.resultOne?.approved)
   // console.log("records",records)
   
 
@@ -305,7 +307,7 @@ const InvoiceCharges = ({data, companyId}) => {
     })
   }
   // const checkApproval =  data.resultOne?.approved; 
-
+  console.log("data",invoice.SE_Job.jobNo)
 return (
   <>
     {load && <FullScreenLoader/>}
@@ -331,22 +333,9 @@ return (
           <span className='inv-value'>{" "}{invoice?.payType}</span>
       </Col>
       <Col md={3} className="mb-3">
-          <span className='inv-label'>Currency:</span>
-          {" "}
-          {/* <span className='inv-value'>{" "}{invoice.currency}</span> */}
-          <Select
-            size='small'
-            value={invoice?.currency} onChange={(e)=>setInvoice({...invoice, currency:e})}
-            style={{ width: 80 }}
-            options={[
-              {value: 'PKR', label: 'PKR'},
-              {value: 'USD', label: 'USD'},
-              {value: 'EUR', label: 'EUR'},
-              {value: 'CHF', label: 'CHF'},
-              {value: 'GBP', label: 'GBP'},
-              {value: 'OMR', label: 'OMR'},
-            ]}
-          />
+          <span className='inv-label'>Job#:</span>
+          <span className='inv-value'>{" "}{invoice?.SE_Job?.jobNo}</span>
+         
       </Col>
       <Col md={3} className="mb-3">
           <div>
