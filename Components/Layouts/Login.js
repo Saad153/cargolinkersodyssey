@@ -7,40 +7,40 @@ import jwt_decode from 'jwt-decode'
 
 const Login = ({sessionData}) => {
 
-    useEffect(() => {
-        if(sessionData.isLoggedIn==true){
-          Router.push('/')
-        }
-      }, [sessionData]);
+  useEffect(() => {
+      if(sessionData.isLoggedIn==true){
+        Router.push('/')
+      }
+    }, [sessionData]);
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [reveal, setReveal] = useState(false);
-    const [load, setLoad] = useState(false);
-    const [error, setError] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [reveal, setReveal] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [error, setError] = useState(false);
 
-    const handleSubmit = (e) =>{
-        e.preventDefault(e);
-        setLoad(true);
-        axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_EMPLOYEE_LOGIN,{
-          username:username,
-          password:password,
-          contact:''
-        }).then((x)=>{
-          if(x.data.message=='Success'){
-            let token = jwt_decode(x.data.token);
-            Cookies.set('token', x.data.token, { expires: 1 });
-            Cookies.set('designation', token.designation, { expires: 1 });
-            Cookies.set('username', token.username, { expires: 1 });
-            Cookies.set('loginId', token.loginId, { expires: 1 });
-            Cookies.set('access', JSON.stringify(token.access), { expires: 1 });
-            Router.push('/');
-          }else if(x.data.message=='Invalid'){
-            setLoad(false);
-            setError(true);
-          }
-        })
-    }
+  const handleSubmit = (e) =>{
+    e.preventDefault(e);
+    setLoad(true);
+    axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_EMPLOYEE_LOGIN,{
+      username:username,
+      password:password,
+      contact:''
+    }).then((x)=>{
+      if(x.data.message=='Success'){
+        let token = jwt_decode(x.data.token);
+        Cookies.set('token', x.data.token, { expires: 1 });
+        Cookies.set('designation', token.designation, { expires: 1 });
+        Cookies.set('username', token.username, { expires: 1 });
+        Cookies.set('loginId', token.loginId, { expires: 1 });
+        Cookies.set('access', JSON.stringify(token.access), { expires: 1 });
+        Router.push('/');
+      }else if(x.data.message=='Invalid'){
+        setLoad(false);
+        setError(true);
+      }
+    })
+  }
 
   return (
     <div className='bg-signin'>
