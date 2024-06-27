@@ -118,10 +118,10 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           options={state.fields.commodity} 
         />
         {/* <div className='my-2'></div> */}
-        <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Freight Forwarder {"(CHA/CHB)"}</div>
-        <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
+        <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"} disabled={getStatus(approved)} />
+        {/* <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
           options={state.fields.vendor.chaChb} 
-        />     
+        />      */}
         <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
           getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
         />
@@ -151,20 +151,13 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
             <Space/>
           </Col>
           <Col md={12}>
-            <SelectSearchComp register={register} name='terminal' control={control} label='Terminal' width={"100%"}
+            <SelectSearchComp register={register} name='terminal' control={control} label='Terminal/Shed' width={"100%"}
               options={[
-                {id:'QICT', name:'QICT'},
-                {id:'KICT', name:'KICT'},
-                {id:'KGTL', name:'KGTL'},
-                {id:'SAPT', name:'SAPT'},
-                {id:'QFS', name:'QFS'},
-                {id:'Fast Track', name:'Fast Track'},
-                {id:'Shaheen (PQ)', name:'Shaheen (PQ)'},
-                {id:'Pak Shaheen (KPT)', name:'Pak Shaheen (KPT)'},
-                {id:'Badaruddin', name:'Badaruddin'},
-                {id:'Bay West', name:'Bay West'},
-                {id:'Supreme Off Dock', name:'Supreme Off Dock'},
-              ]}
+                {id:`Gerry's Dnata`, name:`Gerry's Dnata`},
+                {id:'Royal Airport Service', name:'Royal Airport Service'},
+                {id:'Shaheen Air', name:'Shaheen Air'},
+                {id:'Pakistan International Air', name:'Pakistan International Air'},
+                             ]}
             />
             <Space/>
           </Col>
@@ -177,11 +170,12 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
           <CheckGroupComp register={register} name='approved' control={control} label='' 
             options={[{ label:"Vessel Sailed", value:"1" }]} 
+            disabled={true}
           />
         </div>
         <hr className='' />
         <div>
-          <Popover
+            <Popover
             content={
             <>{state.InvoiceList?.map((x, i) => 
               (<div key={i} className='my-1'>

@@ -488,7 +488,7 @@ return (
           </div>
           <button className='btn-custom mt-3' onClick={updateNote} type='button'>Save</button>
       </Col>
-      <Col md={4} className='mt-4'>
+      {/* <Col md={4} className='mt-4'>
           <b>Bank Details</b>
           <div style={{border:"1px solid silver"}}>
             <div style={{fontSize:12, lineHeight:0.8, whiteSpace:'pre-wrap', paddingBottom:10}}>
@@ -503,7 +503,7 @@ return (
             <Radio value={2}>BANK-C {"(SNS)"}</Radio>
             <Radio value={3}>BANK-D {"(SNS)"}</Radio>
           </Radio.Group>
-      </Col>
+      </Col> */}
     </Row>
     <hr className='mb-1' />
     <div>
