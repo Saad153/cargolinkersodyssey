@@ -31,11 +31,20 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
   const transporterId = useWatch({control, name:"transporterId"});
   const ClientId = useWatch({control, name:"ClientId"});
   const shippingLineId = useWatch({control, name:"shippingLineId"});
+  const airlineId = useWatch({control, name:"airlineId"});
   const customAgentId = useWatch({control, name:"customAgentId"});
   const commodityId = useWatch({control, name:"commodityId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
   const Space = () => <div className='mt-2'/>
+
+  useEffect(() => {
+    if (approved === '1') {
+      setDisabled(true);
+    } else if (approved === '0') {
+      setDisabled(false);
+    }
+  }, [approved]);
 
   useEffect(() => {
     if(allValues.freightType=="Prepaid"){
@@ -133,6 +142,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
     {id:'UNIT', value:'UNIT'}
   ];
 
+
   return (
   <>
     <Row style={{fontSize:12}}>
@@ -210,11 +220,23 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
               options={state.fields.commodity} 
             />
             {/* <div className='my-2'></div> */}
-            <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Airline</div>
+            {(type=="CSE"||type=="CSI") &&<>
+            <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Freight Forwarder {"(CHA/CHB)"}</div>
             <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
               options={state.fields.vendor.chaChb} 
             />
+                 </>
+            }
+              {(type=="CAE" || type=="CAI") &&<> 
             <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"} disabled={getStatus(approved)} />
+            </> }
+            {(type=="CAE" || type=="CAI") &&<>
+            <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", airlineId)} >Airline</div>
+            <SelectSearchComp register={register} name='airlineId' control={control} label='' width={"100%"}
+              options={state.fields.vendor.airLine} 
+            />
+                 </>
+            }
             {(type=="CSE"||type=="CSI") &&<>
               <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", shippingLineId)} >Sline/Carrier</div>
               <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
@@ -253,12 +275,14 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
           <Col md={5}>
           {state.edit &&<Notes state={state} dispatch={dispatch} type={type} />}
             {approved=="1" && <img src={'/approve.png'} height={100} />}
-           <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true}}) }>
-              <CheckGroupComp register={register} name='approved' control={control} label='' 
-                options={[{ label:"Vessel Sailed", value:"1" }]} 
-                disabled={true}              
-              />
+          <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true}}) }>
+                       <CheckGroupComp register={register} name='approved' control={control} label='' 
+                options={[{ label:"Vessel Sailed", value:"1" }]}     
+                
+         />
+
             </div>
+
             <hr className='' />
             <div>
             <Popover
