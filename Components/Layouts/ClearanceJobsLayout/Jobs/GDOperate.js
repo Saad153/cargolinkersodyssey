@@ -18,6 +18,8 @@ import airports from "/jsonData/airports";
 import Carrier from './Carrier';
 import polAir from "/jsonData/polAir.json";
 import polSea from "/jsonData/polSea.json";
+import terminalSea from "/jsonData/terminalSea.json"
+import terminalAir from "/jsonData/terminalAir.json"
 
 const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
@@ -151,13 +153,8 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
             <Space/>
           </Col>
           <Col md={12}>
-            <SelectSearchComp register={register} name='terminal' control={control} label='Terminal/Shed' width={"100%"}
-              options={[
-                {id:`Gerry's Dnata`, name:`Gerry's Dnata`},
-                {id:'Royal Airport Service', name:'Royal Airport Service'},
-                {id:'Shaheen Air', name:'Shaheen Air'},
-                {id:'Pakistan International Air', name:'Pakistan International Air'},
-                             ]}
+            <SelectSearchComp register={register} name='terminal' control={control} label={(type=="CSE"||type=="CSI")?'Terminal':'Terminal/Shed'} width={"100%"}
+              options={(type=="CSE"||type=="CSI")?terminalSea.terminal:terminalAir.terminal}           
             />
             <Space/>
           </Col>

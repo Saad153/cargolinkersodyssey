@@ -117,7 +117,7 @@ const Notes = ({state, dispatch, type}) => {
                             />
                           }
                         </div>
-                        <div className='mt-2' style={{lineHeight:1.3}}>
+                        <div className='mt-2' style={{lineHeight:1.3, whiteSpace: 'pre-wrap'}}>
                           {!x.edit && x.note}
                           {x.edit && 
                             <textarea  

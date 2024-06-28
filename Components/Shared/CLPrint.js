@@ -16,7 +16,7 @@ const CLPrint = ({ records, invoice }) => {
     const border = "1px solid black";
 
     useEffect(() => {
-        console.log(invoice)
+        console.log("incvoice", invoice)
         let result = 0;
         let temptax = 0;
         let taxPercent = 0;
@@ -61,14 +61,14 @@ console.log("sum", sum)
       <Row>
         <Col>
             <header className='justify-content-center text-center'>
-                <span className='fs-12'>NTN.5322935-2</span> <br />
+                <span className='fs-17'>NTN.5322935-2</span> <br />
             </header>
         </Col>
       </Row>
       <Row>
         <Col md={5}><Line /></Col>
         <Col md={2}>
-            <div className='text-center fs-15' style={{ whiteSpace: 'nowrap' }}>
+            <div className='text-center fs-17' style={{ whiteSpace: 'nowrap' }}>
                 <strong>Invoice</strong>
             </div>
         </Col>
@@ -94,7 +94,7 @@ console.log("sum", sum)
                 </div>
                 <div className='text-start' style={{ lineHeight: "-20px" }}>
                     <span className='fs-12'>{invoice.invoice_No ? invoice.invoice_No : ""}</span><br />
-                    <span className='fs-12'>{invoice.createdAt ? moment(invoice.createdAt).format("ll") : ""}</span><br />
+                    <span className='fs-12'>{invoice.createdAt ? moment(invoice.createdAt).format('DD MMM, YYYY') : ""}</span><br />
                     <span className='fs-12'></span><br />
                     <span className='fs-12'>{invoice.SE_Job.subType || ""}</span><br />
                 </div>
@@ -111,7 +111,7 @@ console.log("sum", sum)
                 <span className='fs-11 pe-3 fw-bold'>Description # :</span><br />
               
                 <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} #:</span><br />
-                <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} Date:</span><br />
+               
             </div>
             <div className='text-start'>
                 <span className='fs-12'></span><br />
@@ -123,7 +123,7 @@ console.log("sum", sum)
                 <span className='fs-12'></span><br />
                 <span className='fs-12 mt-6'></span><br />
                 <span className='fs-12'></span><br />
-                <span className='fs-12'></span><br />
+         
             </div>
         </div>
       </Col>
@@ -136,7 +136,7 @@ console.log("sum", sum)
 
                     <span className='fs-11 pe-3 fw-bold'>Shipment From #:</span><br />
                     <span className='fs-11 pe-3 fw-bold'>Terminal:</span><br />
-                    <span className='fs-11 pe-3 fw-bold'>Vessel :</span><br />
+                    <span className='fs-11 pe-3 fw-bold'>S/Line :</span><br />
                     <span className='fs-11 pe-3 fw-bold'>Sailing Date :</span><br />
                 </div>
 
@@ -166,12 +166,12 @@ console.log("sum", sum)
                         console.log("x",x)
                         return (
                             <>
-                                <tr key={x.id} className='fs-10 text-start' style={{ lineHeight: 1 }}>
-                                    <td className='fs-12' >{i + 1}</td>
-                                    <td className='fs-12'>{x.particular}</td>
-                                    <td className='fs-12'></td>
-                                    <td className='fs-12'>0.00</td>
-                                    <td className='fs-12'>{x.net_amount}</td>
+                                <tr key={x.id} className='fs-10' style={{ lineHeight: 1 }}>
+                                    <td className='fs-12 text-start' >{i + 1}</td>
+                                    <td className='fs-12 text-start'>{x.particular}</td>
+                                    <td className='fs-12 text-start'></td>
+                                    <td className='fs-12 text-end'>0.00</td>
+                                    <td className='fs-12 text-end'>{x.net_amount}</td>
                                 </tr>
                             </>
                         )
@@ -182,13 +182,13 @@ console.log("sum", sum)
                                Amount in words (Rupees) :
                             </span>
                             <span className='fs-12'>
-                                {inWords(sum)} Only
+                                {inWords(sum)} 
                             </span>
                         </td>
-                        <td className='text-end'>
+                        <td className='text-start'>
                             <span className='fw-bold'>Total Expense</span> <br />
                             <span className='fw-bold'>Service Charges</span> <br />
-                            <span className='fw-bold'>Sale Tax {values.taxPercent} %</span> <br />
+                            <span className='fw-bold'>Sales Tax 13%</span> <br />
                             <span className='fw-bold'>Balance Invoice</span> <br />
                             <span className='fw-bold'>Advnace Recieved</span> <br />
                             <span className='fw-bold'>Net Balance</span> <br />
@@ -196,7 +196,7 @@ console.log("sum", sum)
                         <td className='text-end'>
                             <span className='fs-12'>{commas(values.total)}</span> <br />
                             <span className='fs-12'>{commas(values.serviceCharges)}</span> <br />
-                            <span className='fs-12'>{commas(values.tax)}</span> <br />
+                            <span className='fs-12'>{commas(values.taxPercent)}</span> <br />
                             <span className='fs-12'></span>{commas(sum)} <br />
                             <span className='fs-12'>0.00</span> <br />
                             <span className='fs-12'>{commas(sum)}</span> <br />
