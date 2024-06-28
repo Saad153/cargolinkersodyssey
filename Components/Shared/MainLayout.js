@@ -20,6 +20,9 @@ const MainLayout = ({children}) => {
 
   const newRouter = useRouter();
   const dispatch = useDispatch();
+  const { Option } = Select;
+  const [fieldValue, setFieldValue] = useState(2);
+  const [defaultVal,setDefaultVal] = useState("Cargo Linkers");
   const [username, setUsername] = useState("");
   const [load, setLoad] = useState(true);
   const [searchingList, setSearchingList] = useState([]);
@@ -439,7 +442,6 @@ const MainLayout = ({children}) => {
     })
     toggleTab(item);
   }
-
   return (
   <Layout className="main-dashboard-layout">
       {/* sidebar  */}

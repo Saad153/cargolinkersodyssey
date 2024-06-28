@@ -5,7 +5,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import PopConfirm from '../../../Shared/PopConfirm';
 
 const EquipmentInfo = ({state, dispatch}) => {
-
+  
   const width = '100%';
   
   const addEquipment = () => {
@@ -13,7 +13,7 @@ const EquipmentInfo = ({state, dispatch}) => {
     tempState.push({size:'', qty:'', dg:'', gross:0.01, teu:0.01, container:''});
     dispatch({type:'toggle', fieldName:'equipments', payload:tempState});
   };
-
+console.log(state.equipments)
   return (
     <div style={{border:'1px solid silver', padding:'10px'}}>
       <div >
@@ -87,6 +87,7 @@ const EquipmentInfo = ({state, dispatch}) => {
               </td>*/}
               <td className='p-0'>
                 <InputNumber placeholder="Weight" style={{width:width}} value={x.gross}
+                  defaultValue={0.01}
                   min={0.01}
                   onChange={(e)=>{
                     let tempState = [...state.equipments];
@@ -97,6 +98,7 @@ const EquipmentInfo = ({state, dispatch}) => {
               </td>
               <td className='p-0'>
                 <InputNumber placeholder="VGM" style={{width:width}} value={x.teu} 
+                  defaultValue={0.01}
                   min={0.01}
                   onChange={(e)=>{
                     let tempState = [...state.equipments];

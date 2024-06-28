@@ -159,8 +159,18 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       notification: approved[0] == '1' ?  `Job No ${data.jobNo} Approved`: `Job No ${data.jobNo} Dispproved`
     }
     data.id = id
+    console.log("data",data)
+  //   const updatedData = JSON.parse(JSON.stringify(data));
+  //   updatedData.equipments = updatedData.equipments.map(equipment => ({
+  //     ...equipment,
+  //     gross: "0.01",
+  //     teu: "0.01"
+  // }));
+  
+  // console.log("updated",updatedData);
     setTimeout(async() => {
         await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_EDIT_SEAJOB,{data}).then((x)=>{
+          console.log("x",x)
           if(x.data.status=='success'){
               openNotification('Success', `Job Updated!`, 'green')
               createNotification(notification)

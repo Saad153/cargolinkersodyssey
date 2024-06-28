@@ -71,7 +71,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
           }
         >Add +</div>
       </Col>
-      <Col>
+     <Col>
         <div className='div-btn-custom text-center mx-0 py-1 px-3' style={{float:'right'}} 
           onClick={async () => {
             if(!state.chargeLoad){
