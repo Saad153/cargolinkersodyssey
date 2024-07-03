@@ -120,7 +120,16 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           options={state.fields.commodity} 
         />
         {/* <div className='my-2'></div> */}
-        <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"} disabled={getStatus(approved)} />
+        {(type=="CSE"||type=="CSI") &&<>
+            <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Freight Forwarder {"(CHA/CHB)"}</div>
+            <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
+              options={state.fields.vendor.chaChb} 
+            />
+                 </>
+            }
+              {(type=="CAE" || type=="CAI") &&<> 
+            <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"} disabled={getStatus(approved)} />
+            </> }
         {/* <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
           options={state.fields.vendor.chaChb} 
         />      */}
