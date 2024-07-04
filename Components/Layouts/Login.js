@@ -8,10 +8,10 @@ import jwt_decode from 'jwt-decode'
 const Login = ({sessionData}) => {
 
   useEffect(() => {
-      if(sessionData.isLoggedIn==true){
-        Router.push('/')
-      }
-    }, [sessionData]);
+    if(sessionData.isLoggedIn==true){
+      Router.push('/')
+    }
+  }, [sessionData]);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,36 +43,37 @@ const Login = ({sessionData}) => {
   }
 
   return (
-    <div className='bg-signin'>
-      <Row className='my-5 py-5'>
-        <Col md={6} className='p-5'>
+  <div className='bg-signin'>
+    <Row className='my-5 py-5'>
+      <Col md={6} className='p-5'>
         <img src={'/logistic vector.png'} />
         <p style={{color:'grey', fontSize:30, marginLeft:150}}>Logistics ERP System</p>
-        </Col>
-        <Col md={6} className='p-5'>
+      </Col>
+      <Col md={6} className='p-5'>
         <form onSubmit={handleSubmit}>
-        <div style={{ textAlign:'center'}}>
-          <div className='fs-65 fw-8' style={{marginBottom:'25px'}}>LOGIN</div>
-          {error&&<Alert style={{marginLeft:'20%', marginRight:'20%'}} key={'danger'} variant={'danger'}>
-            Wrong username or password
-          </Alert>}
-          <div className='mb-4'>
-            <input className='login-inp' required placeholder='Enter your username...' value={username} onChange={(e)=>setUsername(e.target.value)} />
-            <img src={'/username.png'} className='username-img' height={55} />
+          <div style={{ textAlign:'center'}}>
+            <div className='fs-65 fw-8' style={{marginBottom:'25px'}}>LOGIN</div>
+            {error&&
+              <Alert style={{marginLeft:'20%', marginRight:'20%'}} key={'danger'} variant={'danger'}>
+                Wrong username or password
+              </Alert>
+            }
+            <div className='mb-4'>
+              <input className='login-inp' required placeholder='Enter your username...' value={username} onChange={(e)=>setUsername(e.target.value)} />
+              <img src={'/username.png'} className='username-img' height={55} />
+            </div>
+            <div className='mt-4'>
+              <input className='login-inp' placeholder='Enter your password...' required type={reveal?'text':'password'} value={password} onChange={(e)=>setPassword(e.target.value)} />
+              <img src={reveal?'/pass.png':'/locked.png'} className='username-img' style={{cursor:'pointer'}} height={55} onClick={()=>setReveal(!reveal)} />
+            </div>
+            <div className='my-5'>
+              <button type='submit' className='login-btn'>{load?<Spinner animation="border" className='mx-3' size='sm' variant="light" />:'LOGIN'}</button>
+            </div>
           </div>
-          <div className='mt-4'>
-            <input className='login-inp' placeholder='Enter your password...' required type={reveal?'text':'password'} value={password} onChange={(e)=>setPassword(e.target.value)} />
-            <img src={reveal?'/pass.png':'/locked.png'} className='username-img' style={{cursor:'pointer'}} height={55} onClick={()=>setReveal(!reveal)} />
-          </div>
-          <div className='my-5'>
-            <button type='submit' className='login-btn'>{load?<Spinner animation="border" className='mx-3' size='sm' variant="light" />:'LOGIN'}</button>
-          </div>
-        </div>
         </form>
-        </Col>
-      </Row>
-    </div>
+      </Col>
+    </Row>
+  </div>
   )
 }
-
 export default Login
