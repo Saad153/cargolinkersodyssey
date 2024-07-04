@@ -27,8 +27,8 @@ console.log(state.equipments)
               <th>Container #</th>
               <th>Truck #</th>
               {/*<th>DG/Non-DG</th>*/}
-              <th>Gross Weight</th>
-              <th>VGM</th>
+              {/* <th>Gross Weight</th>
+              <th>VGM</th> */}
               <th> </th>
             </tr>
           </thead>
@@ -85,7 +85,7 @@ console.log(state.equipments)
                   ]}
                 />
               </td>*/}
-              <td className='p-0'>
+              {/* <td className='p-0'>
                 <InputNumber placeholder="Weight" style={{width:width}} value={x.gross}
                   defaultValue={0.01}
                   min={0.01}
@@ -95,8 +95,8 @@ console.log(state.equipments)
                     dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
                   }} 
                 />
-              </td>
-              <td className='p-0'>
+              </td> */}
+              {/* <td className='p-0'>
                 <InputNumber placeholder="VGM" style={{width:width}} value={x.teu} 
                   defaultValue={0.01}
                   min={0.01}
@@ -106,7 +106,7 @@ console.log(state.equipments)
                     dispatch({type:'toggle', fieldName:'equipments', payload:tempState})
                   }} 
                 />
-              </td>
+              </td> */}
               <td className='p-0 pt-2'>
                 <CloseCircleOutlined className='mx-3 cross-icon' onClick={()=>{
                   PopConfirm(

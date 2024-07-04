@@ -305,9 +305,11 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
           </Col>
         </Row>
       </Col>
+      {(type=="CSE"||type=="CSI") &&<>
       <Col md={7}>
         <EquipmentInfo state={state} dispatch={dispatch} />
       </Col>
+      </> })
     </Row>
     <Modal open={state.isModalOpen} onOk={handleOk} onCancel={handleCancel} maskClosable={false}>
       {approved=="1" ? "Mark Vessel Sailed? " : "Unmark Vessel Sailed? "}

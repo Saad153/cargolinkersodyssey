@@ -307,7 +307,6 @@ const InvoiceCharges = ({data, companyId}) => {
     })
   }
   // const checkApproval =  data.resultOne?.approved; 
-  console.log("data",invoice.SE_Job.jobNo)
 return (
   <>
     {load && <FullScreenLoader/>}
