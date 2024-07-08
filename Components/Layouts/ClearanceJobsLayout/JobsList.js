@@ -151,7 +151,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
               POL: <span className='grey-txt'>{x.pol}</span><br/>
               POD: <span className='grey-txt'>{x.pod}</span><br/>
               {/* FLD: <span className='grey-txt'> {x.fd}</span><br/> */}
-              Type: <span className='grey-txt'>{x.jobKind}</span>
+              Type: <span className='grey-txt'>{x.subType}</span>
             </td>
             <td>
               {/* Container: <span className='grey-txt'>{x.container}</span><br/> */}
