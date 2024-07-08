@@ -10,7 +10,7 @@ const EquipmentInfo = ({state, dispatch}) => {
   
   const addEquipment = () => {
     let tempState = [...state.equipments];
-    tempState.push({size:'', qty:'', dg:'', gross:0.01, teu:0.01, container:''});
+    tempState.push({size:'', qty:'', dg:'', container:''});
     dispatch({type:'toggle', fieldName:'equipments', payload:tempState});
   };
 console.log(state.equipments)
