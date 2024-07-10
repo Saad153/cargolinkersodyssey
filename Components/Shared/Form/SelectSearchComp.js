@@ -16,7 +16,7 @@ const SelectSearchComp = (props) => {
             })
         });
         return(
-            <Select disabled={props.disabled} style={{minWidth:props.width||200, maxWidth:props.width||200, fontSize:12}}
+            <Select disabled={props.disabled} style={{minWidth:props.width||200, maxWidth:props.width||200, fontSize:14}}
                 name={fieldName} onChange={onChange} value={value} ref={ref} onBlur={onBlur} showSearch 
                 optionFilterProp="children"
                 filterOption={(input, option) =>

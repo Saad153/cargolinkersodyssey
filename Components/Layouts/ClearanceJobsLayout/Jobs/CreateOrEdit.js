@@ -33,6 +33,8 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   const allValues = useWatch({control});
   const dispatchNew = useDispatch();
 
+  console.log("all values", allValues)
+
   useEffect(() => {
     let tempState = {...baseValues, ...jobData};
     let tempVoyageList = [...state.voyageList];

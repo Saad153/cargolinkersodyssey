@@ -112,7 +112,7 @@ const baseValues = {
   arrivalTime:'',
   departureDate:'',
   departureTime:'',
-  gross:0
+  gross:''
 };
 
 const initialState = {

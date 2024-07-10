@@ -33,6 +33,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
   const consigneeId = useWatch({control, name:"consigneeId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
   const approved = useWatch({control, name:"approved"});
+  
   let allValues = useWatch({control});
   const Space = () => <div className='mt-2'/>
 

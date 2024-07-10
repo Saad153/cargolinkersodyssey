@@ -8,6 +8,7 @@ import FullScreenLoader from './FullScreenLoader';
 import { Checkbox, Popover, Input, Radio, Select } from 'antd';
 import { useQueryClient } from '@tanstack/react-query';
 import CLPrint from './CLPrint';
+import SLPrint from './SLPrint';
 const { TextArea } = Input;
 
 const InvoiceCharges = ({data, companyId}) => {
@@ -15,6 +16,7 @@ const InvoiceCharges = ({data, companyId}) => {
   const commas = (a) =>  { return parseFloat(a).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
 
   let inputRef = useRef(null);
+  let inputSalesRef = useRef(null);
   const queryClient = useQueryClient();
   const [bank, setBank] = useState(1);
   const [invoiceData, setInvoiceData] = useState(false);
@@ -294,6 +296,9 @@ const InvoiceCharges = ({data, companyId}) => {
       {/* <br/> */}
       <div className='mt-3'></div>
       <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
+      <br />
+      <ReactToPrint content={()=>inputSalesRef} trigger={()=><div className='div-btn-custom text-center p-2'>Print GST</div>} />
+      
     </>
   )
 
@@ -538,7 +543,13 @@ return (
       >
         <div ref={(response)=>(inputRef=response)}>
           <CLPrint records={records} invoice={invoice} />
+          {/* <SLPrint /> */}
         </div>
+
+        <div ref={(response)=>(inputSalesRef=response)}>
+                    <SLPrint records={records} invoice={invoice}/>
+        </div>
+
       </div>
     </div>
   </>

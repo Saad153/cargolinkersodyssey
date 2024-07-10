@@ -148,7 +148,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
     <Row style={{fontSize:12}}>
       <Col md={2} className=''>
         <div className="mt-1">Job No.</div>
-        <div className="dummy-input">
+        <div className="dummy-input" style={{fontSize:14}}>
           {state.edit?(state.selectedRecord?.jobNo):<span style={{color:'white'}}>.</span>}
         </div>
       </Col>

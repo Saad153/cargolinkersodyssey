@@ -45,7 +45,7 @@ const CLPrint = ({ records, invoice }) => {
     const serviceFloat = values.serviceCharges
     // + values.serviceCharges;
     const sum = totalFloat+serviceFloat+taxFloat;
-console.log("sum", sum)
+    console.log("sum", sum)
     return (
     <div className='pb-5 px-5 pt-2'>
       <Row>
@@ -74,13 +74,13 @@ console.log("sum", sum)
         </Col>
         <Col md={5}><Line /></Col>
       </Row>
-      <Row style={{ paddingLeft: 12, paddingRight: 12, marginTop: "20px" }}>
+      <Row style={{ paddingLeft: 12, paddingRight: 12, marginTop: "10px" }}>
         <Col md="6" style={{ borderTop: border, borderRight: border, borderLeft: border, borderBottom: border, }}>
             <div className='d-flex'>
                 <div className='fs-12 pe-3 fw-bold'>M/S:</div>
                 <div className='fs-12'>
-                    <span className='fs-12'>{invoice.SE_Job.Client ? invoice.SE_Job.Client.name : ""}</span> <br />
-                    <span className='fs-12'>{invoice.SE_Job.Client ? invoice.SE_Job.Client.address1 : ""}</span> <br />
+                    <span className='fs-12'>{invoice?.SE_Job?.Client ? invoice?.SE_Job?.Client?.name : ""}</span> <br />
+                    <span className='fs-12'>{invoice?.SE_Job?.Client ? invoice?.SE_Job?.Client?.address1 : ""}</span> <br />
                 </div>
             </div>
         </Col>
@@ -96,7 +96,7 @@ console.log("sum", sum)
                     <span className='fs-12'>{invoice.invoice_No ? invoice.invoice_No : ""}</span><br />
                     <span className='fs-12'>{invoice.createdAt ? moment(invoice.createdAt).format('DD MMM, YYYY') : ""}</span><br />
                     <span className='fs-12'></span><br />
-                    <span className='fs-12'>{invoice.SE_Job.subType || ""}</span><br />
+                    <span className='fs-12'>{invoice?.SE_Job?.subType || ""}</span><br />
                 </div>
             </div>
         </Col>
@@ -109,7 +109,6 @@ console.log("sum", sum)
                 <span className='fs-11 pe-3 fw-bold mt-6'>GD:</span><br />
                 <span className='fs-11 pe-3 fw-bold'>No Of Packages :</span><br />
                 <span className='fs-11 pe-3 fw-bold'>Description # :</span><br />
-              
                 <span className='fs-10 pe-3 fw-bold'>FORM {"'E'"} #:</span><br />
                
             </div>
@@ -122,18 +121,16 @@ console.log("sum", sum)
                 <span className='fs-12'></span><br />
                 <span className='fs-12'></span><br />
                 <span className='fs-12 mt-6'></span><br />
-                <span className='fs-12'></span><br />
+                <span className='fs-12'></span>
          
             </div>
         </div>
       </Col>
 
-      {/* <Col md="2" style={{ borderBottom: border }}></Col> */}
       <Col md="6" style={{ borderRight: border, borderBottom: border }}>
             <div className='d-flex justify-content-start'>
                 <div className='text-start'>
                     <span className='fs-11 pe-3 fw-bold'>Job # :</span><br />
-
                     <span className='fs-11 pe-3 fw-bold'>Shipment From #:</span><br />
                     <span className='fs-11 pe-3 fw-bold'>Terminal:</span><br />
                     <span className='fs-11 pe-3 fw-bold'>S/Line :</span><br />
@@ -217,6 +214,7 @@ console.log("sum", sum)
             <span className='fs-10 fw-bold'>CARGO LINKERS</span>
         </Col>
       </Row>
+
     </div>
     )
 }
