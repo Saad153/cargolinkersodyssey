@@ -7,7 +7,7 @@ import { RiShipLine } from "react-icons/ri";
 
 function setAccesLevels(dispatch, collapsed){
   let items = [];
-  let obj = { setup:false, accounts:false, admin:false }
+  let obj = { setup:false, accounts:false, admin:false, hr:false }
   let levels = Cookies.get("access");
 
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
@@ -24,11 +24,16 @@ function setAccesLevels(dispatch, collapsed){
   ])
   const setup = getParentItem('Setup', '2', <SettingOutlined />,
   [
-    getItem('Employees', '2-1',<></>, null, {
-      label: `Employees`,
+    // getItem('Employees', '2-1',<></>, null, {
+    //   label: `Employees`,
+    //   key: '2-1',
+    //   children: `Content of Tab Pane 2`,
+    // }),
+    (levels?.includes("hr")||levels?.includes("admin"))?getItem('Employees', '2-1', <></>, null, {
+      label: 'Employees',
       key: '2-1',
-      children: `Content of Tab Pane 2`,
-    }),
+      children: 'Content of Tab Pane 2',
+    }):null,
     (levels?.includes("accounts")||levels?.includes("admin"))?getItem('Client List', '2-2',<></>, null, {
       label: `Client List`,
       key: '2-2',
@@ -213,6 +218,9 @@ function setAccesLevels(dispatch, collapsed){
       case "accounts":
         obj.accounts = true;
         break;
+      case "hr":
+        obj.hr = true;
+        break;
       case "admin":
         obj.admin = true;
         break;
@@ -238,6 +246,11 @@ function setAccesLevels(dispatch, collapsed){
       accounts,
       reports
   ]:null
+  obj.hr?
+    items = [
+      setup
+  ]:null
+  
   obj.setup?items.push(setup):null
   Cookies.set("permissions", JSON.stringify(obj));
   items.unshift(dashboard)

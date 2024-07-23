@@ -274,6 +274,7 @@ return(
             <Select.Option value={'setup'}>Setup</Select.Option>
             <Select.Option value={'se'}>SEA Operations</Select.Option>
             <Select.Option value={'ae'}>AIR Operations</Select.Option>
+            <Select.Option value={'hr'}>HR</Select.Option>
           </Select>
         </Form.Item>
         </Col>
