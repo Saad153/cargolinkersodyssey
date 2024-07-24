@@ -10,8 +10,9 @@ function setAccesLevels(dispatch, collapsed){
   let items = [];
   let obj = { setup:false, accounts:false, admin:false, hr:false }
   let levels = Cookies.get("access");
-
+//getParentItem only returns the section data as objects to store in items array.
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
+    //getItem only returns the subsection data as objects to store in parents children array.
     getItem('Home', '1-1',<></>, null, {
       label: `Home`,
       key: '1-1',
@@ -25,6 +26,7 @@ function setAccesLevels(dispatch, collapsed){
   ])
   const setup = getParentItem('Setup', '2', <SettingOutlined />,
   [
+    //checks whether the given strings are part of the access level array or not, and includes the subsection into the children array of the parent section.
     (levels?.includes("Employees")||levels?.includes("admin"))?getItem('Employees', '2-1', <></>, null, {
       label: 'Employees',
       key: '2-1',
@@ -187,6 +189,8 @@ function setAccesLevels(dispatch, collapsed){
       }):null,
     ]
   )
+
+  //functions to generate objects from the parent and children data and rearranging the data within the object.
   function getParentItem(label, key, icon, children) {
     return { key, icon, children, label}
   }
@@ -197,6 +201,7 @@ function setAccesLevels(dispatch, collapsed){
     }
   }}
 
+  //Adds the related parents into the items array by checking if the user has access to any of the children.
   if(levels){
     levels = levels.slice(0, -1)
     levels = levels.substring(1);
