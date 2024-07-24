@@ -269,11 +269,13 @@ return(
         <Form.Item name="accessLevels" hasFeedback={true} showValidateSuccess={true}>
           <span>Provide Access.</span>
           <Select name="accessLevels" style={{ width: "100%" }} placeholder="Provide Access" mode="multiple">
-            <Select.Option value={'admin'}>Admin</Select.Option>
+            <Select.Option value={'SeaOps'}>IM/EX Sea Operations</Select.Option>
+            <Select.Option value={'AirOps'}>IM/EX AIR Operations</Select.Option>
             <Select.Option value={'accounts'}>Accounts</Select.Option>
-            <Select.Option value={'setup'}>Setup</Select.Option>
-            <Select.Option value={'se'}>SEA Operations</Select.Option>
-            <Select.Option value={'ae'}>AIR Operations</Select.Option>
+            <Select.Option value={'hr'}>HR</Select.Option>
+            <Select.Option value={'reports'}>Reports</Select.Option>
+            <Select.Option value={'tasks'}>Tasks</Select.Option>
+            <Select.Option value={'admin'}>Admin</Select.Option>
           </Select>
         </Form.Item>
         </Col>

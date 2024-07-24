@@ -9,7 +9,7 @@ const EmployeeAccess = () => {
 
   useEffect(() => {
     fetchData();
-    console.log('Acess Page') ;
+    console.log('Acess Page');
   }, [])
 
   const fetchData = async() => {
