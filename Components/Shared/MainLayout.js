@@ -463,7 +463,7 @@ const MainLayout = ({children}) => {
           showSearch 
           style={{ width: "101%" }} 
           placeholder="Search to Select" 
-          optionFilterProp="children" 
+          optionFilterProp="children"
           onChange={searchPages}
           filterOption={(input, option) => (option?.label.toLowerCase() ?? '').includes(input.toLowerCase())}
           filterSort={(optionA, optionB) => (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase()) }
