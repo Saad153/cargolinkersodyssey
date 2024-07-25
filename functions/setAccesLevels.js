@@ -6,10 +6,8 @@ import { IoMdArrowDropleft } from "react-icons/io";
 import { RiShipLine } from "react-icons/ri";
 
 function setAccesLevels(dispatch, collapsed){
+  
   let items = [];
-  let obj = { setup:false, accounts:false, admin:false }
-  let levels = Cookies.get("access");
-
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
     getItem('Home', '1-1',<></>, null, {
       label: `Home`,
@@ -29,16 +27,16 @@ function setAccesLevels(dispatch, collapsed){
       key: '2-1',
       children: `Content of Tab Pane 2`,
     }),
-    (levels?.includes("accounts")||levels?.includes("admin"))?getItem('Client List', '2-2',<></>, null, {
+    getItem('Client List', '2-2',<></>, null, {
       label: `Client List`,
       key: '2-2',
       children: `Content of Tab Pane 2`,
-    }):null,
-    (levels?.includes("accounts")||levels?.includes("admin"))?getItem('Vendor List', '2-5',<></>, null, {
+    }),
+    getItem('Vendor List', '2-5',<></>, null, {
       label: `Vendor List`,
       key: '2-5',
       children: `Content of Tab Pane 2`,
-    }):null,
+    }),
     getItem('Non-GL Parties', '2-9',<></>, null, {
       label: `Non-GL Parties`,
       key: '2-9',
@@ -200,48 +198,16 @@ function setAccesLevels(dispatch, collapsed){
       if(!collapsed){ dispatch(incrementTab(tab)); }
     }
   }}
-
-  if(levels){
-    levels = levels.slice(0, -1)
-    levels = levels.substring(1);
-    levels = levels.split(", ")
-    levels.forEach(x => {
-    switch (x) {
-      case "setup":
-        obj.setup = true;
-        break;
-      case "accounts":
-        obj.accounts = true;
-        break;
-      case "admin":
-        obj.admin = true;
-        break;
-      default:
-        break;
-      }
-    });
-  }
   
-  obj.accounts?
   items = [
+    dashboard,
+    setup,
     importJobs,
     exportJobs,
     accounts,
-    reports
-  ]:null
-  obj.admin?
-    items = [
-      //dashboard,
-      exportJobs,
-      importJobs,
-      setup,
-      accounts,
-      reports
-  ]:null
-  obj.setup?items.push(setup):null
-  Cookies.set("permissions", JSON.stringify(obj));
-  items.unshift(dashboard)
-  items.push(tasks)
+    reports,
+    tasks
+  ]
   return items
 }
 

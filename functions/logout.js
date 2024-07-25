@@ -6,7 +6,6 @@ function logout(){
     Cookies.remove("companyId");
     Cookies.remove("designation");
     Cookies.remove("token");
-    Cookies.remove("access");
     Cookies.remove("loginId");
     Router.push('/login')
 }
