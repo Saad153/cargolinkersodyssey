@@ -4,14 +4,17 @@ import { AccountBookOutlined, HomeOutlined, SettingOutlined, UnorderedListOutlin
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 import { IoMdArrowDropleft } from "react-icons/io";
 import { RiShipLine } from "react-icons/ri";
+import jwt_decode from 'jwt-decode';
+
 
 function setAccesLevels(dispatch, collapsed){
-  // console.log("bilal");
   let items = [];
-  let obj = { setup:false, accounts:false, admin:false, hr:false }
-  let levels = Cookies.get("access");
+  let levels = JSON.stringify(jwt_decode(Cookies.get("token")).access);
+  // let levels = Cookies.get("access");
+
 //getParentItem only returns the section data as objects to store in items array.
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
+
     //getItem only returns the subsection data as objects to store in parents children array.
     getItem('Home', '1-1',<></>, null, {
       label: `Home`,
@@ -238,26 +241,7 @@ function setAccesLevels(dispatch, collapsed){
     });
     
   }
-  // console.log( obj + "1");
-  // console.log("obj");
-  
-  // obj.accounts?
-  // items = [
-  //   importJobs,
-  //   exportJobs,
-  //   accounts,
-  //   setup,
-  //   reports
-  // ]:null
-  // obj.admin?
-  //   :null
-  // obj.hr?
-  //   items = [
-  //     setup
-  // ]:null
-  
-  // obj.setup?items.push(setup):null
-  Cookies.set("permissions", JSON.stringify(obj));
+
   items.unshift(dashboard)
   items.push(tasks)
   return items
