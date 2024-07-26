@@ -1,7 +1,9 @@
 import Router from "next/router";
 import Cookies from "js-cookie";
+import { setTempToken } from './setAccesLevels'; 
 
 function logout(){
+    setTempToken(null, true);
     Cookies.remove("username");
     Cookies.remove("companyId");
     Cookies.remove("designation");

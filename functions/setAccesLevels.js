@@ -10,6 +10,11 @@ import logout from '/functions/logout';
 let firstCall = true;
 let tempToken;
 
+export const setTempToken = (token, call) => {
+  tempToken = token;
+  firstCall = call;
+};
+
 
 function setAccesLevels(dispatch, collapsed){
   let items = [];
@@ -27,7 +32,7 @@ function setAccesLevels(dispatch, collapsed){
     }else{
       logout();
     }
-  }else{
+  }else if(!firstCall){
     logout();
   }
 
@@ -266,7 +271,7 @@ function setAccesLevels(dispatch, collapsed){
 
   items.unshift(dashboard)
   items.push(tasks)
-  console.log(items)
+  // console.log(items)
   return items
 }
 
