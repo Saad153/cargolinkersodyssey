@@ -18,7 +18,7 @@ const SeJob = ({id, type}) => {
   const [ state, dispatch ] = useReducer(recordsReducer, initialState);
 
   useEffect(() => {
-    let tempPerms = JSON.parse(Cookies.get('permissions'));
+    // let tempPerms = JSON.parse(Cookies.get('permissions'));
     if(dataSuccess && newdata) {
       dispatch({type:'set',
         payload:{
@@ -26,7 +26,7 @@ const SeJob = ({id, type}) => {
           selectedRecord:dataSuccess?newdata?.result:{},
           fetched:true,
           edit:id=="new"?false:true,
-          permissions:tempPerms
+          // permissions:tempPerms
         }
       })
     }

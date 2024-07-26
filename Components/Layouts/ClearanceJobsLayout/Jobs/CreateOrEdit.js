@@ -108,7 +108,10 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_CREATE_SEAJOB,{
         data
       }).then((x)=>{
-        if(x.data.status=='success'){
+        if(x.data.status=='exists'){
+          alert("Invoice # Already Exists!");
+        }
+        else if(x.data.status=='success'){
           refetch()
           openNotification('Success', `Job Created!`, 'green');
           dispatchNew(incrementTab({
@@ -131,6 +134,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   };
 
   const onEdit = async(data) => {
+    console.log("edit")
     data.equipments = state.equipments
     data.customAgentId = data.customCheck.length>0?data.customAgentId:null;
     data.transporterId = data.transportCheck.length>0?data.transporterId:null;
@@ -162,18 +166,14 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
     }
     data.id = id
     console.log("data",data)
-  //   const updatedData = JSON.parse(JSON.stringify(data));
-  //   updatedData.equipments = updatedData.equipments.map(equipment => ({
-  //     ...equipment,
-  //     gross: "0.01",
-  //     teu: "0.01"
-  // }));
-  
-  // console.log("updated",updatedData);
+
     setTimeout(async() => {
         await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_EDIT_SEAJOB,{data}).then((x)=>{
           console.log("x",x)
-          if(x.data.status=='success'){
+          if(x.data.status=='exists'){
+            alert("Invoice # Already Exists!");
+          }
+          else if(x.data.status=='success'){
               openNotification('Success', `Job Updated!`, 'green')
               createNotification(notification)
               refetch();
@@ -201,7 +201,8 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       <Tabs defaultActiveKey={state.tabState} activeKey={state.tabState}
         onChange={(e)=> dispatch({type:'toggle', fieldName:'tabState', payload:e}) }>
       <Tabs.TabPane tab="Booking Info" key="1"> 
-        <BookingInfo handleSubmit={handleSubmit} onEdit={onEdit} companyId={companyId} control={control} register={register} 
+        <BookingInfo handleSubmit={handleSubmit} onEdit={onEdit} 
+        companyId={companyId} control={control} register={register} 
           errors={errors} state={state} useWatch={useWatch} dispatch={dispatch} reset={reset} id={id} type={type}
         />
       </Tabs.TabPane>
