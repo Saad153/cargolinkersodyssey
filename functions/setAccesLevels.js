@@ -5,12 +5,36 @@ import { HiOutlineDocumentSearch } from "react-icons/hi";
 import { IoMdArrowDropleft } from "react-icons/io";
 import { RiShipLine } from "react-icons/ri";
 import jwt_decode from 'jwt-decode';
+import { Router } from "next/router";
+import logout from '/functions/logout';
+let firstCall = true;
+let tempToken;
 
 
 function setAccesLevels(dispatch, collapsed){
   let items = [];
-  let levels = JSON.stringify(jwt_decode(Cookies.get("token")).access);
-  // let levels = Cookies.get("access");
+  if(firstCall && Cookies.get('token') != null){
+    tempToken = Cookies.get('token');
+    firstCall = false;
+  }
+
+  
+  //getting the token from cookies and decoding it to get the access level array.
+  let token = null;
+  if(Cookies.get("token") != null && Cookies.get("token") != "" && Cookies.get("token") != "undefined"){
+    if(tempToken == Cookies.get('token')){
+      token = jwt_decode(Cookies.get("token")); 
+    }else{
+      logout();
+    }
+  }else{
+    logout();
+  }
+
+  let levels = null;
+  if(token != null){
+    levels = token.access;
+  }
 
 //getParentItem only returns the section data as objects to store in items array.
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
@@ -206,8 +230,6 @@ function setAccesLevels(dispatch, collapsed){
 
   //Adds the related parents into the items array by checking if the user has access to any of the children.
   if(levels){
-    levels = levels.slice(0, -1)
-    levels = levels.substring(1);
     levels = levels.split(", ")
     levels.forEach(x => {
       switch (x) {
@@ -244,6 +266,7 @@ function setAccesLevels(dispatch, collapsed){
 
   items.unshift(dashboard)
   items.push(tasks)
+  console.log(items)
   return items
 }
 

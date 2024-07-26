@@ -6,9 +6,12 @@ function logout(){
     Cookies.remove("companyId");
     Cookies.remove("designation");
     Cookies.remove("token");
-    // Cookies.remove("access");
     Cookies.remove("loginId");
-    Router.push('/login')
+    // Router.push('/login')
+    if (typeof window !== 'undefined') {
+        // Only run Router.push in the browser
+        Router.push('/login');
+    }
 }
 
 export default logout
