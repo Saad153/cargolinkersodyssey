@@ -118,6 +118,23 @@ const CreateOrEdit = ({appendClient, edit, setVisible, setEdit, selectedEmployee
       setLoad(false);
     })
   }
+  let isAdmin;
+  let isNotAdmin;
+  const checkAdmin = (value) => {
+    console.log(value)
+    isAdmin = false;
+    isNotAdmin = false;
+    value.forEach((x)=>{
+      if(x.includes("admin")){
+        isAdmin = true;
+      }else{
+        isNotAdmin = true;
+      }
+    })
+    console.log(isAdmin)
+    console.log(isNotAdmin)
+  };
+
 
 return( 
   <div className='employee-styles'>
@@ -268,35 +285,35 @@ return(
         <h5 className="mt-3">Define Access <UnlockOutlined style={{position:'relative', bottom:5}} /></h5>
         <Form.Item name="accessLevels" hasFeedback={true} showValidateSuccess={true}>
           <span>Provide Access.</span>
-          <Select name="accessLevels" style={{ width: "100%" }} placeholder="Provide Access" mode="multiple">
-            <Select.Option value={'ExSea'}>EX Sea Operations</Select.Option>
-            <Select.Option value={'ImSea'}>IM Sea Operations</Select.Option>
-            <Select.Option value={'ExAir'}>EX AIR Operations</Select.Option>
-            <Select.Option value={'ImAir'}>IM AIR Operations</Select.Option>
-            <Select.Option value={'Employees'}>Employees</Select.Option>
-            <Select.Option value={'ClientList'}>Client List</Select.Option>
-            <Select.Option value={'VendorList'}>Vendor List</Select.Option>
-            <Select.Option value={'NonGLParties'}>Non-GL Parties</Select.Option>
-            <Select.Option value={'Commodity'}>Commodity</Select.Option>
-            <Select.Option value={'Voyage'}>Voyage</Select.Option>
-            <Select.Option value={'Charges'}>Charges</Select.Option>
-            <Select.Option value={'ChartOfAccount'}>Chart of Account</Select.Option>
-            <Select.Option value={'Invoice/Bills'}>Invoice</Select.Option>
-            <Select.Option value={'Payment/Reciept'}>Payment/Reciept</Select.Option>
-            <Select.Option value={'Voucher'}>Voucher</Select.Option>
-            <Select.Option value={'VoucherList'}>Voucher List</Select.Option>
-            <Select.Option value={'OfficeVoucherList'}>Office Voucher List</Select.Option>
-            <Select.Option value={'OpeningBalances'}>Opening Balances</Select.Option>
-            <Select.Option value={'OpeningInvoises'}>Opening Invoices</Select.Option>
-            <Select.Option value={'JobBalancing'}>Job Balancing</Select.Option>
-            <Select.Option value={'AccountActivity'}>Account Activity</Select.Option>
-            <Select.Option value={'BalanceSheet'}>Balance Sheet</Select.Option>
-            <Select.Option value={'JobProfit/Loss'}>Job Profit/Loss</Select.Option>
-            <Select.Option value={'Ledger'}>Ledger</Select.Option>
-            <Select.Option value={'AgentInvBalance'}>Agent Inv Balance</Select.Option>
-            <Select.Option value={'TrialBalance'}>Trial Balance</Select.Option>
-            <Select.Option value={'IncomeStatement'}>Income Statement</Select.Option>
-            <Select.Option value={'admin'}>Admin</Select.Option>
+          <Select name="accessLevels" style={{ width: "100%" }} placeholder="Provide Access" mode="multiple" onChange={checkAdmin}>
+            <Select.Option disabled={isAdmin} value={'ExSea'}>EX Sea Operations</Select.Option>
+            <Select.Option disabled={isAdmin} value={'ImSea'}>IM Sea Operations</Select.Option>
+            <Select.Option disabled={isAdmin} value={'ExAir'}>EX AIR Operations</Select.Option>
+            <Select.Option disabled={isAdmin} value={'ImAir'}>IM AIR Operations</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Employees'}>Employees</Select.Option>
+            <Select.Option disabled={isAdmin} value={'ClientList'}>Client List</Select.Option>
+            <Select.Option disabled={isAdmin} value={'VendorList'}>Vendor List</Select.Option>
+            <Select.Option disabled={isAdmin} value={'NonGLParties'}>Non-GL Parties</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Commodity'}>Commodity</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Voyage'}>Voyage</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Charges'}>Charges</Select.Option>
+            <Select.Option disabled={isAdmin} value={'ChartOfAccount'}>Chart of Account</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Invoice/Bills'}>Invoice</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Payment/Reciept'}>Payment/Reciept</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Voucher'}>Voucher</Select.Option>
+            <Select.Option disabled={isAdmin} value={'VoucherList'}>Voucher List</Select.Option>
+            <Select.Option disabled={isAdmin} value={'OfficeVoucherList'}>Office Voucher List</Select.Option>
+            <Select.Option disabled={isAdmin} value={'OpeningBalances'}>Opening Balances</Select.Option>
+            <Select.Option disabled={isAdmin} value={'OpeningInvoises'}>Opening Invoices</Select.Option>
+            <Select.Option disabled={isAdmin} value={'JobBalancing'}>Job Balancing</Select.Option>
+            <Select.Option disabled={isAdmin} value={'AccountActivity'}>Account Activity</Select.Option>
+            <Select.Option disabled={isAdmin} value={'BalanceSheet'}>Balance Sheet</Select.Option>
+            <Select.Option disabled={isAdmin} value={'JobProfit/Loss'}>Job Profit/Loss</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Ledger'}>Ledger</Select.Option>
+            <Select.Option disabled={isAdmin} value={'AgentInvBalance'}>Agent Inv Balance</Select.Option>
+            <Select.Option disabled={isAdmin} value={'TrialBalance'}>Trial Balance</Select.Option>
+            <Select.Option disabled={isAdmin} value={'IncomeStatement'}>Income Statement</Select.Option>
+            <Select.Option disabled={isNotAdmin} onChange={checkAdmin} value={'admin'}>Admin</Select.Option>
 
           </Select>
         </Form.Item>

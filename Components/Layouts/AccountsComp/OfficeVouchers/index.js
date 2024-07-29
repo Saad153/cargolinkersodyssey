@@ -29,6 +29,7 @@ const OfficeVouchers = ({voucherList}) => {
     set({records:voucherList});
     //console.log( voucherList );
   }, [voucherList])
+  console.log(state);
   
   return (
   <div className='base-page-layout'>
