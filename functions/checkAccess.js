@@ -21,7 +21,6 @@ function checkAccess(dispatch){
       })
     })
   }
-  console.log(newTemp);
   newTemp.forEach((x)=>{
     if(x.label === "Employees"){
       access = true;

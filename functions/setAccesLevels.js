@@ -233,26 +233,51 @@ function setAccesLevels(dispatch, collapsed){
     }
   }}
 
+  console.log(reports)
+
   //Adds the related parents into the items array by checking if the user has access to any of the children.
   if(levels){
     levels = levels.split(", ")
+    console.log(levels)
     levels.forEach(x => {
       switch (x) {
-        case "ExSea"||"ExAir":
+        case "ExSea":
+        case "ExAir":
           items.indexOf(exportJobs) === -1 ? items.push(exportJobs) : null;
           break;
-        case "ImAir"||"ImSea":
+        case "ImAir":
+        case "ImSea":
           items.indexOf(importJobs) === -1 ? items.push(importJobs) : null;
           break;
-        case "Employees"||"ClientList"||"VendorList"||"NonGLParties"||"Commodity"||"Voyage":
+        case "Employees":
+        case "ClientList":
+        case "VendorList":
+        case "NonGLParties":
+        case "Commodity":
+        case "Voyage":
           items.indexOf(setup) === -1 ? items.push(setup) : null;
           break;
-          case "Charges"||"ChartOfAccount"||"Invoice/Bills"||"Payment/Reciept"||"Voucher"||"VoucherList"||"OfficeVoucherList"||"OpeningBalances"||"OpeningInvoises":
-            items.indexOf(accounts) === -1 ? items.push(accounts) : null;
-            break;
-          case "JobBalancing"||"AccountActivity"||"BalanceSheet"||"JobProfit/Loss"||"Ledger"||"AgentInvBalance"||"TrialBalance"||"IncomeStatement":
-            items.indexOf(reports) === -1 ? items.push(reports) : null;
-            break;
+        case "Charges":
+        case "ChartofAccount":
+        case "Invoice/Bills":
+        case "Payment/Reciept":
+        case "Voucher":
+        case "VoucherList":
+        case "OfficeVoucherList":
+        case "OpeningBalances":
+        case "OpeningInvoises":
+          items.indexOf(accounts) === -1 ? items.push(accounts) : null;
+          break;
+        case "JobBalancing":
+        case "AccountActivity":
+        case "BalanceSheet":
+        case "JobProfit/Loss":
+        case "Ledger":
+        case "AgentInvBalance":
+        case "TrialBalance":
+        case "IncomeStatement":
+          items.indexOf(reports) === -1 ? items.push(reports) : null;
+          break;
         case "admin":
           items = [
             exportJobs,
@@ -271,7 +296,7 @@ function setAccesLevels(dispatch, collapsed){
 
   items.unshift(dashboard)
   items.push(tasks)
-  // console.log(items)
+  console.log(items)
   return items
 }
 

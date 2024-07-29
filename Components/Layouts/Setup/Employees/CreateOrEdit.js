@@ -121,7 +121,6 @@ const CreateOrEdit = ({appendClient, edit, setVisible, setEdit, selectedEmployee
   let isAdmin;
   let isNotAdmin;
   const checkAdmin = (value) => {
-    console.log(value)
     isAdmin = false;
     isNotAdmin = false;
     value.forEach((x)=>{
@@ -133,8 +132,6 @@ const CreateOrEdit = ({appendClient, edit, setVisible, setEdit, selectedEmployee
         }
       }
     })
-    console.log(isAdmin)
-    console.log(isNotAdmin)
   };
 
 
