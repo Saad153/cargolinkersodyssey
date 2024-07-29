@@ -128,7 +128,9 @@ const CreateOrEdit = ({appendClient, edit, setVisible, setEdit, selectedEmployee
       if(x.includes("admin")){
         isAdmin = true;
       }else{
-        isNotAdmin = true;
+        if(x.length > 0){
+          isNotAdmin = true;
+        }
       }
     })
     console.log(isAdmin)
