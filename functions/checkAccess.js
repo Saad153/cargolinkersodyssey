@@ -8,9 +8,11 @@ import { setAccesLevels } from '/functions/setAccesLevels';
 
 
 
-function checkAccess(dispatch){
-    const items  = setAccesLevels(dispatch, true);
-    let access = false;
+
+function checkAccess(dispatch, pageName){
+  // console.log(pageName);
+  const items  = setAccesLevels(dispatch, true);
+  let access = false;
   let newTemp = [];
   if(items.length > 0){
     items.forEach((x)=>{
@@ -21,10 +23,11 @@ function checkAccess(dispatch){
       })
     })
   }
+  // console.log(newTemp);
   newTemp.forEach((x)=>{
-    if(x.label === "Employees"){
+    if(x.label === pageName){
       access = true;
-      console.log(access);
+      // console.log(access);
     }
   })
   

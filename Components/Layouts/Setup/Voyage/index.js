@@ -11,6 +11,8 @@ import Router from 'next/router';
 import { getJobValues } from '/apis/jobs';
 import { useQuery } from '@tanstack/react-query';
 import { Input } from 'antd';
+import { checkAccess } from '/functions/checkAccess';
+
 
 function recordsReducer(state, action){
     switch (action.type) {
@@ -168,113 +170,119 @@ const Voyage = ({vesselsData}) => {
    };
 
   const onError = (errors) => console.log(errors);
-
-  return (
-    <div className='base-page-layout'>
-    <Row>
-      <Col md={8}>
-        <button className='btn-custom' 
-          onClick={()=>Router.push("/setup/vessel")}
-        >View Vessels
-        </button>
-      </Col>
-      <Col md="4">
-        <div className='d-flex justify-content-end'>
-          <Input type="text" placeholder="Enter Vessel Name" size='sm' onChange={e => setQuery(e.target.value)} />
+  const access = checkAccess(dispatch, "Voyage");
+  if(access){
+    return (
+      <div className='base-page-layout'>
+      <Row>
+        <Col md={8}>
+          <button className='btn-custom' 
+            onClick={()=>Router.push("/setup/vessel")}
+          >View Vessels
+          </button>
+        </Col>
+        <Col md="4">
+          <div className='d-flex justify-content-end'>
+            <Input type="text" placeholder="Enter Vessel Name" size='sm' onChange={e => setQuery(e.target.value)} />
+          </div>
+        </Col>
+      </Row>
+      <hr/>
+      <Row>
+      <Col md={4}>
+        <div className='mt-3' style={{maxHeight:500, overflowY:'auto'}}>
+          <Table className='tableFixHead'>
+            <thead><tr><th>Sr.</th><th>Code</th><th>Name</th></tr></thead>
+              <tbody>
+              {
+                state.records.map((x, index) => {
+                return (
+                  <tr key={index} className={`f row-hov ${x.id==state.selectedRecord.id?"bg-blue-selected":""}`} onClick={()=>findVoyages(x)} >
+                    <td>{index + 1}</td>
+                    <td className='blue-txt fw-7'> {x.code}</td>
+                    <td style={{minWidth:150}}>
+                      <div style={{fontSize:14,lineHeight:1}}>{x.name}</div>
+                      <div style={{fontSize:12,color:'grey'}}>{x.carrier}</div>
+                    </td>
+                  </tr>
+              )})}
+              </tbody>
+          </Table>
         </div>
       </Col>
-    </Row>
-    <hr/>
-    <Row>
-    <Col md={4}>
-      <div className='mt-3' style={{maxHeight:500, overflowY:'auto'}}>
-        <Table className='tableFixHead'>
-          <thead><tr><th>Sr.</th><th>Code</th><th>Name</th></tr></thead>
-            <tbody>
-            {
-              state.records.map((x, index) => {
+      <Col md={8}>
+      <div className='border p-2 mt-3' style={{minHeight:100}}>
+        {Object.keys(state.selectedRecord).length==0 &&<div className='text-center my-4'>Select A Vessel</div>}
+        {Object.keys(state.selectedRecord).length>0 &&<>
+        {!state.load && 
+        <Row>
+          <Col md={12}>
+            <button className='btn-custom'  onClick={()=>{ reset(baseValues); dispatch({type:'create'})}}>Create</button>
+          </Col>
+          {state.voyagerecords.length==0 && <div className='text-center my-5'>Empty</div>}
+          {state.voyagerecords.length>0 && <div className=''>
+          <div className='mt-3' style={{maxHeight:500, overflowY:'auto'}}>
+            <Table className='tableFixHead' style={{fontSize:13}}>
+              <thead><tr><th>Voyage #</th><th>Arrival</th><th>Sailing</th><th>Cut-Off Date</th><th>Cut-Off Time</th><th>Ports</th></tr></thead>
+              <tbody>
+              {state.voyagerecords.map((x,i)=>{
               return (
-                <tr key={index} className={`f row-hov ${x.id==state.selectedRecord.id?"bg-blue-selected":""}`} onClick={()=>findVoyages(x)} >
-                  <td>{index + 1}</td>
-                  <td className='blue-txt fw-7'> {x.code}</td>
-                  <td style={{minWidth:150}}>
-                    <div style={{fontSize:14,lineHeight:1}}>{x.name}</div>
-                    <div style={{fontSize:12,color:'grey'}}>{x.carrier}</div>
-                  </td>
-                </tr>
-            )})}
-            </tbody>
-        </Table>
-      </div>
-    </Col>
-    <Col md={8}>
-    <div className='border p-2 mt-3' style={{minHeight:100}}>
-      {Object.keys(state.selectedRecord).length==0 &&<div className='text-center my-4'>Select A Vessel</div>}
-      {Object.keys(state.selectedRecord).length>0 &&<>
-      {!state.load && 
-      <Row>
-        <Col md={12}>
-          <button className='btn-custom'  onClick={()=>{ reset(baseValues); dispatch({type:'create'})}}>Create</button>
-        </Col>
-        {state.voyagerecords.length==0 && <div className='text-center my-5'>Empty</div>}
-        {state.voyagerecords.length>0 && <div className=''>
-        <div className='mt-3' style={{maxHeight:500, overflowY:'auto'}}>
-          <Table className='tableFixHead' style={{fontSize:13}}>
-            <thead><tr><th>Voyage #</th><th>Arrival</th><th>Sailing</th><th>Cut-Off Date</th><th>Cut-Off Time</th><th>Ports</th></tr></thead>
-            <tbody>
-            {state.voyagerecords.map((x,i)=>{
-            return (
-            <tr key={i} className='f row-hov' onClick={()=>{
-              dispatch({type:'edit', payload:x});
-              
-              reset({
-                ...x,
-                cutOffDate:x.cutOffDate==""?"":moment(x.cutOffDate),
-                cutOffTime:x.cutOffTime==""?"":moment(x.cutOffTime),
-                destinationEta:x.destinationEta==""?"":moment(x.destinationEta),
-                exportSailDate:x.exportSailDate==""?"":moment(x.exportSailDate),
-                importArrivalDate:x.importArrivalDate==""?"":moment(x.importArrivalDate),
-                importOriginSailDate:x.importOriginSailDate==""?"":moment(x.importOriginSailDate),
-              });
-            }}>
-              <td className='blue-txt fw-7'> {x.voyage}</td>
-              <td>{x.importArrivalDate!="" && moment(x.importArrivalDate).format("DD-MM-YY")}</td>
-              <td>{x.exportSailDate!="" && moment(x.exportSailDate).format("DD-MM-YY")}</td>
-              <td>{x.cutOffDate!="" && moment(x.cutOffDate).format("DD-MM-YY")}</td>
-              <td>{x.cutOffTime!="" && moment(x.cutOffTime).format("hh:mm a")}</td>
-              <td style={{fontSize:10}}>POL : {x.pol}<br/>POD: {x.pod}</td>
-            </tr>)})}
-            </tbody>
-          </Table>
-          </div>
-          </div>
+              <tr key={i} className='f row-hov' onClick={()=>{
+                dispatch({type:'edit', payload:x});
+                
+                reset({
+                  ...x,
+                  cutOffDate:x.cutOffDate==""?"":moment(x.cutOffDate),
+                  cutOffTime:x.cutOffTime==""?"":moment(x.cutOffTime),
+                  destinationEta:x.destinationEta==""?"":moment(x.destinationEta),
+                  exportSailDate:x.exportSailDate==""?"":moment(x.exportSailDate),
+                  importArrivalDate:x.importArrivalDate==""?"":moment(x.importArrivalDate),
+                  importOriginSailDate:x.importOriginSailDate==""?"":moment(x.importOriginSailDate),
+                });
+              }}>
+                <td className='blue-txt fw-7'> {x.voyage}</td>
+                <td>{x.importArrivalDate!="" && moment(x.importArrivalDate).format("DD-MM-YY")}</td>
+                <td>{x.exportSailDate!="" && moment(x.exportSailDate).format("DD-MM-YY")}</td>
+                <td>{x.cutOffDate!="" && moment(x.cutOffDate).format("DD-MM-YY")}</td>
+                <td>{x.cutOffTime!="" && moment(x.cutOffTime).format("hh:mm a")}</td>
+                <td style={{fontSize:10}}>POL : {x.pol}<br/>POD: {x.pod}</td>
+              </tr>)})}
+              </tbody>
+            </Table>
+            </div>
+            </div>
+          }
+        </Row>
         }
+        </>}
+        {state.load && <div className='text-center py-5'><Spinner  /></div>}
+      </div>
+      </Col>
       </Row>
-      }
-      </>}
-      {state.load && <div className='text-center py-5'><Spinner  /></div>}
-    </div>
-    </Col>
-    </Row>
-    <Modal open={state.visible} maskClosable={false}
-      onOk={()=>dispatch({ type: 'modalOff' })} onCancel={()=>dispatch({type:'modalOff'})}
-      width={800} footer={false} //centered={true}
-    >
-      {state.visible && 
-      <form onSubmit={handleSubmit(state.edit?onEdit:onSubmit, onError)}>
-        <CreateOrEdit 
-          state={state} 
-          dispatch={dispatch} 
-          baseValues={baseValues} 
-          register={register} 
-          control={control} 
-          useWatch={useWatch} 
-        />
-      </form>
-      }
-    </Modal>
-    </div>
-  )
+      <Modal open={state.visible} maskClosable={false}
+        onOk={()=>dispatch({ type: 'modalOff' })} onCancel={()=>dispatch({type:'modalOff'})}
+        width={800} footer={false} //centered={true}
+      >
+        {state.visible && 
+        <form onSubmit={handleSubmit(state.edit?onEdit:onSubmit, onError)}>
+          <CreateOrEdit 
+            state={state} 
+            dispatch={dispatch} 
+            baseValues={baseValues} 
+            register={register} 
+            control={control} 
+            useWatch={useWatch} 
+          />
+        </form>
+        }
+      </Modal>
+      </div>
+    )
+  }else{
+    return(
+      <div>No Access</div>
+    )
+  }
 }
 
 export default Voyage

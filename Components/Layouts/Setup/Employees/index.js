@@ -5,7 +5,6 @@ import MediumModal from '/Components/Shared/Modals/MediumModal';
 import CreateOrEdit from './CreateOrEdit';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input } from 'antd';
-import { setAccesLevels } from '/functions/setAccesLevels';
 import { checkAccess } from '/functions/checkAccess';
 
 const Employees = () => {
@@ -14,8 +13,7 @@ const Employees = () => {
   const [visible, setVisible] = useState(false);
   const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
-  const items = setAccesLevels(dispatch);
-  const access = checkAccess(dispatch);
+  const access = checkAccess(dispatch, "Employees");
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [query, setQuery] = useState("");
   const [originalEmployeeList, setOriginalEmployeeList] = useState([]);
