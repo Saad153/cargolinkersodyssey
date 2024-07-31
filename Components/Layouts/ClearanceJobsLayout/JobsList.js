@@ -47,7 +47,7 @@ const JobsList = ({ jobsData, sessionData, type }) => {
           <Row>
             <Col md={7}>
               <h5>
-                {type=="CSE"?"SEA Export":type=="CSI"?"SEA Import":type=="CAE"?"AIR Export":type=="CAI"?"AIR Import":""}
+                {type=="CSE"?"SEA Export ":type=="CSI"?"SEA Import ":type=="CAE"?"AIR Export ":type=="CAI"?"AIR Import ":""}
                 Job List
               </h5>
             </Col>

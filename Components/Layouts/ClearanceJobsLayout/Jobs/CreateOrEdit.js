@@ -16,7 +16,7 @@ import LoadingProgram from './Loading Program';
 import GDOperate from './GDOperate';
 import DelieveryOrder from './Delievery Order';
 import { incrementTab, removeTab } from '/redux/tabs/tabSlice';
-import { SignupSchema, getInvoices, baseValues } from './states';
+import { getStatus, SignupSchema, getInvoices, baseValues } from './states';
 import PopConfirm from '/Components/Shared/PopConfirm';
 import { createNotification } from '/functions/notifications';
 import openNotification from '/Components/Shared/Notification';
@@ -33,8 +33,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   const allValues = useWatch({control});
   const dispatchNew = useDispatch();
 
-  console.log("all values", allValues)
-
+  // console.log("all values", allValues)
   useEffect(() => {
     let tempState = {...baseValues, ...jobData};
     let tempVoyageList = [...state.voyageList];
