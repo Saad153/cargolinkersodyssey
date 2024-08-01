@@ -17,7 +17,9 @@ export const setTempToken = (token, call) => {
 
 
 function setAccesLevels(dispatch, collapsed){
+  
   let items = [];
+
   if(firstCall && Cookies.get('token') != null){
     tempToken = Cookies.get('token');
     firstCall = false;
@@ -42,6 +44,7 @@ function setAccesLevels(dispatch, collapsed){
   }
 
 //getParentItem only returns the section data as objects to store in items array.
+
   const dashboard = getParentItem('Dashboard', '1', <HomeOutlined />,[
 
     //getItem only returns the subsection data as objects to store in parents children array.
@@ -62,6 +65,7 @@ function setAccesLevels(dispatch, collapsed){
     (levels?.includes("Employees")||levels?.includes("admin"))?getItem('Employees', '2-1', <></>, null, {
       label: 'Employees',
       key: '2-1',
+
       children: 'Content of Tab Pane 2',
     }):null,
     (levels?.includes("VendorList")||levels?.includes("admin"))?getItem('Vendor List', '2-5',<></>, null, {
@@ -233,8 +237,6 @@ function setAccesLevels(dispatch, collapsed){
     }
   }}
 
-  // console.log(reports)
-
   //Adds the related parents into the items array by checking if the user has access to any of the children.
   if(levels){
     levels = levels.split(", ")
@@ -297,6 +299,7 @@ function setAccesLevels(dispatch, collapsed){
   items.unshift(dashboard)
   items.push(tasks)
   // console.log(items)
+
   return items
 }
 
