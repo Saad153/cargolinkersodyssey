@@ -349,9 +349,13 @@ const getInvoices = async(id, dispatch) => {
   //return result;
 } 
 
-const getStatus = () => {
+const getStatus = (designation) => {
   // console.log(checkDesignation("GD Operator"))
-  return !checkDesignation("GD Operator");
+  if(designation == null){
+    return !checkDesignation("gd operator");
+  }else{
+    return !checkDesignation(designation);
+  }
 }
 
 const setHeadsCache = (chargesData, dispatch, reset) => {

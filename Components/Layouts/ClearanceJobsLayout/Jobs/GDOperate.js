@@ -83,27 +83,27 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
   <>
     <Row style={{fontSize:12}}>
       <Col md={2} className='py-1'>     
-        <InputComp register={register} name='gd' control={control} label='GD #' width={"100%"} disabled={getStatus(approved)} />
+        <InputComp register={register} name='gd' control={control} label='GD #' width={"100%"}  />
       </Col>
       <Col md={2} className='py-1'>
-        <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"} disabled={getStatus(approved)} />
+        <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"}  />
       </Col>
       <Col md={2} className='py-1'>
-        <InputComp register={register} name='fileNo' control={control} label='FORM E #' width={"100%"} disabled={getStatus(approved)} />
+        <InputComp register={register} name='fileNo' control={control} label='FORM E #' width={"100%"}  />
       </Col>
       <Col md={2} className='py-1'>     
-        <DateComp register={register} name='gdDate' control={control} label='GD Date' disabled={getStatus(approved)} width={"100%"} />
+        <DateComp register={register} name='gdDate' control={control} label='GD Date'  width={"100%"} />
       </Col>
     </Row>
     <hr />
     <Row style={{fontSize:12}}>
       <Col md={3}>
         <div className='custom-link mt-2' onClick={()=>pageLinking("client", ClientId)} >Client *</div>
-        <SelectSearchComp register={register} name='ClientId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='ClientId' control={control} label=''  width={"100%"}
           options={state.fields.party.client} />
         <Space/>
         <div className='custom-link mt-2' onClick={()=>pageLinking("client", consigneeId)} >Consignee *</div>
-        <SelectSearchComp register={register} name='consigneeId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='consigneeId' control={control} label=''  width={"100%"}
           options={state.fields.party.consignee} /><Space/>
         <div style={{ marginTop: 13 }}></div>
           <Weights register={register} control={control} equipments={state.equipments}
@@ -117,7 +117,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
         />
         <div className='custom-link mt-2' onClick={()=>pageLinking("commodity", commodityId)} >Commodity</div>
-        <SelectSearchComp register={register} name='commodityId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
+        <SelectSearchComp register={register} name='commodityId' control={control} label=''  width={"100%"}
           options={state.fields.commodity} 
         />
         {/* <div className='my-2'></div> */}
@@ -129,7 +129,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
                  </>
             }
               {(type=="CAE" || type=="CAI") &&<> 
-            <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"} disabled={getStatus(approved)} />
+            <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"}  />
             </> }
         {/* <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
           options={state.fields.vendor.chaChb} 

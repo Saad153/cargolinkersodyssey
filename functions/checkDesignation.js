@@ -17,7 +17,7 @@ function checkDesignation(pageName){
   
 //   console.log(token);
 //   console.log(pageName.toLowerCase());
-    if(token === pageName.toLowerCase()){
+    if(token === pageName){
       access = true;
     }
   

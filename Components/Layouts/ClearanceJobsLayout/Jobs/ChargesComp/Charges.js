@@ -10,7 +10,7 @@ import { getVendors, getClients } from '../states';
 import { Row, Col, Table, Spinner } from 'react-bootstrap';
 import PopConfirm from '/Components/Shared/PopConfirm';
 import PartySearch from './PartySearch';
-import { saveHeads, calculateChargeHeadsTotal, makeInvoice } from "../states";
+import { getStatus, saveHeads, calculateChargeHeadsTotal, makeInvoice } from "../states";
 import { useQueryClient } from '@tanstack/react-query';
 import { delay } from "/functions/delay";
 
@@ -51,11 +51,62 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
     let tempChargeHeadsArray = calculateChargeHeadsTotal(tempChargeList, 'full');
     dispatch({type:'set', payload:{...tempChargeHeadsArray}})
     reset({ chargeList: tempChargeList });
+
   };
+  const isDisabled = getStatus("accountant");
+  console.log(isDisabled)
   return(
   <>
     <Row>
-      <Col style={{maxWidth:150}} className="">
+    <Col style={{ maxWidth: 150 }} className="">
+  {!isDisabled && (
+    <div
+      className="div-btn-custom text-center py-1 fw-8"
+      onClick={() => {
+        if (!state.chargeLoad) {
+          append({
+            type: type,
+            description: "",
+            basis: "",
+            new: true,
+            ex_rate: parseFloat(state.exRate),
+            pp_cc: state.selectedRecord.freightType === "Prepaid" ? "PP" : "CC",
+            local_amount: 0,
+            size_type: "40HC",
+            dg_type: state.selectedRecord.dg === "Mix" ? "DG" : state.selectedRecord.dg,
+            qty: 1,
+            rate_charge: 1,
+            currency:   
+ "PKR",
+            amount: 1,
+            check: false,
+            bill_invoice: "",
+            charge: "",
+            particular: "",
+            discount: 0,
+            tax_apply: false,
+            taxPerc: 0.00,
+            tax_amount: 0,
+            net_amount: 0,
+            invoiceType: "",
+            name: "",
+            partyId: "",
+            sep: false,
+            status: "",
+            approved_by: "",
+            approval_date: "",
+            InvoiceId: null,
+            SEJobId: state.selectedRecord.id,
+          });
+        }
+      }}
+    >
+      Add +
+    </div>   
+
+  )}
+</Col>
+      {/* <Col style={{maxWidth:150}} className="">
         <div className='div-btn-custom text-center py-1 fw-8'
           onClick={()=>{
           if(!state.chargeLoad){
@@ -70,8 +121,10 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             })}}
           }
         >Add +</div>
-      </Col>
+      </Col> */}
      <Col>
+     {
+      !isDisabled && (
         <div className='div-btn-custom text-center mx-0 py-1 px-3' style={{float:'right'}} 
           onClick={async () => {
             if(!state.chargeLoad){
@@ -94,6 +147,9 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             }
           }}
         >Save Charges</div>
+      )
+     }
+        
         {allValues.approved.length==1 &&
           <div 
             className='div-btn-custom-green text-center py-1 mx-2 px-3' 

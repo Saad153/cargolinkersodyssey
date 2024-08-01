@@ -32,6 +32,9 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   const tabs = useSelector((state)=>state.tabs.tabs);
   const allValues = useWatch({control});
   const dispatchNew = useDispatch();
+  const isDisabled = getStatus();
+
+  console.log(isDisabled)
 
   // console.log("all values", allValues)
   useEffect(() => {
@@ -233,9 +236,14 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       </Tabs>
       {(state.tabState=="1"||state.tabState=="2"||state.tabState=="3") &&
       <>
-        <button type="submit" disabled={state.load?true:false} className='btn-custom mt-3'>
+        {!isDisabled && (
+              <button type="submit" className='btn-custom mt-3'>
+                {state.load ? <Spinner animation="border" size='sm' className='mx-3' /> : 'Save Job'}
+              </button>
+            )}
+        {/* <button type="submit" disabled={isDisabled} className='btn-custom mt-3'>
           {state.load?<Spinner animation="border" size='sm' className='mx-3' />:'Save Job'}
-        </button>
+        </button> */}
         {/* <button type="button" disabled //disabled={allValues.approved==1?true:false} 
           className={allValues.approved==1?"btn-red-disabled mt-3 mx-3":"btn-red mt-3 mx-3"}
           onClick={()=>
