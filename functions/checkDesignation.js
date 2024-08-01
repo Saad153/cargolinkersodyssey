@@ -11,7 +11,11 @@ function checkDesignation(pageName){
   
   if(Cookies.get("token") != null){
     token = jwt_decode(Cookies.get("token")).designation;
+    if(jwt_decode(Cookies.get("token")).access == "admin"){
+      return true
+    }
   }
+
   let access = false;
   let newTemp = [];
   
