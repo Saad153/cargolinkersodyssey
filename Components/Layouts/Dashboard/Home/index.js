@@ -8,10 +8,13 @@ import Notifications from "./Notifications";
 import Notes from "./Notes";
 import Tasks from "./Tasks";
 import { Tabs } from 'antd';
+import jwt_decode from 'jwt-decode';
+
 
   const Home = ({ sessionData }) => {
-
-  const access = Cookies.get('access');
+  // let token = jwt_decode(Cookies.get("token"));
+  // const access = JSON.stringify(token.access);
+  const access = Cookies.get("access");
   const dispatch = useDispatch();
 
   useEffect(() => {

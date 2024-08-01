@@ -16,7 +16,7 @@ import LoadingProgram from './Loading Program';
 import GDOperate from './GDOperate';
 import DelieveryOrder from './Delievery Order';
 import { incrementTab, removeTab } from '/redux/tabs/tabSlice';
-import { SignupSchema, getInvoices, baseValues } from './states';
+import { getStatus, SignupSchema, getInvoices, baseValues } from './states';
 import PopConfirm from '/Components/Shared/PopConfirm';
 import { createNotification } from '/functions/notifications';
 import openNotification from '/Components/Shared/Notification';
@@ -32,9 +32,11 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   const tabs = useSelector((state)=>state.tabs.tabs);
   const allValues = useWatch({control});
   const dispatchNew = useDispatch();
+  const isDisabled = getStatus();
 
-  console.log("all values", allValues)
+  console.log(isDisabled)
 
+  // console.log("all values", allValues)
   useEffect(() => {
     let tempState = {...baseValues, ...jobData};
     let tempVoyageList = [...state.voyageList];
@@ -235,9 +237,14 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
       </Tabs>
       {(state.tabState=="1"||state.tabState=="2"||state.tabState=="3") &&
       <>
-        <button type="submit" disabled={state.load?true:false} className='btn-custom mt-3'>
+        {!isDisabled && (
+              <button type="submit" className='btn-custom mt-3'>
+                {state.load ? <Spinner animation="border" size='sm' className='mx-3' /> : 'Save Job'}
+              </button>
+            )}
+        {/* <button type="submit" disabled={isDisabled} className='btn-custom mt-3'>
           {state.load?<Spinner animation="border" size='sm' className='mx-3' />:'Save Job'}
-        </button>
+        </button> */}
         {/* <button type="button" disabled //disabled={allValues.approved==1?true:false} 
           className={allValues.approved==1?"btn-red-disabled mt-3 mx-3":"btn-red mt-3 mx-3"}
           onClick={()=>

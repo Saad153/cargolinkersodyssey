@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { incrementTab } from '/redux/tabs/tabSlice';
 import axios from 'axios';
 import {Input, Select} from 'antd'
+import { checkAccess } from '/functions/checkAccess';
 
 function recordsReducer(state, action){
   switch (action.type) {
@@ -81,6 +82,9 @@ const onSearch = (event) => {
   dispatch({type:'toggle', fieldName:'records', payload:data});
 }
 
+const access = checkAccess(dispatch, "Non-GL Parties");
+
+if(access){
   return (
     <div className='base-page-layout'>
     <Row>
@@ -146,6 +150,12 @@ const onSearch = (event) => {
     </Row>
     </div>
   )
+}else{
+  return(
+    <div>No Access</div>
+  )
+}
+
 }
 
 export default Index

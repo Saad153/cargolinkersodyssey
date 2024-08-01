@@ -142,6 +142,8 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
     {id:'UNIT', value:'UNIT'}
   ];
 
+  // console.log(getStatus());
+
 
   return (
   <>
@@ -153,13 +155,13 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
         </div>
       </Col>
       <Col md={2} className='py-1'>     
-        <DateComp register={register} name='jobDate' control={control} label='Job Date' width={"100%"} disabled={getStatus(approved)} />
+        <DateComp register={register} name='jobDate' control={control} label='Job Date' width={"100%"} disabled />
       </Col>
       <Col md={2} className='py-1'>     
-        <DateComp register={register} name='shipDate' control={control} label='Sailing/Flight Date' disabled={getStatus(approved)} width={"100%"} />
+        <DateComp register={register} name='shipDate' control={control} label='Sailing/Flight Date'  width={"100%"} />
       </Col>
       <Col md={2} className='py-1'>
-        <SelectComp register={register} name='jobType' control={control} label='Job Type' width={"100%"} disabled={getStatus(approved)}
+        <SelectComp register={register} name='jobType' control={control} label='Job Type' width={"100%"} 
           options={[  
             {id:'Clearing Only', name:'Clearing Only'},
             {id:'Clearing + Tpt', name:'Clearing + Tpt'},
@@ -168,7 +170,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
         />
       </Col>
       <Col md={2} className='py-1'>
-        <SelectComp register={register} name='subType' control={control} label='Shipment Type' width={"100%"} disabled={getStatus(approved)}
+        <SelectComp register={register} name='subType' control={control} label='Shipment Type' width={"100%"} 
           options={[
             {id:'FCL', name:'FCL'},
             {id:'LCL', name:'LCL'},
@@ -178,7 +180,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
         />
       </Col>
       <Col md={2} className='py-1'>
-        <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"} disabled={getStatus(approved)} />
+        <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"}  />
       </Col>
     </Row>
     <hr />
@@ -187,24 +189,24 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
         <Row>
           <Col md={6} className=''>
             <div className='custom-link mt-2' onClick={()=>pageLinking("client", ClientId)} >Client *</div>
-            <SelectSearchComp register={register} name='ClientId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='ClientId' control={control} label=''  width={"100%"}
               options={state.fields.party.client} />
             <Space/>
 
             {(type=="CSE" || type=="CSI") && <>
-            <SelectSearchComp register={register} name='pol' control={control} label='Port Of Shipment' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='pol' control={control} label='Port Of Shipment'  width={"100%"}
               options={polSea.ports} /><Space/>
-            <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='pod' control={control} label='Port Of Discharge'  width={"100%"}
               options={ports.ports} /><Space/>
             </>
             }
             {(type=="CAE" || type=="CAI") &&<>
-            <SelectSearchComp register={register} name='pol' control={control} label='Airport Of Shipment' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='pol' control={control} label='Airport Of Shipment'  width={"100%"}
               options={polAir.ports} /><Space/>
-            <SelectSearchComp register={register} name='pod' control={control} label='Airport Of Discharge' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='pod' control={control} label='Airport Of Discharge'  width={"100%"}
               options={airports} /><Space/>
             </>}
-            <SelectSearchComp register={register} name='fd' control={control} label='Final Destination' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='fd' control={control} label='Final Destination'  width={"100%"}
               options={destinations} 
             />
             <Space/>
@@ -213,22 +215,22 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
             <Space/>
             <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", localVendorId)} >Local Vendor</div>
             <SelectSearchComp register={register} name='localVendorId' control={control} label='' 
-              disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
+              options={state.fields.vendor.localVendor} width={"100%"} 
             />
             <div className='custom-link mt-2' onClick={()=>pageLinking("commodity", commodityId)} >Commodity</div>
-            <SelectSearchComp register={register} name='commodityId' control={control} label='' disabled={getStatus(approved)} width={"100%"}
+            <SelectSearchComp register={register} name='commodityId' control={control} label='' width={"100%"}
               options={state.fields.commodity} 
             />
             {/* <div className='my-2'></div> */}
             {(type=="CSE"||type=="CSI") &&<>
             <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", customAgentId)} >Freight Forwarder {"(CHA/CHB)"}</div>
-            <SelectSearchComp register={register} name='customAgentId' control={control} label='' width={"100%"}
+            <SelectSearchComp register={register} name='customAgentId' control={control} label=''  width={"100%"}
               options={state.fields.vendor.chaChb} 
             />
                  </>
             }
               {(type=="CAE" || type=="CAI") &&<> 
-            <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"} disabled={getStatus(approved)} />
+            <InputComp register={register} name='airwayBill' control={control} label='Airway Bill#' width={"100%"}  />
             </> }
             {(type=="CAE" || type=="CAI") &&<>
             <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", airlineId)} >Airline</div>
@@ -239,7 +241,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
             }
             {(type=="CSE"||type=="CSI") &&<>
               <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", shippingLineId)} >Sline/Carrier</div>
-              <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
+              <SelectSearchComp register={register} name='shippingLineId' control={control} label=''  options={state.fields.vendor.sLine} width={"100%"} />
             </>
             }
           </Col>
@@ -251,7 +253,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
             <div className='mt-2' />
             <Row>
               <Col md={1}>
-                <CheckGroupComp register={register} name='transportCheck' control={control} label='' disabled={getStatus(approved)}
+                <CheckGroupComp register={register} name='transportCheck' control={control} label='' 
                   options={[{ label: "", value: "Transport" }]}
                 />
               </Col>
@@ -261,14 +263,14 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
               <Col>.</Col>
             </Row>
             <SelectSearchComp register={register} name='transporterId' control={control} label=''
-              options={state.fields.vendor.transporter} disabled={getStatus(approved) || transportCheck.length == 0} width={"100%"} 
+              options={state.fields.vendor.transporter} disabled={getStatus() || transportCheck.length == 0} width={"100%"} 
             />
             <Row>
               <Col md={4} className='mt-2'>
-                <InputNumComp register={register} name='pcs' control={control}  label='No of Pkgs' width={"120%"} disabled={getStatus(approved)} />
+                <InputNumComp register={register} name='pcs' control={control}  label='No of Pkgs' width={"120%"}  />
               </Col>
               <Col md={8} className='mt-2'>
-                <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"} disabled={getStatus(approved)} options={packages}  />
+                <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"}  options={packages}  />
               </Col>
             </Row>
           </Col>

@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import axios from "axios";
 import moment from "moment";
+import { checkDesignation } from "../../../../functions/checkDesignation";
 
 const SignupSchema = yup.object().shape({  });
 
@@ -348,9 +349,14 @@ const getInvoices = async(id, dispatch) => {
   //return result;
 } 
 
-const getStatus = (val) => {
-  return val[0]=="1"?true:false
-};
+const getStatus = (designation) => {
+  // console.log(checkDesignation("GD Operator"))
+  if(designation == null){
+    return !checkDesignation("gd operator");
+  }else{
+    return !checkDesignation(designation);
+  }
+}
 
 const setHeadsCache = (chargesData, dispatch, reset) => {
   chargesData.status=="success"?
