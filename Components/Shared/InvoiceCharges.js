@@ -14,7 +14,7 @@ const { TextArea } = Input;
 const InvoiceCharges = ({data, companyId}) => {
     
   const commas = (a) =>  { return parseFloat(a).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
-
+  
   let inputRef = useRef(null);
   let inputSalesRef = useRef(null);
   const queryClient = useQueryClient();
@@ -36,12 +36,13 @@ const InvoiceCharges = ({data, companyId}) => {
     },
     note:''
   });
+  const [printed, setprinted] = useState();
+  const [gstprinted, setgstprinted] = useState();
   const [load, setLoad] = useState(false);
   const [ref, setRef] = useState(false);
   const [logo, setLogo] = useState(false);
   const [compLogo, setCompLogo] = useState("1");
   const [balance, setBalance] = useState(false);
-
   let bankDetails = {
     one:`
     Bank Name: Soneri Bank Ltd \n
@@ -72,6 +73,16 @@ const InvoiceCharges = ({data, companyId}) => {
     BRANCH: TARIQ ROAD 1054, KARACHI \n
     SWIFT: BAHLPKKAXXX`,
   }
+  console.log(data.resultOne)
+  // console.log(data.resultOne.isPrinted)
+  // console.log(data.resultOne.GSTPrinted)
+  // if(data != null && data != 'undefined'){
+  //   if(data.resultOne != null && data.resultOne != undefined){
+
+  //     setprinted(data.resultOne.isPrinted);
+  //     setgstprinted(data.resultOne.GSTPrinted);
+  //   }
+  // }
 
   useEffect(()=>{
 
@@ -79,7 +90,12 @@ const InvoiceCharges = ({data, companyId}) => {
     if(Object.keys(data).length>0){
         setInvoice(data.resultOne);
         setRecords(data.resultOne?.Charge_Heads);
+        setprinted(data.resultOne.isPrinted);
+        setgstprinted(data.resultOne.GSTPrinted)
         setInvoiceData(!invoiceData)
+        console.log(gstprinted)
+        console.log("abc")
+        // console.log("abc")
     }
   }, [data])
 
@@ -282,6 +298,44 @@ const InvoiceCharges = ({data, companyId}) => {
     }
     return result
   }
+  // console.log(invoice)
+
+  const updatePrinted = () => {
+    console.log("Updated")
+    setprinted(true);
+    console.log("Test before Post: "+printed)
+    postPrinted();
+  }
+
+  const postPrinted = async() => {
+    
+    try {
+      const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
+        id: invoice.id,
+        printed: printed,
+        gstprinted: gstprinted,
+      });
+  
+      if (response.status === 200) {
+        console.log('Print status updated successfully');
+        // Handle success, e.g., update UI
+      } else {
+        console.error('Error updating print status:', response.data);
+        // Handle error, e.g., show error message
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error, e.g., show error message
+    }
+
+  }
+
+  const updateGstPrinted = () => {
+    console.log("GST Updated")
+    setgstprinted(true);
+    console.log("Test before Post: "+gstprinted)
+    postPrinted();
+  }
 
   const PrintOptions = (
     <>
@@ -295,9 +349,9 @@ const InvoiceCharges = ({data, companyId}) => {
       /> */}
       {/* <br/> */}
       <div className='mt-3'></div>
-      <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
+      {!printed && <ReactToPrint content={()=>inputRef} trigger={()=><div onClick={console.log("Pressed")} className='div-btn-custom text-center p-2'>Go</div>} />}
       <br />
-      <ReactToPrint content={()=>inputSalesRef} trigger={()=><div className='div-btn-custom text-center p-2'>Print GST</div>} />
+      {!gstprinted && <ReactToPrint onClick={updateGstPrinted()} content={()=>inputSalesRef} trigger={()=><div onClick={console.log("Pressed 2")} className='div-btn-custom text-center p-2'>Print GST</div>} />}
       
     </>
   )
@@ -318,7 +372,7 @@ return (
     <div className='invoice-styles '>
     {Object.keys(data).length>0 &&
     <div className='fs-12' style={{maxHeight:660, overflowY:'auto', overflowX:'hidden'}}>
-    <div style={{maxWidth:70}}>
+    <div style={{maxWidth:75}}>
     <Popover content={PrintOptions} placement="bottom" title="Printing Options">
       <div className='div-btn-custom text-center p-2'>Print</div>
     </Popover>
