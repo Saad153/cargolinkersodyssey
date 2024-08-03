@@ -34,7 +34,7 @@ const CreateOrEdit = ({state, dispatch, companyId, jobData, id, type, refetch}) 
   const dispatchNew = useDispatch();
   const isDisabled = getStatus();
 
-  console.log(isDisabled)
+  // console.log(isDisabled)
 
   // console.log("all values", allValues)
   useEffect(() => {

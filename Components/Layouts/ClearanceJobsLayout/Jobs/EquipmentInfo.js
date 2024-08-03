@@ -13,7 +13,7 @@ const EquipmentInfo = ({state, dispatch}) => {
     tempState.push({size:'', qty:'', dg:'', container:''});
     dispatch({type:'toggle', fieldName:'equipments', payload:tempState});
   };
-console.log(state.equipments)
+// console.log(state.equipments)
   return (
     <div style={{border:'1px solid silver', padding:'10px'}}>
       <div >

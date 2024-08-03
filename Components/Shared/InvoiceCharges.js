@@ -9,6 +9,8 @@ import { Checkbox, Popover, Input, Radio, Select } from 'antd';
 import { useQueryClient } from '@tanstack/react-query';
 import CLPrint from './CLPrint';
 import SLPrint from './SLPrint';
+// import MediaQuery from 'hooks/useMedia';
+
 const { TextArea } = Input;
 
 const InvoiceCharges = ({data, companyId}) => {
@@ -36,8 +38,18 @@ const InvoiceCharges = ({data, companyId}) => {
     },
     note:''
   });
-  const [printed, setprinted] = useState();
-  const [gstprinted, setgstprinted] = useState();
+  let printed;
+  let gstprint;
+  let invoiceNo;
+  if(data.resultOne != null){
+    // console.log(data.resultOne.invoice_No);
+    invoiceNo = data.resultOne.invoice_No;
+    // console.log(invoiceNo)
+    printed = data.resultOne.isPrinted;
+    gstprint = data.resultOne.GSTPrinted;
+  }
+  let printRef = useRef(null);
+  let GSTRef = useRef(null);
   const [load, setLoad] = useState(false);
   const [ref, setRef] = useState(false);
   const [logo, setLogo] = useState(false);
@@ -73,16 +85,6 @@ const InvoiceCharges = ({data, companyId}) => {
     BRANCH: TARIQ ROAD 1054, KARACHI \n
     SWIFT: BAHLPKKAXXX`,
   }
-  console.log(data.resultOne)
-  // console.log(data.resultOne.isPrinted)
-  // console.log(data.resultOne.GSTPrinted)
-  // if(data != null && data != 'undefined'){
-  //   if(data.resultOne != null && data.resultOne != undefined){
-
-  //     setprinted(data.resultOne.isPrinted);
-  //     setgstprinted(data.resultOne.GSTPrinted);
-  //   }
-  // }
 
   useEffect(()=>{
 
@@ -90,17 +92,10 @@ const InvoiceCharges = ({data, companyId}) => {
     if(Object.keys(data).length>0){
         setInvoice(data.resultOne);
         setRecords(data.resultOne?.Charge_Heads);
-        setprinted(data.resultOne.isPrinted);
-        setgstprinted(data.resultOne.GSTPrinted)
         setInvoiceData(!invoiceData)
-        console.log(gstprinted)
-        console.log("abc")
-        // console.log("abc")
     }
   }, [data])
 
-  console.log("data",data.resultOne?.approved)
-  // console.log("records",records)
   
 
   const calculateTotal = (data) => {
@@ -298,25 +293,16 @@ const InvoiceCharges = ({data, companyId}) => {
     }
     return result
   }
-  // console.log(invoice)
-
-  const updatePrinted = () => {
-    console.log("Updated")
-    setprinted(true);
-    console.log("Test before Post: "+printed)
-    postPrinted();
-  }
-
   const postPrinted = async() => {
-    
+    console.log("Printed and Updated")
     try {
       const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
-        id: invoice.id,
+        invoice_No: invoiceNo,
         printed: printed,
-        gstprinted: gstprinted,
+        gstprinted: gstprint,
       });
   
-      if (response.status === 200) {
+      if (response.status === "success") {
         console.log('Print status updated successfully');
         // Handle success, e.g., update UI
       } else {
@@ -330,12 +316,24 @@ const InvoiceCharges = ({data, companyId}) => {
 
   }
 
-  const updateGstPrinted = () => {
-    console.log("GST Updated")
-    setgstprinted(true);
-    console.log("Test before Post: "+gstprinted)
+  const printInvoice = (PorG) =>{
+    if(PorG == 1){
+      console.log("printRef 1" + printRef.current);
+      if(printRef.current != null){
+        printRef.current.click()
+        printed = true
+      } 
+    }else{
+      console.log("GSTRef 2" + GSTRef.current);
+      if(GSTRef.current != null){
+        GSTRef.current.click()
+        gstprint = true;
+      }
+    }
     postPrinted();
+
   }
+
 
   const PrintOptions = (
     <>
@@ -349,9 +347,11 @@ const InvoiceCharges = ({data, companyId}) => {
       /> */}
       {/* <br/> */}
       <div className='mt-3'></div>
-      {!printed && <ReactToPrint content={()=>inputRef} trigger={()=><div onClick={console.log("Pressed")} className='div-btn-custom text-center p-2'>Go</div>} />}
+      <ReactToPrint onAfterPrint={console.log("Pressed on ReactToPrint 1")} content={()=>inputRef} trigger={()=><div ref={printRef} onMouseDown={console.log("Pressed on Div 1")} style={{ display: 'none' }} className='div-btn-custom text-center p-2'>Go</div>} />
+      <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice(1)}>Print</div>
       <br />
-      {!gstprinted && <ReactToPrint onClick={updateGstPrinted()} content={()=>inputSalesRef} trigger={()=><div onClick={console.log("Pressed 2")} className='div-btn-custom text-center p-2'>Print GST</div>} />}
+      <ReactToPrint onAfterPrint={console.log("Pressed on ReactToPrint 2")} content={()=>inputSalesRef} trigger={()=><div ref={GSTRef} onClick={console.log("Pressed on Div 2")} style={{ display: 'none' }} className='div-btn-custom text-center p-2'>Print GST</div>} />
+      <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice(2)}>Print GST</div>
       
     </>
   )

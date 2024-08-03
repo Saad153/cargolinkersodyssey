@@ -16,7 +16,7 @@ const SLPrint = ({ records, invoice }) => {
        const gstInv = `${prefix}-SI-${suffix}`;
        setGst(gstInv);
     } else {
-      console.log('Invoice number is undefined or not properly formatted.');
+      // console.log('Invoice number is undefined or not properly formatted.');
     }
   }, [invoice]);
 
