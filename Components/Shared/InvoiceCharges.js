@@ -9,12 +9,14 @@ import { Checkbox, Popover, Input, Radio, Select } from 'antd';
 import { useQueryClient } from '@tanstack/react-query';
 import CLPrint from './CLPrint';
 import SLPrint from './SLPrint';
+// import MediaQuery from 'hooks/useMedia';
+
 const { TextArea } = Input;
 
 const InvoiceCharges = ({data, companyId}) => {
     
   const commas = (a) =>  { return parseFloat(a).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
-
+  
   let inputRef = useRef(null);
   let inputSalesRef = useRef(null);
   const queryClient = useQueryClient();
@@ -36,12 +38,21 @@ const InvoiceCharges = ({data, companyId}) => {
     },
     note:''
   });
+  let printed;
+  let gstprint;
+  let invoiceNo;
+  if(data.resultOne != null){
+    // console.log(data.resultOne.invoice_No);
+    invoiceNo = data.resultOne.invoice_No;
+    // console.log(invoiceNo)
+    printed = data.resultOne.isPrinted;
+    gstprint = data.resultOne.GSTPrinted;
+  }
   const [load, setLoad] = useState(false);
   const [ref, setRef] = useState(false);
   const [logo, setLogo] = useState(false);
   const [compLogo, setCompLogo] = useState("1");
   const [balance, setBalance] = useState(false);
-
   let bankDetails = {
     one:`
     Bank Name: Soneri Bank Ltd \n
@@ -83,8 +94,6 @@ const InvoiceCharges = ({data, companyId}) => {
     }
   }, [data])
 
-  console.log("data",data.resultOne?.approved)
-  // console.log("records",records)
   
 
   const calculateTotal = (data) => {
@@ -282,6 +291,36 @@ const InvoiceCharges = ({data, companyId}) => {
     }
     return result
   }
+  const postPrinted = async() => {
+    console.log("Invoice No: "+data.resultOne.invoice_No+" Printed: "+printed+" gstPrinted: "+gstprint)
+    try {
+      const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
+        invoice_No: data.resultOne.invoice_No,
+        printed: printed,
+        gstprinted: gstprint,
+      });
+  
+      if (response.status === "success") {
+        console.log('Print status updated successfully');
+      } else {
+        console.error('Error updating print status:', response.data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+  }
+
+  const printInvoice = (PorG) =>{
+    console.log("Printing")
+    if(PorG == 1){
+      printed = true; 
+    }else{
+      gstprint = true;
+    }
+    postPrinted();
+  }
+
 
   const PrintOptions = (
     <>
@@ -296,8 +335,10 @@ const InvoiceCharges = ({data, companyId}) => {
       {/* <br/> */}
       <div className='mt-3'></div>
       <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
+      {/* <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice()}>Print</div> */}
       <br />
       <ReactToPrint content={()=>inputSalesRef} trigger={()=><div className='div-btn-custom text-center p-2'>Print GST</div>} />
+      {/* <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice()}>Print GST</div> */}
       
     </>
   )
@@ -318,7 +359,7 @@ return (
     <div className='invoice-styles '>
     {Object.keys(data).length>0 &&
     <div className='fs-12' style={{maxHeight:660, overflowY:'auto', overflowX:'hidden'}}>
-    <div style={{maxWidth:70}}>
+    <div style={{maxWidth:75}}>
     <Popover content={PrintOptions} placement="bottom" title="Printing Options">
       <div className='div-btn-custom text-center p-2'>Print</div>
     </Popover>

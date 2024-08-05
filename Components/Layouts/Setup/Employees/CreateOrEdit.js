@@ -131,6 +131,7 @@ const CreateOrEdit = ({appendClient, edit, setVisible, setEdit, selectedEmployee
           isNotAdmin = true;
         }
       }
+      console.log("Admin: "+isAdmin+", isNotAdmin: "+ isNotAdmin)
     })
   };
 

@@ -16,7 +16,7 @@ const CLPrint = ({ records, invoice }) => {
     const border = "1px solid black";
 
     useEffect(() => {
-        console.log("incvoice", invoice)
+        // console.log("incvoice", invoice)
         let result = 0;
         let temptax = 0;
         let taxPercent = 0;

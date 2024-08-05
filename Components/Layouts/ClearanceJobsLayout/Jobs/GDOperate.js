@@ -114,7 +114,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
         <Space/>
         <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", localVendorId)} >Local Vendor</div>
         <SelectSearchComp register={register} name='localVendorId' control={control} label='' 
-          disabled={getStatus(approved)}options={state.fields.vendor.localVendor} width={"100%"} 
+          options={state.fields.vendor.localVendor} width={"100%"} 
         />
         <div className='custom-link mt-2' onClick={()=>pageLinking("commodity", commodityId)} >Commodity</div>
         <SelectSearchComp register={register} name='commodityId' control={control} label=''  width={"100%"}
@@ -135,7 +135,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           options={state.fields.vendor.chaChb} 
         />      */}
         <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
-          getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
+           approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
         />
       </Col>
       <Col md={3}>

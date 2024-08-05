@@ -68,13 +68,13 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
   return(
   <Row style={{border:'1px solid silver', paddingBottom:15, margin:0}}>
     <Col md={6} className='mt-2'>
-      <InputNumComp register={register} name='gross' control={control} width={"100%"} label='Gross Weight' step={'0.01'} disabled={getStatus(approved)}  />
+      <InputNumComp register={register} name='gross' control={control} width={"100%"} label='Gross Weight' step={'0.01'}  />
     </Col>
     <Col md={6} className='mt-2'>
-      <InputNumComp register={register} name='bkg' control={control} width={"100%"} label='Net Weight' step={'0.01'} disabled={getStatus(approved)} />
+      <InputNumComp register={register} name='bkg' control={control} width={"100%"} label='Net Weight' step={'0.01'} />
     </Col>
     <Col md={12} className='py-1'>
-      <SelectComp register={register} name='incoTerms' control={control} label='Inco Terms' width={"100%"} disabled={getStatus(approved)}
+      <SelectComp register={register} name='incoTerms' control={control} label='Inco Terms' width={"100%"}
         options={[
           { id: 'EXW', name: 'EXW' },
           { id: 'FCP', name: 'FCP' },
@@ -99,10 +99,10 @@ const Weights = ({register, control, type, approved, equipments, useWatch}) => {
         ]} />
     </Col>
     <Col md={4} className='mt-2'>
-      <InputNumComp register={register} name='pcs' control={control}  label='PCS' width={"100%"} disabled={getStatus(approved)} />
+      <InputNumComp register={register} name='pcs' control={control}  label='PCS' width={"100%"}/>
     </Col>
     <Col md={8} className='mt-2'>
-      <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"} disabled={getStatus(approved)}
+      <SelectComp register={register} name='pkgUnit' control={control} label='.' width={"100%"}
         options={packages} 
       />
     </Col>
