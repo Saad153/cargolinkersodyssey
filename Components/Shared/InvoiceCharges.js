@@ -48,8 +48,6 @@ const InvoiceCharges = ({data, companyId}) => {
     printed = data.resultOne.isPrinted;
     gstprint = data.resultOne.GSTPrinted;
   }
-  let printRef = useRef(null);
-  let GSTRef = useRef(null);
   const [load, setLoad] = useState(false);
   const [ref, setRef] = useState(false);
   const [logo, setLogo] = useState(false);
@@ -294,44 +292,33 @@ const InvoiceCharges = ({data, companyId}) => {
     return result
   }
   const postPrinted = async() => {
-    console.log("Printed and Updated")
+    console.log("Invoice No: "+data.resultOne.invoice_No+" Printed: "+printed+" gstPrinted: "+gstprint)
     try {
       const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
-        invoice_No: invoiceNo,
+        invoice_No: data.resultOne.invoice_No,
         printed: printed,
         gstprinted: gstprint,
       });
   
       if (response.status === "success") {
         console.log('Print status updated successfully');
-        // Handle success, e.g., update UI
       } else {
         console.error('Error updating print status:', response.data);
-        // Handle error, e.g., show error message
       }
     } catch (error) {
       console.error('Error:', error);
-      // Handle error, e.g., show error message
     }
 
   }
 
   const printInvoice = (PorG) =>{
+    console.log("Printing")
     if(PorG == 1){
-      console.log("printRef 1" + printRef.current);
-      if(printRef.current != null){
-        printRef.current.click()
-        printed = true
-      } 
+      printed = true; 
     }else{
-      console.log("GSTRef 2" + GSTRef.current);
-      if(GSTRef.current != null){
-        GSTRef.current.click()
-        gstprint = true;
-      }
+      gstprint = true;
     }
     postPrinted();
-
   }
 
 
@@ -347,11 +334,11 @@ const InvoiceCharges = ({data, companyId}) => {
       /> */}
       {/* <br/> */}
       <div className='mt-3'></div>
-      <ReactToPrint onAfterPrint={console.log("Pressed on ReactToPrint 1")} content={()=>inputRef} trigger={()=><div ref={printRef} onMouseDown={console.log("Pressed on Div 1")} style={{ display: 'none' }} className='div-btn-custom text-center p-2'>Go</div>} />
-      <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice(1)}>Print</div>
+      <ReactToPrint content={()=>inputRef} trigger={()=><div className='div-btn-custom text-center p-2'>Go</div>} />
+      {/* <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice()}>Print</div> */}
       <br />
-      <ReactToPrint onAfterPrint={console.log("Pressed on ReactToPrint 2")} content={()=>inputSalesRef} trigger={()=><div ref={GSTRef} onClick={console.log("Pressed on Div 2")} style={{ display: 'none' }} className='div-btn-custom text-center p-2'>Print GST</div>} />
-      <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice(2)}>Print GST</div>
+      <ReactToPrint content={()=>inputSalesRef} trigger={()=><div className='div-btn-custom text-center p-2'>Print GST</div>} />
+      {/* <div className='div-btn-custom text-center p-2 mt-3' onClick={printInvoice()}>Print GST</div> */}
       
     </>
   )
