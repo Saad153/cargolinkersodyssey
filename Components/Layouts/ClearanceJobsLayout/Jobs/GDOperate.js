@@ -135,7 +135,7 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
           options={state.fields.vendor.chaChb} 
         />      */}
         <Carrier state={state} register={register} control={control} pageLinking={pageLinking} dispatch={dispatch}
-          getStatus={getStatus} approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
+           approved={approved} VoyageId={VoyageId} vesselId={vesselId} type={type} 
         />
       </Col>
       <Col md={3}>
