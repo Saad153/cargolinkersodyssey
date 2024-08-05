@@ -35,7 +35,7 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
     <div className='px-2 pb-3 pt-2 ' style={{border:'1px solid silver'}}>
         {(type=="CSE"||type=="CSI") &&<>
         <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", shippingLineId)} >Sline/Carrier</div>
-        <SelectSearchComp register={register} name='shippingLineId' control={control} label='' disabled={getStatus(approved)} options={state.fields.vendor.sLine} width={"100%"} />
+        <SelectSearchComp register={register} name='shippingLineId' control={control} label='' options={state.fields.vendor.sLine} width={"100%"} />
         </>}
         {(type=="CAE"||type=="CAI") &&<>
           <div className='custom-link mt-2' onClick={()=>pageLinking("vendor", airLineId)} >Air line *</div>
@@ -44,8 +44,7 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
             width={"100%"} 
             register={register} 
             name='airLineId' 
-            control={control} 
-            disabled={getStatus(approved)} options={state.fields.vendor.airLine} 
+            control={control} options={state.fields.vendor.airLine} 
           />
           <Col md={12} className='pt-2'>
             <InputComp register={register} name='flightNo' control={control} label='Flight No.' disabled={getStatus(approved)} />
