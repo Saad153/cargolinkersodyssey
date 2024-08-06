@@ -27,7 +27,7 @@ const Invoice = ({state, dispatch, companyId}) => {
   return (
     <div style={{minHeight:680}}>
         {!load && 
-            <InvoiceCharges data={state.invoiceData} companyId={companyId} />
+            <InvoiceCharges data={state.invoiceData} companyId={companyId} reload={getData}/>
         }
         {load && 
         <div style={{textAlign:"center", paddingTop:'30%'}}>

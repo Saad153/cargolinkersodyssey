@@ -20,6 +20,7 @@ import polAir from "/jsonData/polAir.json";
 import polSea from "/jsonData/polSea.json";
 import terminalSea from "/jsonData/terminalSea.json"
 import terminalAir from "/jsonData/terminalAir.json"
+import { useController } from "react-hook-form";
 
 const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
@@ -78,6 +79,14 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
     dispatchNew(incrementTab(obj));
     Router.push(route);
   };
+
+  const { field: { onChange, onBlur, value, name: fieldName, ref } } = useController({ control, name:'approved' });
+  console.log(value)
+  let access = false
+  if(value == "1" && getStatus("admin")){
+    access = true;
+  }
+  console.log(access)
 
   return (
   <>
@@ -174,12 +183,12 @@ const GDOperate = ({handleSubmit, onEdit, companyId, register, control, errors, 
       <Col md={3}>
         {state.edit &&<Notes state={state} dispatch={dispatch} />}
         {approved=="1" && <img src={'/approve.png'} height={100} />}
-        <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
+        {!access && <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true,}}) }>
           <CheckGroupComp register={register} name='approved' control={control} label='' 
             options={[{ label:"Vessel Sailed", value:"1" }]} 
             disabled={true}
           />
-        </div>
+        </div>}
         <hr className='' />
         <div>
             <Popover

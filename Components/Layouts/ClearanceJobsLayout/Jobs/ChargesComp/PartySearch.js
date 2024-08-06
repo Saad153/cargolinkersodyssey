@@ -34,6 +34,7 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
   }, [])
 
   const RenderData = ((props) => {
+    console.log(props)
     return(
     <>
       {props.data.filter((x)=>{
@@ -99,6 +100,7 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     </>
     )
   })
+  console.log(state)
 
   return(
     <>

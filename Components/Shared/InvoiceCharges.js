@@ -7,18 +7,22 @@ import openNotification from '../Shared/Notification';
 import FullScreenLoader from './FullScreenLoader';
 import { Checkbox, Popover, Input, Radio, Select } from 'antd';
 import { useQueryClient } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
+import { incrementTab } from '/redux/tabs/tabSlice';
 import CLPrint from './CLPrint';
 import SLPrint from './SLPrint';
-// import MediaQuery from 'hooks/useMedia';
+import InvoiceEditor from './InvoiceEditor';
+import Router from 'next/router';
 
 const { TextArea } = Input;
 
-const InvoiceCharges = ({data, companyId}) => {
+const InvoiceCharges = ({data, companyId, reload}) => {
     
   const commas = (a) =>  { return parseFloat(a).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
   
   let inputRef = useRef(null);
   let inputSalesRef = useRef(null);
+  const dispatchNew = useDispatch();
   const queryClient = useQueryClient();
   const [bank, setBank] = useState(1);
   const [invoiceData, setInvoiceData] = useState(false);
@@ -42,9 +46,7 @@ const InvoiceCharges = ({data, companyId}) => {
   let gstprint;
   let invoiceNo;
   if(data.resultOne != null){
-    // console.log(data.resultOne.invoice_No);
     invoiceNo = data.resultOne.invoice_No;
-    // console.log(invoiceNo)
     printed = data.resultOne.isPrinted;
     gstprint = data.resultOne.GSTPrinted;
   }
@@ -83,7 +85,8 @@ const InvoiceCharges = ({data, companyId}) => {
     BRANCH: TARIQ ROAD 1054, KARACHI \n
     SWIFT: BAHLPKKAXXX`,
   }
-
+  const [access, setAccess] = useState();
+  
   useEffect(()=>{
 
 
@@ -92,6 +95,7 @@ const InvoiceCharges = ({data, companyId}) => {
         setRecords(data.resultOne?.Charge_Heads);
         setInvoiceData(!invoiceData)
     }
+    
   }, [data])
 
   
@@ -117,7 +121,6 @@ const InvoiceCharges = ({data, companyId}) => {
         headers:{ title:JSON.stringify(["JOB INCOME", "JOB EXPENSE"]), companyid:2 }
     }).then((x)=>{
         if(x.data.status=="success"){
-            // console.log(x.data.result)
             x.data.result.forEach((y)=>{
                 if(y.title.endsWith("INCOME")){ 
                     income = y
@@ -252,7 +255,6 @@ const InvoiceCharges = ({data, companyId}) => {
             ChildAccountId:income.id
         })
     }
-    // console.log(vouchers)
     await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_INVOICE_APPROVE_DISAPPROVE,{
         id:tempInv.id,
         total:tempInv.total,
@@ -265,9 +267,7 @@ const InvoiceCharges = ({data, companyId}) => {
             if(tempInv.approved=="1"){
                 await axios.post(process.env.NEXT_PUBLIC_CLIMAX_CREATE_VOUCHER, vouchers);
             }else{
-                //console.log("Here")
                 await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_VOUCHER, {id:tempInv.id})
-                //.then((x)=>console.log(x.data))
             }
         }else{
             openNotification("Ops", "An Error Occured!", "red")
@@ -277,6 +277,16 @@ const InvoiceCharges = ({data, companyId}) => {
     setInvoice(tempInv);
     setLoad(false);
   }
+
+  useEffect(()=>{
+    if(invoice.approved == 1){
+      setAccess(true);
+    }else{
+      setAccess(false);
+    }
+
+  },[invoice])
+
 
   const checkApprovability = (x) => {
     let result = false;
@@ -292,7 +302,6 @@ const InvoiceCharges = ({data, companyId}) => {
     return result
   }
   const postPrinted = async() => {
-    console.log("Invoice No: "+data.resultOne.invoice_No+" Printed: "+printed+" gstPrinted: "+gstprint)
     try {
       const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
         invoice_No: data.resultOne.invoice_No,
@@ -312,7 +321,6 @@ const InvoiceCharges = ({data, companyId}) => {
   }
 
   const printInvoice = (PorG) =>{
-    console.log("Printing")
     if(PorG == 1){
       printed = true; 
     }else{
@@ -342,6 +350,7 @@ const InvoiceCharges = ({data, companyId}) => {
       
     </>
   )
+  
 
   const updateNote = async() => {
     await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_INVOICE_NOTE_UPDATE,{
@@ -352,6 +361,7 @@ const InvoiceCharges = ({data, companyId}) => {
       }
     })
   }
+
   // const checkApproval =  data.resultOne?.approved; 
 return (
   <>
@@ -359,10 +369,11 @@ return (
     <div className='invoice-styles '>
     {Object.keys(data).length>0 &&
     <div className='fs-12' style={{maxHeight:660, overflowY:'auto', overflowX:'hidden'}}>
-    <div style={{maxWidth:75}}>
-    <Popover content={PrintOptions} placement="bottom" title="Printing Options">
-      <div className='div-btn-custom text-center p-2'>Print</div>
-    </Popover>
+    <div className='flex'>
+    {access && <Popover content={PrintOptions} placement="bottom" title="Printing Options">
+      <div className='div-btn-custom text-center py-2 px-3'>Print</div>
+    </Popover>}
+    <InvoiceEditor data={data} reload={reload} />
     </div>
     <Row className='py-3'>
       <Col md={3} className="mb-3">
@@ -379,7 +390,14 @@ return (
       </Col>
       <Col md={3} className="mb-3">
           <span className='inv-label'>Job#:</span>
-          <span className='inv-value'>{" "}{invoice?.SE_Job?.jobNo}</span>
+          {/* <span className='inv-value'>{" "}{invoice?.SE_Job?.jobNo}</span> */}
+          <span className='inv-value' 
+          style={{cursor:'pointer'}}
+          onClick={async ()=>{
+            await Router.push(`/clearanceJobs/export/sea/${invoice?.SEJobId}`)
+            dispatchNew(incrementTab({"label":"SE JOB", "key":"4-3", "id":`${invoice?.SEJobId}`}))
+          }}
+          >{" "}{invoice?.SE_Job?.jobNo}</span>
          
       </Col>
       <Col md={3} className="mb-3">

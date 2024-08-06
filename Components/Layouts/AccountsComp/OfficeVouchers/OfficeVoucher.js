@@ -76,6 +76,7 @@ const OfficeVoucher = ({voucherData, id, employeeData}) => {
         Router.push(`/accounts/officeVouchers/${x.data.result[0].id}`);
       }else{
         openNotification("Error", `Something Went Wrong, Try Again`, "red")
+        console.log(x.data.result)
       }
     })
   }

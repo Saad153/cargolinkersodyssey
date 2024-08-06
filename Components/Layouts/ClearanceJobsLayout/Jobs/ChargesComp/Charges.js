@@ -54,7 +54,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
 
   };
   const isDisabled = getStatus("accountant");
-  // console.log(isDisabled)
+  console.log(isDisabled)
   return(
   <>
     <Row>
@@ -189,9 +189,10 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
           <th>.</th>
           <th>Bill/Invoice</th>
           <th>Charge</th>
+          <th>Name</th>
           <th>Particular</th>
           <th>Basis</th>
-          <th style={{minWidth:90}}>Ref</th>
+          <th style={{minWidth:125}}>Description</th>
           {(operationType=="SE"||operationType=="SI") &&<th>SizeType</th>}
           {(operationType=="SE"||operationType=="SI") &&<th style={{minWidth:95}}>DG Type</th>}
           <th>Quantity</th>
@@ -203,7 +204,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
           <th style={{minWidth:100}}>Net Amount</th>
           <th>Ref#</th>
           <th style={{minWidth:110}}>Local Amount</th>
-          <th>Name</th>
           <th>Date</th>
           <th>Status</th>
           <th style={{minWidth:110}}>Approved By</th>
@@ -255,7 +255,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             {/* charge selection */}
             <td style={{ padding: 3, minWidth: 100 }}>
               <Select className='table-dropdown' showSearch value={x.charge} style={{ paddingLeft: 0 }}
-                disabled={permissionAssign(permissions, x)}
+                disabled={permissionAssign(permissions, x) && getStatus("admin")}
                 onChange={(e) => {
                   let tempChargeList = [...chargeList];
                   state.fields.chargeList.forEach(async (y, i) => {
@@ -335,12 +335,19 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                 options={state.fields.chargeList}
               />
             </td>
+            <td className='text-center'>{/* Party Selection */}
+              {x.new == true && 
+              <RightCircleOutlined className="blue-hov" style={{fontSize:15}}
+                onClick={() => dispatch({ type: 'set', payload: { headIndex: index, headVisible: true } }) } //<--Identifies the Head with there Index sent to modal
+              />
+              }{x.name != "" ? <span className='m-2 '><Tag color="geekblue" style={{ fontSize: 15 }}>{x.name}</Tag></span> : ""}
+            </td>
             <td>{x.particular}</td>
             <td>{x.basis}</td>{/* Basis */}
             {/* PP?CC */}
             <td style={{ padding: 3, minWidth: 50 }}>
               <InputComp register={register} name={`chargeList.${index}.pp_cc`} control={control} width={60} font={13} 
-                disabled={permissionAssign(permissions, x)}
+                disabled={permissionAssign(permissions, x) && getStatus("admin")}
               />
             </td>
             {/* Size/Type */}
@@ -348,7 +355,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             <td style={{ padding: 3 }}>
               <SelectSearchComp register={register} name={`chargeList.${index}.size_type`} 
                 control={control} width={'100%'} font={13} 
-                disabled={permissionAssign(permissions, x)}
+                disabled={permissionAssign(permissions, x) && getStatus("admin")}
                 options={[
                   { id: '40HC', name: '40HC' },
                   { id: '20HC', name: '20HC' }
@@ -370,52 +377,46 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             {/* QTY */}
             <td style={{ padding: 3 }}>
               <InputNumComp register={register} name={`chargeList.${index}.qty`} control={control} width={30} font={13} 
-                disabled={permissionAssign(permissions, x)}
+                disabled={permissionAssign(permissions, x) && getStatus("admin")}
               />
             </td>
             {/* rate_charge */}
             {(operationType=="AI"||operationType=="AE") &&<td style={{ padding: 3 }}>
               <InputNumComp register={register} name={`chargeList.${index}.rate_charge`} control={control} width={30} font={13} 
-                disabled={permissionAssign(permissions, x)}
+                disabled={permissionAssign(permissions, x) && getStatus("admin")}
               />
             </td>
             }
             <td style={{ padding: 3 }}> {/* Amount */}
               <InputNumComp register={register} name={`chargeList.${index}.amount`} control={control} label='' width={20} 
-                disabled={(operationType=="AI"||operationType=="AE")?true:permissionAssign(permissions, x)} />
+                disabled={(operationType=="AI"||operationType=="AE")?true:permissionAssign(permissions, x) && getStatus("admin")} />
             </td>
             <td style={{ padding: 3 }}>  {/* Discount */}
               <InputNumComp register={register} name={`chargeList.${index}.discount`} font={13} 
-                control={control} width={30} disabled={permissionAssign(permissions, x)} 
+                control={control} width={30} disabled={permissionAssign(permissions, x) && getStatus("admin")} 
               />
             </td>
             <td style={{ textAlign: 'center' }}> {/* Tax Apply */}
               <input type="checkbox" {...register(`chargeList.${index}.tax_apply`)} 
                 style={{ cursor: 'pointer' }} 
-                disabled={permissionAssign(permissions, x)} 
+                disabled={permissionAssign(permissions, x) && getStatus("admin")} 
               />
             </td>
             <td>{x.tax_amount}</td>{/* Tax Amount */}
             <td>{x.net_amount}</td>
             <td style={{ padding: 3 }}>{/* Ex. Rate */}
               {chargeList[index]?.currency!="PKR" && 
-                <InputNumComp register={register} name={`chargeList.${index}.ex_rate`} control={control} label='' width={10} disabled={permissionAssign(permissions, x)} />
+                <InputNumComp register={register} name={`chargeList.${index}.ex_rate`} control={control} label='' width={10} disabled={permissionAssign(permissions, x) && getStatus("admin")} />
               }
               {chargeList[index]?.currency=="PKR" && <InputNumber value={1.00} /> }
             </td>
             <td>{x.local_amount}</td>
-            <td className='text-center'>{/* Party Selection */}
-              {x.new == true && 
-              <RightCircleOutlined className="blue-hov" style={{fontSize:15}}
-                onClick={() => dispatch({ type: 'set', payload: { headIndex: index, headVisible: true } }) } //<--Identifies the Head with there Index sent to modal
-              />
-              }{x.name != "" ? <span className='m-2 '><Tag color="geekblue" style={{ fontSize: 15 }}>{x.name}</Tag></span> : ""}
-            </td>
+            
             <td style={{padding:3}}>
               <DateComp 
                 register={register} name={`chargeList.${index}.chargeDate`} 
                 control={control} label='' width={120}
-                disabled={permissionAssign(permissions, x)} 
+                disabled={permissionAssign(permissions, x) && getStatus("admin")} 
               />
             </td>
             <td>Un-Approved</td>
