@@ -54,7 +54,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
 
   };
   const isDisabled = getStatus("accountant");
-  console.log(isDisabled)
+  // console.log(isDisabled)
   return(
   <>
     <Row>

@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Tag, Switch, Input } from 'antd';
+import { Tag, Switch, Input, Select } from 'antd';
 import { CheckCircleOutlined } from "@ant-design/icons"
 
 const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
@@ -28,13 +28,26 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     })
   }
 
+  const getEmpAccount = async() => {
+    axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_CHILD_ACCOUNTS,{
+      headers:{ companyid: 2 }
+    }).then((x) => {
+      console.log(x.data.result)
+      const data = x.data.result.filter((x, index)=>{
+        if(x.Parent_Account.AccountId=="1"){ return x }
+      })
+      console.log(data)
+      dispatch({type:'toggle', fieldName:'employeeParties', payload:data});
+    })
+  }
+
   useEffect(() => {
     getClients();
     getVendors();
+    getEmpAccount();
   }, [])
 
   const RenderData = ((props) => {
-    console.log(props)
     return(
     <>
       {props.data.filter((x)=>{
@@ -106,11 +119,17 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     <>
     <h5>Party Selection</h5>
     <hr/>
-    <Switch checked={partyType!="vendor"}
+    <Select defaultValue="vendor" style={{width:150}} onChange={(e)=>setPartyType(e)}>
+      <option value="vendor">Vendor</option>
+      <option value="client">Client</option>
+      <option value="employee accounts">Employee Accounts</option>
+      </Select>
+    {/* <Switch checked={partyType!="vendor"}
       onChange={() => {
         partyType=="vendor"?setPartyType("client"):setPartyType("vendor")
       }}
-    /><span className='mx-2'><b>{partyType}</b></span>
+    /> */}
+    <span className='mx-2'><b>{partyType}</b></span>
     <Input style={{width:200}} placeholder='Type Name' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} />
     <div className='table-sm-1 mt-4' style={{maxHeight:300, overflowY:'auto'}}>
       <Table className='tableFixHead'>
@@ -125,7 +144,10 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
         </tr>
       </thead>
       <tbody>
-      <RenderData data={partyType=="vendor"?state.vendorParties:state.clientParties} type={partyType=="vendor"?'vendors':'clients'} searchTerm={searchTerm} />
+      <RenderData 
+      data={
+        partyType=="vendor"?state.vendorParties:partyType=="client"?state.clientParties:state.employeeParties
+        } type={partyType=="vendor"?'vendors':partyType=="client"?'clients':'employee accounts'} searchTerm={searchTerm} />
       </tbody>
       </Table>
     </div>
