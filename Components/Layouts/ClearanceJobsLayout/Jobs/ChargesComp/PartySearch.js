@@ -20,6 +20,7 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
   const getVendors = async() => {
     await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_VENDOR_FOR_PARTY_SEARCH)
     .then((x) => {
+      // console.log(x.data.result)
       let data = [];
       x.data.result.forEach(x => {
         data.push({...x, check:false})
@@ -32,30 +33,108 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_CHILD_ACCOUNTS,{
       headers:{ companyid: 2 }
     }).then((x) => {
-      console.log(x.data.result)
-      const data = x.data.result.filter((x, index)=>{
+      // console.log(x.data.result)
+      let data = x.data.result.filter((x)=>{
         if(x.Parent_Account.AccountId=="1"){ return x }
       })
-      console.log(data)
-      dispatch({type:'toggle', fieldName:'employeeParties', payload:data});
+      // console.log(data)
+      let data2 = [];
+      data.forEach((x)=>{
+        data2.push({...x, check:false})
+      })
+      // console.log(data2)
+      dispatch({type:'toggle', fieldName:'employeeParties', payload:data2});
     })
   }
 
+// console.log(state.employeeParties)
   useEffect(() => {
     getClients();
     getVendors();
     getEmpAccount();
   }, [])
 
+  const RenderEmployeeAccount = ((props) => {
+    return(
+      <>
+        {
+        props.data.filter((x)=>{
+          if(
+            x.title.toLowerCase().includes(searchTerm.toLowerCase())||
+            x.id.includes(searchTerm)||
+            x.Parent_Account.title.toLowerCase().includes(searchTerm.toLowerCase())
+
+          ){ return x }
+          if(searchTerm == ""){ return x }
+        }).map((x, i)=> {
+          return(
+            <tr
+            key={i}
+            className='table-select-list'
+            onClick={()=>{
+              
+              if(!x.check){
+                let temp = state.employeeParties;
+                temp.forEach((y, i2)=>{
+                  if(y.id==x.id){ y.check=true
+                  } else { y.check=false }
+                })
+                
+                dispatch({type:'toggle', fieldName:'employeeParties', payload:temp});
+              } else {
+                let temp = [];
+                temp = chargeList;
+                temp[state.headIndex] = {
+                  ...temp[state.headIndex], 
+                  name:x.title, 
+                  partyId:x.id, 
+                  partyType:partyType
+                }
+                reset({ chargeList: temp });
+                let tempOne = [...state.vendorParties];
+                let tempTwo = [...state.clientParties];
+                let tempThree = [...state.employeeParties];
+                tempOne.forEach((y, i1)=>{
+                  tempOne[i1].check=false
+                })
+                tempTwo.forEach((y, i1)=>{
+                  tempTwo[i1].check=false
+                })
+                tempThree.forEach((y, i1)=>{
+                  console.log(tempThree[i1])
+                  tempThree[i1].check=false
+                })
+                dispatch({ type:'set', payload:{headIndex:"", headVisible:false, vendorParties:tempOne, clientParties:tempTwo, employeeParties:tempThree} })
+              }
+            }}
+            >
+              <td className='pt-1 text-center px-3'> {x.check?<CheckCircleOutlined style={{color:'green', position:'relative', bottom:2}} />:i+1 } </td>
+              <td className='pt-1' style={{whiteSpace:"nowrap"}}><strong>{x.title}</strong></td>
+              <td className='pt-1 text-center'>
+                {x.Parent_Account.title?.split(", ").map((y, i2)=>{
+                  return <Tag key={i2} color="purple" className='mb-1'>{y}</Tag>
+                })}
+              </td>
+            </tr>
+          )
+        })
+        }
+      </>
+    )
+    
+  })
+
   const RenderData = ((props) => {
     return(
     <>
       {props.data.filter((x)=>{
+        
         if(
           x.name.toLowerCase().includes(searchTerm.toLowerCase())||
           x.code.toLowerCase().includes(searchTerm.toLowerCase())||
           x.types?.toLowerCase().includes(searchTerm.toLowerCase())
         ){ return x }
+        
         if(searchTerm==""){ return x }
       }).map((x, i)=> {
       return(
@@ -113,7 +192,7 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     </>
     )
   })
-  console.log(state)
+  // console.log(state)
 
   return(
     <>
@@ -124,15 +203,12 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
       <option value="client">Client</option>
       <option value="employee accounts">Employee Accounts</option>
       </Select>
-    {/* <Switch checked={partyType!="vendor"}
-      onChange={() => {
-        partyType=="vendor"?setPartyType("client"):setPartyType("vendor")
-      }}
-    /> */}
     <span className='mx-2'><b>{partyType}</b></span>
     <Input style={{width:200}} placeholder='Type Name' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} />
-    <div className='table-sm-1 mt-4' style={{maxHeight:300, overflowY:'auto'}}>
+    <div className='table-sm-1 mt-4' style={{minHeight:300, maxHeight:300, overflowY:'auto'}}>
       <Table className='tableFixHead'>
+        {partyType!="employee accounts" &&
+          
       <thead>
         <tr>
           <th className='text-center'>#</th>
@@ -143,11 +219,27 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
           <th className='text-center'>Mobile</th>
         </tr>
       </thead>
+        }
+        {partyType=="employee accounts" &&
+        <thead>
+          <tr>
+            <th className='text-center'>#</th>
+            <th className='text-center'>Title</th>
+            <th className='text-center'>Parent Account</th>
+          </tr>
+        </thead>
+        }
       <tbody>
+      {partyType != "employee accounts" &&
       <RenderData 
       data={
-        partyType=="vendor"?state.vendorParties:partyType=="client"?state.clientParties:state.employeeParties
-        } type={partyType=="vendor"?'vendors':partyType=="client"?'clients':'employee accounts'} searchTerm={searchTerm} />
+        partyType=="vendor"?state.vendorParties:state.clientParties
+        } type={partyType=="vendor"?'vendors':'clients'} searchTerm={searchTerm} />
+      }
+      {partyType == "employee accounts" &&
+      <RenderEmployeeAccount data={state.employeeParties} type={'employee accounts'} searchTerm={searchTerm} />
+
+      }
       </tbody>
       </Table>
     </div>
