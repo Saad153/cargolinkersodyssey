@@ -71,9 +71,9 @@ const Notes = ({state, dispatch, type}) => {
         content={
           <div className='p-2 m-0' style={{border:'1px solid silver'}}>
             <h5>Add A Note</h5>
-            <Input placeholder='title' value={state.title} 
+            {/* <Input placeholder='title' value={state.title} 
               onChange={(e)=>dispatch({type:'toggle', fieldName:'title', payload:e.target.value})}
-            />
+            /> */}
             <Input.TextArea rows={4} placeholder='description' className='my-2' 
               value={state.note} 
               onChange={(e)=>dispatch({type:'toggle', fieldName:'note', payload:e.target.value})} 

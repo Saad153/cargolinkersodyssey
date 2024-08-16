@@ -62,6 +62,9 @@ const OfficeVoucher = ({voucherData, id, employeeData}) => {
     const preparedBy = await cookies.get("username")
     e.preventDefault();
     let tempData = {...state};
+    // console.log(state.EmployeeId)
+    // console.log(state.descriptive?calculateTotal():tempData.amount)
+    // console.log(preparedBy)
     id=="new"? delete tempData.id:null;
     id=="new"? delete tempData.VoucherId:null;
     if(tempData.descriptive){
@@ -69,13 +72,14 @@ const OfficeVoucher = ({voucherData, id, employeeData}) => {
     }
     await axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_UPSERT_OFFICE_VOUCHER, {
       ...tempData,
-      EmployeeId:tempData.EmployeeId, amount:state.descriptive?calculateTotal():tempData.amount, preparedBy:preparedBy, CompanyId:companyId
+      EmployeeId:tempData.EmployeeId, amount:state.descriptive?calculateTotal():tempData.amount, preparedBy:preparedBy, CompanyId:true
     }).then((x)=>{
       if(x.data.status=="success"){
         openNotification("Success", `Voucher ${id=="new"?"Created":"Updated"} Successfully!`, "green")
         Router.push(`/accounts/officeVouchers/${x.data.result[0].id}`);
       }else{
         openNotification("Error", `Something Went Wrong, Try Again`, "red")
+        console.log(x.data.result)
       }
     })
   }

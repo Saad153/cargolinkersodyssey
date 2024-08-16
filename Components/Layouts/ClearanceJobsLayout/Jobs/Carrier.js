@@ -44,10 +44,11 @@ const Carrier = ({state, register, control, pageLinking, dispatch, getStatus, ap
             width={"100%"} 
             register={register} 
             name='airLineId' 
+
             control={control} options={state.fields.vendor.airLine} 
           />
           <Col md={12} className='pt-2'>
-            <InputComp register={register} name='flightNo' control={control} label='Flight No.' disabled={getStatus(approved)} />
+            <InputComp register={register} name='flightNo' control={control} label='Flight No.' />
           </Col>
           <Col md={12}>
             <div className='mt-2'>

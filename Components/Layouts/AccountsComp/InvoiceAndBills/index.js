@@ -21,6 +21,16 @@ const InvoiceAndBills = ({invoiceData}) => {
   const [records, setRecords] = useState([]);
   const [type, setType] = useState("Job Invoice");
 
+  const getData = async() => {
+    setLoad(true);
+    await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_INVOICE_BY_NO, {
+        headers:{"invoiceno": `${state.selectedInvoice}`}
+    }).then((x)=>{
+        setLoad(false);
+        dispatch({type:'toggle', fieldName:'invoiceData', payload:x.data.result});
+    })
+}
+
   const onChange = async(e) => {
     setType(e.target.value);
     setLoad(true);
@@ -85,7 +95,7 @@ const InvoiceAndBills = ({invoiceData}) => {
               centered={true}
               maskClosable={false}
             >
-              <InvoiceCharges data={invoice} companyId={companyId} />
+              <InvoiceCharges data={invoice} companyId={companyId} reload={getData()}/>
             </Modal>
           }
           {records.length==0 &&

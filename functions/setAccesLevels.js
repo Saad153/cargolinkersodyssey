@@ -30,7 +30,8 @@ function setAccesLevels(dispatch, collapsed){
   let token = null;
   if(Cookies.get("token") != null && Cookies.get("token") != "" && Cookies.get("token") != "undefined"){
     if(tempToken == Cookies.get('token')){
-      token = jwt_decode(Cookies.get("token")); 
+      token = jwt_decode(Cookies.get("token"));
+      console.log(token) 
     }else{
       logout();
     }

@@ -18,10 +18,11 @@ import airports from "/jsonData/airports";
 import polAir from "/jsonData/polAir.json";
 import polSea from "/jsonData/polSea.json";
 import EquipmentInfo from './EquipmentInfo';
+import { useController } from "react-hook-form";
+
 
 const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, useWatch, dispatch, reset, id, type}) => {
 
-  // console.log("state from se job booking info",state)
 
   const dispatchNew = useDispatch();
 
@@ -142,7 +143,11 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
     {id:'UNIT', value:'UNIT'}
   ];
 
-  // console.log(getStatus());
+  const { field: { onChange, onBlur, value, name: fieldName, ref } } = useController({ control, name:'approved' });
+  let access = false
+  if(value == "1" && getStatus("admin")){
+    access = true;
+  }
 
 
   return (
@@ -263,7 +268,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
               <Col>.</Col>
             </Row>
             <SelectSearchComp register={register} name='transporterId' control={control} label=''
-              options={state.fields.vendor.transporter} disabled={getStatus() || transportCheck.length == 0} width={"100%"} 
+              options={state.fields.vendor.transporter} disabled={transportCheck.length == 0} width={"100%"} 
             />
             <Row>
               <Col md={4} className='mt-2'>
@@ -277,13 +282,10 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
           <Col md={5}>
           {state.edit &&<Notes state={state} dispatch={dispatch} type={type} />}
             {approved=="1" && <img src={'/approve.png'} height={100} />}
-          <div onClick={()=> dispatch({type:"set",payload:{isModalOpen : true}}) }>
-                       <CheckGroupComp register={register} name='approved' control={control} label='' 
-                options={[{ label:"Vessel Sailed", value:"1" }]}     
-                
-         />
-
-            </div>
+          {!access && <div  onClick={()=> dispatch({type:"set",payload:{isModalOpen : true}}) }>
+                       <CheckGroupComp disabled={getStatus("admin")} register={register} name='approved' control={control} label='' 
+                options={[{ label:"Vessel Sailed", value:"1" }]}/>
+            </div>}
 
             <hr className='' />
             <div>

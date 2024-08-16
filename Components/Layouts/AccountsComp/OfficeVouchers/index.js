@@ -22,16 +22,17 @@ const initialState = {
 };
 
 const OfficeVouchers = ({voucherList}) => {
-    const [ state, dispatch ] = useReducer(recordsReducer, initialState);
-    const dispatchNew = useDispatch();
-    const access = checkAccess(dispatch, "Office Voucher List");
-    const set = (payload) => dispatch({type:"set", payload:payload});
+  console.log(voucherList)
+  const [ state, dispatch ] = useReducer(recordsReducer, initialState);
+  const dispatchNew = useDispatch();
+  const access = checkAccess(dispatch, "Office Voucher List");
+  const set = (payload) => dispatch({type:"set", payload:payload});
 
   useEffect(() => {
     set({records:voucherList});
     //console.log( voucherList );
   }, [voucherList])
-  console.log(state);
+  console.log(state.records);
 
   if(access){
     return (
@@ -57,41 +58,41 @@ const OfficeVouchers = ({voucherList}) => {
             </thead>
             <tbody>
             {
-            state.records.map((x, index) => {
-            return (
-            <tr key={index} className='f row-hov'
-              onClick={() => {
-                dispatchNew(incrementTab({
-                  "label": "Office Voucher",
-                  "key": "3-8",
-                  "id":x.id
-                }))
-                Router.push(`/accounts/officeVouchers/${x.id}`)
-              }}
-            >
-              <td>{index + 1}</td>
-              <td>
-                <span className='blue-txt fw-7'>{x.Employee.name}</span>
-              </td>
-              <td>{x.requestedBy} </td>
-              <td> PKR {x.amount} </td>
-              <td>{x.preparedBy} </td>
-              <td className='blue-txt fw-7'>{x.approved? x.Voucher?.voucher_Id:''} </td>
-              <td className='fw-7'>{x.approved?
-                  <span style={{color:'green'}}>Approved</span>:
-                  <span style={{color:'silver'}}>Un-Approved</span>}
-              </td>
-              <td className='fw-7'>{
-                x.paid=="0"?
-                  <span style={{color:'silver'}}>Not Paid</span>:
-                x.paid=="1"?
-                  <span style={{color:'green'}}>Paid</span>:
-                  <span style={{color:'orange'}}>Not Fully Paid</span>
-                  }
-              </td>
-            </tr>
-              )
-            })}
+        state.records.map((x, index) => {
+        return (
+        <tr key={index} className='f row-hov'
+          onClick={() => {
+            dispatchNew(incrementTab({
+              "label": "Office Voucher",
+              "key": "3-8",
+              "id":x.id
+            }))
+            Router.push(`/accounts/officeVouchers/${x.id}`)
+          }}
+        >
+          <td>{index + 1}</td>
+          <td>
+            <span className='blue-txt fw-7'>{x.Employee.name}</span>
+          </td>
+          <td>{x.requestedBy} </td>
+          <td> PKR {x.amount} </td>
+          <td>{x.preparedBy} </td>
+          <td className='blue-txt fw-7'>{x.approved? x.Voucher?.voucher_Id:''} </td>
+          <td className='fw-7'>{x.approved?
+              <span style={{color:'green'}}>Approved</span>:
+              <span style={{color:'silver'}}>Un-Approved</span>}
+          </td>
+          <td className='fw-7'>{
+            x.paid=="0"?
+              <span style={{color:'silver'}}>Not Paid</span>:
+            x.paid=="1"?
+              <span style={{color:'green'}}>Paid</span>:
+              <span style={{color:'orange'}}>Not Fully Paid</span>
+              }
+          </td>
+        </tr>
+          )
+        })}
             </tbody>
           </Table>
         </div>

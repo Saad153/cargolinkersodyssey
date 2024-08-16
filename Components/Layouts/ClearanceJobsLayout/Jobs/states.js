@@ -225,6 +225,7 @@ const getClients = memoize(async(id) => {
     headers:{id:id}
   })
   .then((x)=>x.data.result);
+  console.log(result)
   return result;
 })
 
@@ -233,8 +234,20 @@ const getVendors = memoize(async(id) => {
     headers:{id:id}
   })
   .then((x) => x.data.result)
+  console.log(result)
   return result;
 })
+
+const getEmpList = memoize(async (No) => {
+  try {
+    const response = await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_EMP_PAY_LIST,
+    {headers:{jobNo: No}})
+    return response.data.result;
+  } catch (error) {
+    console.error('Error fetching employee list:', error);
+    return [];
+  }
+});
 
 const saveHeads = async(charges, state, dispatch, reset) => {
   await axios.post(process.env.NEXT_PUBLIC_CLIMAX_SAVE_SE_HEADS_NEW, 
@@ -385,5 +398,5 @@ export {
   saveHeads, getHeadsNew, getStatus,
   calculateChargeHeadsTotal,
   makeInvoice, getInvoices,
-  setHeadsCache
+  setHeadsCache, getEmpList
 };
