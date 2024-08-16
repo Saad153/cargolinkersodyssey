@@ -14,7 +14,6 @@ export async function getServerSideProps(context) {
   console.log(context.req.cookies)
   const { companyId } = context.req.cookies;
     const voucherList = await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_OFFICE_VOUCHERS,{
-      headers:{ "companyId": `${companyId}` }
     }).then((x)=>x.data.result);
   return{ 
     props: {

@@ -6,7 +6,7 @@ import InputNumComp from "/Components/Shared/Form/InputNumComp";
 import InputComp from "/Components/Shared/Form/InputComp";
 import DateComp from "/Components/Shared/Form/DateComp";
 import { Select, Modal, Tag, InputNumber } from 'antd';
-import { getVendors, getClients } from '../states';
+import { getVendors, getClients, getEmpAccount } from '../states';
 import { Row, Col, Table, Spinner } from 'react-bootstrap';
 import PopConfirm from '/Components/Shared/PopConfirm';
 import PartySearch from './PartySearch';
@@ -54,7 +54,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
 
   };
   const isDisabled = getStatus("accountant");
-  // console.log(isDisabled)
   return(
   <>
     <Row>
@@ -76,8 +75,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             dg_type: state.selectedRecord.dg === "Mix" ? "DG" : state.selectedRecord.dg,
             qty: 1,
             rate_charge: 1,
-            currency:   
- "PKR",
+            currency: "PKR",
             amount: 1,
             check: false,
             bill_invoice: "",
@@ -287,8 +285,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                       let choiceArr = ['', 'defaultRecivableParty', 'defaultPaybleParty']; // 0=null, 1=recivable, 2=payble
                       partyType = y[choiceArr[parseInt(state.chargesTab)]];
                       let searchPartyId;
-                      console.log(partyType)
-                      console.log(state.selectedRecord.localVendorId)
                       switch (partyType) {
                         case "Client":
                         searchPartyId = state.selectedRecord.ClientId;
@@ -436,7 +432,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
     <Modal
       open={state.headVisible}
       onOk={()=>dispatch({type:'toggle', fieldName:'headVisible', payload:false})} 
-      onCancel={()=>dispatch({type:'toggle', fieldName:'headVisible', payload:false})}
+      onCancel={()=>dispatch({type:'toggle', fieldName:'headVisible', payload:true})}
       width={1000} footer={false} maskClosable={false}
     >
       {state.headVisible && <PartySearch state={state} dispatch={dispatch} reset={reset} useWatch={useWatch} control={control} />}

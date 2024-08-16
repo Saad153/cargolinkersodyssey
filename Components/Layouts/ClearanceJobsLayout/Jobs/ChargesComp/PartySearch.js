@@ -51,14 +51,14 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
   useEffect(() => {
     getClients();
     getVendors();
-    getEmpAccount();
+    // getEmpAccount();
   }, [])
 
   const RenderEmployeeAccount = ((props) => {
     return(
       <>
         {
-        props.data.filter((x)=>{
+        props?.data?.filter((x)=>{
           if(
             x.title.toLowerCase().includes(searchTerm.toLowerCase())||
             x.id.includes(searchTerm)||
@@ -104,6 +104,7 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
                   console.log(tempThree[i1])
                   tempThree[i1].check=false
                 })
+                dispatch({ type:'set', fieldName:'chargesTab', payload:3 })
                 dispatch({ type:'set', payload:{headIndex:"", headVisible:false, vendorParties:tempOne, clientParties:tempTwo, employeeParties:tempThree} })
               }
             }}
@@ -201,7 +202,7 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     <Select defaultValue="vendor" style={{width:150}} onChange={(e)=>setPartyType(e)}>
       <option value="vendor">Vendor</option>
       <option value="client">Client</option>
-      <option value="employee accounts">Employee Accounts</option>
+      {/* <option value="employee accounts">Employee Accounts</option> */}
       </Select>
     <span className='mx-2'><b>{partyType}</b></span>
     <Input style={{width:200}} placeholder='Type Name' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} />
@@ -230,16 +231,15 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
         </thead>
         }
       <tbody>
-      {partyType != "employee accounts" &&
+      {/* {partyType != "employee accounts" &&} */}
       <RenderData 
       data={
         partyType=="vendor"?state.vendorParties:state.clientParties
         } type={partyType=="vendor"?'vendors':'clients'} searchTerm={searchTerm} />
-      }
-      {partyType == "employee accounts" &&
+      {/* {partyType == "employee accounts" &&
       <RenderEmployeeAccount data={state.employeeParties} type={'employee accounts'} searchTerm={searchTerm} />
 
-      }
+      } */}
       </tbody>
       </Table>
     </div>

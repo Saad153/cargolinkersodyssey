@@ -23,12 +23,17 @@ const CLPrint = ({ records, invoice }) => {
         let netBalance = 0;
         let tempServiceCharges = 0;
         records.forEach((x) => {
+            console.log(x)
           if(x.charge!='57'){
             temptax = temptax + parseFloat(x.tax_amount);
-            taxPercent = parseFloat(x.taxPerc)
+            taxPercent = parseFloat(x.tax_amount)
             result = result + parseFloat(x.local_amount);
           } else {
-            tempServiceCharges = tempServiceCharges + parseFloat(x.local_amount);
+            // console.log("Temp Service Charges: "+tempServiceCharges)
+            // console.log("Local Amount: "+x.local_amount)
+            console.log(x.tax_amount)
+            temptax = temptax + parseFloat(x.tax_amount);
+            tempServiceCharges = tempServiceCharges + parseFloat(x.amount);
           }
           netBalance = netBalance + parseFloat(x.local_amount) + parseFloat(x.tax_amount)
         });
@@ -43,8 +48,9 @@ const CLPrint = ({ records, invoice }) => {
     const totalFloat = values.total;
     const taxFloat = values.taxPercent;
     const serviceFloat = values.serviceCharges
+    const tax = values.tax
     // + values.serviceCharges;
-    const sum = totalFloat+serviceFloat+taxFloat;
+    const sum = totalFloat+serviceFloat+taxFloat+tax;
     console.log("sum", sum)
     return (
     <div className='pb-5 px-5 pt-2'>
@@ -185,7 +191,7 @@ const CLPrint = ({ records, invoice }) => {
                         <td className='text-start'>
                             <span className='fw-bold'>Total Expense</span> <br />
                             <span className='fw-bold'>Service Charges</span> <br />
-                            <span className='fw-bold'>Sales Tax 13%</span> <br />
+                            <span className='fw-bold'>Sales Tax 15%</span> <br />
                             <span className='fw-bold'>Balance Invoice</span> <br />
                             <span className='fw-bold'>Advnace Recieved</span> <br />
                             <span className='fw-bold'>Net Balance</span> <br />
@@ -193,7 +199,7 @@ const CLPrint = ({ records, invoice }) => {
                         <td className='text-end'>
                             <span className='fs-12'>{commas(values.total)}</span> <br />
                             <span className='fs-12'>{commas(values.serviceCharges)}</span> <br />
-                            <span className='fs-12'>{commas(values.taxPercent)}</span> <br />
+                            <span className='fs-12'>{commas(values.tax)}</span> <br />
                             <span className='fs-12'></span>{commas(sum)} <br />
                             <span className='fs-12'>0.00</span> <br />
                             <span className='fs-12'>{commas(sum)}</span> <br />

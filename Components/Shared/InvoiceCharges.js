@@ -42,14 +42,14 @@ const InvoiceCharges = ({data, companyId, reload}) => {
     },
     note:''
   });
-  let printed;
-  let gstprint;
-  let invoiceNo;
-  if(data.resultOne != null){
-    invoiceNo = data.resultOne.invoice_No;
-    printed = data.resultOne.isPrinted;
-    gstprint = data.resultOne.GSTPrinted;
-  }
+  // let printed;
+  // let gstprint;
+  // let invoiceNo;
+  // if(data.resultOne != null){
+  //   invoiceNo = data.resultOne.invoice_No;
+  //   printed = data.resultOne.isPrinted;
+  //   gstprint = data.resultOne.GSTPrinted;
+  // }
   const [load, setLoad] = useState(false);
   const [ref, setRef] = useState(false);
   const [logo, setLogo] = useState(false);
@@ -301,33 +301,33 @@ const InvoiceCharges = ({data, companyId, reload}) => {
     }
     return result
   }
-  const postPrinted = async() => {
-    try {
-      const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
-        invoice_No: data.resultOne.invoice_No,
-        printed: printed,
-        gstprinted: gstprint,
-      });
+  // const postPrinted = async() => {
+  //   try {
+  //     const response = await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_PRINTED, {
+  //       invoice_No: data.resultOne.invoice_No,
+  //       printed: printed,
+  //       gstprinted: gstprint,
+  //     });
   
-      if (response.status === "success") {
-        console.log('Print status updated successfully');
-      } else {
-        console.error('Error updating print status:', response.data);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  //     if (response.status === "success") {
+  //       console.log('Print status updated successfully');
+  //     } else {
+  //       console.error('Error updating print status:', response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
 
-  }
+  // }
 
-  const printInvoice = (PorG) =>{
-    if(PorG == 1){
-      printed = true; 
-    }else{
-      gstprint = true;
-    }
-    postPrinted();
-  }
+  // const printInvoice = (PorG) =>{
+  //   if(PorG == 1){
+  //     printed = true; 
+  //   }else{
+  //     gstprint = true;
+  //   }
+  //   postPrinted();
+  // }
 
 
   const PrintOptions = (

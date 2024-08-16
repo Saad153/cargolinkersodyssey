@@ -10,8 +10,10 @@ const Charges = dynamic(() => import('./Charges'), {
   loading: () => <p>Loading...</p>,
 });
 import { Tabs } from 'antd';
+import EmployeePaybles from "./EmployeePaybles";
 
 const ChargesComp = ({state, dispatch, type, allValues}) => {
+
 
   const queryClient = useQueryClient();
   const companyId = useSelector((state) => state.company.value);
@@ -49,8 +51,11 @@ const ChargesComp = ({state, dispatch, type, allValues}) => {
           companyId={companyId} operationType={type} allValues={allValues} chargesData={chargesData}
         />
       </Tabs.TabPane>
+      {/* <Tabs.TabPane tab="Employee Paybles" key="3">
+        <EmployeePaybles state={state} dispatch={dispatch} jobNo={state.selectedRecord.jobNo} jobId={state.selectedRecord.id}/>
+      </Tabs.TabPane> */}
     </Tabs>
-    <hr/>
+    <hr/> 
     </div>
     <div className='px-3'>
     <Row className='charges-box' >
