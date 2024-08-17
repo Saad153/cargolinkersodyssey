@@ -20,7 +20,6 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
   const getVendors = async() => {
     await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_VENDOR_FOR_PARTY_SEARCH)
     .then((x) => {
-      // console.log(x.data.result)
       let data = [];
       x.data.result.forEach(x => {
         data.push({...x, check:false})
@@ -33,25 +32,20 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_ALL_CHILD_ACCOUNTS,{
       headers:{ companyid: 2 }
     }).then((x) => {
-      // console.log(x.data.result)
       let data = x.data.result.filter((x)=>{
         if(x.Parent_Account.AccountId=="1"){ return x }
       })
-      // console.log(data)
       let data2 = [];
       data.forEach((x)=>{
         data2.push({...x, check:false})
       })
-      // console.log(data2)
       dispatch({type:'toggle', fieldName:'employeeParties', payload:data2});
     })
   }
 
-// console.log(state.employeeParties)
   useEffect(() => {
     getClients();
     getVendors();
-    // getEmpAccount();
   }, [])
 
   const RenderEmployeeAccount = ((props) => {
@@ -193,7 +187,6 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     </>
     )
   })
-  // console.log(state)
 
   return(
     <>
@@ -202,7 +195,6 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
     <Select defaultValue="vendor" style={{width:150}} onChange={(e)=>setPartyType(e)}>
       <option value="vendor">Vendor</option>
       <option value="client">Client</option>
-      {/* <option value="employee accounts">Employee Accounts</option> */}
       </Select>
     <span className='mx-2'><b>{partyType}</b></span>
     <Input style={{width:200}} placeholder='Type Name' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} />
@@ -231,15 +223,10 @@ const PartySearch = ({state, dispatch, reset, useWatch, control}) => {
         </thead>
         }
       <tbody>
-      {/* {partyType != "employee accounts" &&} */}
       <RenderData 
       data={
         partyType=="vendor"?state.vendorParties:state.clientParties
         } type={partyType=="vendor"?'vendors':'clients'} searchTerm={searchTerm} />
-      {/* {partyType == "employee accounts" &&
-      <RenderEmployeeAccount data={state.employeeParties} type={'employee accounts'} searchTerm={searchTerm} />
-
-      } */}
       </tbody>
       </Table>
     </div>

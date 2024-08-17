@@ -132,7 +132,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
               await queryClient.removeQueries({ queryKey: ['charges'] })
               await chargesData.refetch();
               dispatch({type:'set', payload:{
-                //chargeLoad:false,
                 selection:{InvoiceId:null, partyId:null}
               }})
               await delay(1000);
@@ -140,7 +139,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
               await chargesData.refetch();
               dispatch({type:'set', payload:{
                   chargeLoad:false,
-                  //selection:{InvoiceId:null, partyId:null}
               }})
             }
           }}
@@ -161,14 +159,12 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                   await chargesData.refetch();
                 }  
                 await dispatch({type:'set', payload:{
-                  //chargeLoad:false,
                   selection:{InvoiceId:null, partyId:null}
                 }})
                 await delay(1000);
                 await chargesData.refetch();
                 await dispatch({type:'set', payload:{
                   chargeLoad:false,
-                  //selection:{InvoiceId:null, partyId:null}
                 }})
               }
             }}
@@ -278,7 +274,6 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                         basis: y.calculationType,
                         amount :y.fixAmount>0?y.fixAmount:tempChargePerPiece,
                         taxPerc: y.taxApply == "Yes" ? parseFloat(y.taxPerc) : 0.00,
-                        // qty:(y.calculationType!="Per Unit"||allValues.cwtClient=="")?1:allValues.cwtClient
                       }
 
                       let partyType = "";

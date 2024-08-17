@@ -240,9 +240,14 @@ const getVendors = memoize(async(id) => {
 
 const getEmpList = memoize(async (No) => {
   try {
-    const response = await axios.get(process.env.NEXT_PUBLIC_CLIMAX_GET_EMP_PAY_LIST,
-    {headers:{jobNo: No}})
-    return response.data.result;
+    const response = await axios.get(process.env.NEXT_PUBLIC_CLIMAX_POST_GET_EMPLOYEE_PAYABLE_BY_JOB,
+    {headers:{jobNo: No}});
+    if(response.data.status == 'success') {
+      return response.data.result;
+    }else{
+      console.error('Error fetching employee list:', error);
+
+    }
   } catch (error) {
     console.error('Error fetching employee list:', error);
     return [];
