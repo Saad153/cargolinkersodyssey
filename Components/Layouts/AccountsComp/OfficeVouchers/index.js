@@ -58,6 +58,7 @@ const OfficeVouchers = ({voucherList}) => {
             </thead>
             <tbody>
             {
+            state.records.length>0 &&
         state.records.map((x, index) => {
         return (
         <tr key={index} className='f row-hov'

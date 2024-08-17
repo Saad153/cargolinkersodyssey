@@ -6,10 +6,11 @@ import { useWatch, useFieldArray, useForm } from "react-hook-form";
 import PopConfirm from '/Components/Shared/PopConfirm';
 import { getEmpList, getStatus } from "../states";
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import openNotification from '../../../../Shared/Notification';
 import { Select } from 'antd';
 
-const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
-
+const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
+    // console.log("EmpPay"+jobID)
     const { register, handleSubmit, control, reset } = useForm();
     const { fields, append, remove, replace } = useFieldArray({
         control,
@@ -26,16 +27,15 @@ const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
     useEffect(() => {
         const fetchData = async () => {
             let temp2 = []
-          const data = await getEmpList(jobId);
-          data.forEach((x)=>x.new=false)
+          const data = await getEmpList(jobID);
           data.map((x)=>temp2.push(
             {
                 newid: x.id,
-                requestedBy: x.requestedBy,
-                onAcOf: x.onAcOf,
+                requestedby: x.requestedby,
+                accountid: x.accountid,
                 amount: x.amount,
                 descriptive: true,
-                preparedBy: x.preparedBy,
+                preparedby: x.preparedby,
                 approved: x.approved,
                 CompanyId: true,
                 reverseAmount: x.reverseAmount,
@@ -43,9 +43,10 @@ const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
                 jobPayable: x.jobPayable,
                 createdAt: x.createdAt,
                 updatedAt: x.updatedAt,
-                EmployeeId: x.EmployeeId,
+                employeeid: x.employeeid,
                 VoucherId: x.VoucherId,
-                new: x.new
+                new: false
+
             }
           ))
           try{
@@ -53,7 +54,7 @@ const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
             setAllEmp(result.data.result);
             result.data.result.forEach(element => {
                 data.forEach(x => {
-                    if(element.id == x.EmployeeId){
+                    if(element.id == x.employeeid){
                         setEmpData(element)
                     }
                 })
@@ -92,15 +93,17 @@ const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
                 <Col style={{ maxWidth: 150 }} className='text-center'>
                 <div className="div-btn-custom text-center py-1 fw-8"
                 onClick={() => {
+                    console.log(jobID)
                     append({
+                        requestedby: "",
                         amount: 0,
-                        paid: 0,
-                        preparedBy: Cookies.get("username"),
-                        jobPayable: true,
-                        VoucherId: jobId,
-                        descriptive: true,
+                        preparedby: Cookies.get("username"),
+                        approved: false,
+                        paid: false,
+                        accountid: "",
+                        employeeid: "",
+                        jobid: jobID,
                         new: true,
-                        approved: false
                     })
                     // console.log("Added")
                 }}
@@ -114,20 +117,36 @@ const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
                     // dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
                     await DeleteList.forEach(x => {
                         x.id = x.newid
-                        const result = axios.get(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_OFFICE_VOUCHER, {
+                        const result = axios.get(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_EMPLOYEE_PAYABLE, {
                             headers:{"id": `${x.id}`}
                         })
                     })
                     let tempo = fields
                     await tempo.forEach(x => {
                         x.id = x.newid
+                        if(x.newid == null){
+                            delete x.id
+                            delete x.newid
+                        }
+                        let check = false;
+                        if(x.requestedby != "" && x.amount > 0 && x.accountid != "" && x.employeeid != ""){
+                            check = true
+                        }
                         
-                         if(x.new == true){
+                        if(check && x.new == true){
 
-                            x.new = false
-                            const result = axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_UPSERT_OFFICE_VOUCHER, {
+                            delete x.new
+                            console.log(x.jobid)
+                            const result = axios.post(process.env.NEXT_PUBLIC_CLIMAX_POST_EMPLOYEE_PAYABLE_UPSERT, {
                                 ...x
                             })
+                            x.new = false
+                            console.log(result)
+                            // console.log(result.status)
+                            openNotification("success", "Saved Successfully", "green")
+                        }else if(check == false){
+                            openNotification("Error", "Incomplete Data", "orange")
+                            
                         }
                     })
                     replace(tempo)
@@ -178,22 +197,22 @@ const EmployeeList = ({state, dispatch, jobNo, jobId}) => {
                                         />
                                         </td>
                                         <td className='text-center'>
-                                            {!x.new && x.requestedBy}
+                                            {!x.new && x.requestedby}
                                             {x.new && <Select className='table-dropdown' showSearch style={{ padding: 0 }} disabled={!x.new && getStatus("admin")} onChange={e => {
                                                 const parts = e.split(',');
-                                                x.EmployeeId = parts[1];
-                                                x.requestedBy = parts[0];
+                                                x.employeeid = parts[1];
+                                                x.requestedby = parts[0];
                                             }}>
                                                 {AllEmp.map((x) => <Select.Option key={x.id} value={x.name + "," + x.id}>{x.name}</Select.Option>)}
                                             </Select>}
                                         </td>
                                         <td className='text-center'>
-                                            {!x.new && x.onAcOf}
-                                            {x.new && <Select className='table-dropdown' showSearch style={{ padding: 0 }} disabled={x.new && getStatus("admin")} onChange={e => x.onAcOf = e}>
+                                            {!x.new && x.accountid}
+                                            {x.new && <Select className='table-dropdown' showSearch style={{ padding: 0 }} disabled={x.new && getStatus("admin")} onChange={e => x.accountid = e}>
                                             {AllAccounts.map((x) => <Select.Option key={x.id} value={x.id}>{x.title}</Select.Option>)}
                                             </Select>}
                                         </td>
-                                        <td className='text-center'>{x.preparedBy}</td>
+                                        <td className='text-center'>{x.preparedby}</td>
                                         <td className='text-center'>{x.approved && <CheckCircleOutlined style={{ color: 'green' }}></CheckCircleOutlined>}{!x.approved && <CloseCircleOutlined></CloseCircleOutlined>}</td>
                                         <td className='text-center'>{jobNo}</td>
                                         <td className='text-center'>

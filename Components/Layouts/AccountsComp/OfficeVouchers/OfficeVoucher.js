@@ -62,9 +62,6 @@ const OfficeVoucher = ({voucherData, id, employeeData}) => {
     const preparedBy = await cookies.get("username")
     e.preventDefault();
     let tempData = {...state};
-    // console.log(state.EmployeeId)
-    // console.log(state.descriptive?calculateTotal():tempData.amount)
-    // console.log(preparedBy)
     id=="new"? delete tempData.id:null;
     id=="new"? delete tempData.VoucherId:null;
     if(tempData.descriptive){
@@ -217,7 +214,6 @@ const OfficeVoucher = ({voucherData, id, employeeData}) => {
           delete tempVoucher.voucher_Id;
           delete tempVoucher.voucher_No;
           let tempType = tempVoucher.Voucher_Heads[0].type;
-          //tempVoucher.Voucher_Heads[0].type = tempVoucher.Voucher_Heads[1].type;
           tempVoucher.Voucher_Heads[0] = {...tempVoucher.Voucher_Heads[0], type:tempVoucher.Voucher_Heads[1].type, amount:recievingAmount.value}
           tempVoucher.Voucher_Heads[1] = {...tempVoucher.Voucher_Heads[1], type:tempType, amount:recievingAmount.value};
 
