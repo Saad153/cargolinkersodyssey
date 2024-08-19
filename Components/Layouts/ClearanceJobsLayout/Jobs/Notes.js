@@ -82,10 +82,10 @@ const Notes = ({state, dispatch, type}) => {
               onChange={(e)=>dispatch({type:'toggle', fieldName:'title', payload:e.target.value})}
             /> */}
             <Select className='table-dropdown' style={{minWidth:150}} placeholder='Select Title' onChange={(e)=>dispatch({type:'toggle', fieldName:'title', payload:e})}>
-              <Option value="Charges Payable">Charges Payable</Option>
-              <Option value="Client Instructions">Client Instructions</Option>
-              <Option value="Own Instructions">Own Instructions</Option>
-              <Option value="Others">Others</Option>
+              <Select.Option value="Charges Payable">Charges Payable</Select.Option>
+              <Select.Option value="Client Instructions">Client Instructions</Select.Option>
+              <Select.Option value="Own Instructions">Own Instructions</Select.Option>
+              <Select.Option value="Others">Others</Select.Option>
             </Select>
             <Input.TextArea rows={4} placeholder='description' className='my-2' 
               value={state.note} 

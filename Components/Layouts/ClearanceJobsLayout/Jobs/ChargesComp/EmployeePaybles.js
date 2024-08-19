@@ -179,7 +179,7 @@ AllAccounts.forEach(x => {
                     {fields.map((x, index) => {
                         const accountTitle = AllAccounts.find(account => account.id === x.accountid)?.title || x.accountid;
                                 return(
-                                    <tr className='f table-row-center-singleLine'>
+                                    <tr key={index} className='f table-row-center-singleLine'>
                                         <td className='text-center'>
                                         <CloseCircleOutlined className='cross-icon' style={{ position: 'relative', bottom: 3 }}
                                             onClick={() => {
