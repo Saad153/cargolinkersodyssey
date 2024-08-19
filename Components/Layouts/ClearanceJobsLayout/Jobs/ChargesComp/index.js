@@ -35,8 +35,6 @@ const ChargesComp = ({state, dispatch, type, allValues}) => {
     queryClient.setQueryData(['charges', {id:state.selectedRecord.id}], (x)=>x?{...obj}:x);
   }, [chargeList])
 
-  console.log(state.selectedRecord.id)
-
   return (
     <>
     <div style={{minHeight:525, maxHeight:525}}>
@@ -47,13 +45,13 @@ const ChargesComp = ({state, dispatch, type, allValues}) => {
           companyId={companyId} operationType={type} allValues={allValues} chargesData={chargesData}
         />
       </Tabs.TabPane>
-      <Tabs.TabPane tab="Payble" key="2">
+      <Tabs.TabPane tab="Payable" key="2">
         <Charges state={state} dispatch={dispatch} type={"Payble"} register={register}
           chargeList={chargeList} fields={fields} append={append} reset={reset} control={control} 
           companyId={companyId} operationType={type} allValues={allValues} chargesData={chargesData}
         />
       </Tabs.TabPane>
-      <Tabs.TabPane tab="Employee Paybles" key="3">
+      <Tabs.TabPane tab="Employee Payables" key="3">
         <EmployeePaybles state={state} dispatch={dispatch} jobNo={state.selectedRecord.jobNo} jobID={state.selectedRecord.id}/>
       </Tabs.TabPane>
     </Tabs>

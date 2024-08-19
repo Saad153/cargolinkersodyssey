@@ -54,6 +54,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
 
   };
   const isDisabled = getStatus("accountant");
+  // console.log(chargeList)
   return(
   <>
     <Row>
@@ -125,6 +126,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
       !isDisabled && (
         <div className='div-btn-custom text-center mx-0 py-1 px-3' style={{float:'right'}} 
           onClick={async () => {
+            console.log(chargesData.data.charges)
             if(!state.chargeLoad){
               dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
               await calculate();
@@ -396,10 +398,9 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
             <td>{x.tax_amount}</td>{/* Tax Amount */}
             <td>{x.net_amount}</td>
             <td style={{ padding: 3 }}>{/* Ex. Rate */}
-              {chargeList[index]?.currency!="PKR" && 
-                <InputNumComp register={register} name={`chargeList.${index}.ex_rate`} control={control} label='' width={10} disabled={permissionAssign(permissions, x) && getStatus("admin")} />
-              }
-              {chargeList[index]?.currency=="PKR" && <InputNumber value={1.00} /> }
+              <InputComp register={register} name={`chargeList.${index}.refNum`} control={control} width={60} font={13} 
+                  disabled={permissionAssign(permissions, x) && getStatus("admin")}
+                />
             </td>
             <td>{x.local_amount}</td>
             
