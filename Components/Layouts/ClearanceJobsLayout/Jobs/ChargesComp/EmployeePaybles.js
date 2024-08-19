@@ -214,13 +214,13 @@ AllAccounts.forEach(x => {
                                             </Select>}
                                         </td>
                                         <td className='text-center'>{x.preparedby}</td>
-                                        <td className='text-center'>{x.approved && <CheckCircleOutlined style={{ color: 'green' }}></CheckCircleOutlined>}{!x.approved && <CloseCircleOutlined></CloseCircleOutlined>}</td>
+                                        <td className='text-center'>{x.approved? <CheckCircleOutlined style={{ color: 'green' }} />: 'UnApproved'}</td>
                                         <td className='text-center'>{jobNo}</td>
                                         <td className='text-center'>
                                             {!x.new && x.amount}
                                             {x.new && <input className='table-dropdown' type="number" style={{ border: "1px solid #d7d7d7", padding: 0 }} onChange={(e) => x.amount = e.target.value}/>}
                                         </td>
-                                        <td className='text-center'>{x.paid && <CheckCircleOutlined style={{ color: 'green' }}></CheckCircleOutlined>}{!x.approved && <CloseCircleOutlined></CloseCircleOutlined>}</td>
+                                        <td className='text-center'>{x.paid? <CheckCircleOutlined style={{ color: 'green' }} />: 'Unpaid'}</td>
                                     </tr>
                                 )
 
