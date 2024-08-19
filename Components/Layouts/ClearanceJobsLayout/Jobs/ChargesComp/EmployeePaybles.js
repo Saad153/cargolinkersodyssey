@@ -32,21 +32,14 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
             {
                 newid: x.id,
                 requestedby: x.requestedby,
-                accountid: x.accountid,
                 amount: x.amount,
-                descriptive: true,
                 preparedby: x.preparedby,
                 approved: x.approved,
-                CompanyId: true,
-                reverseAmount: x.reverseAmount,
                 paid: x.paid,
-                jobPayable: x.jobPayable,
-                createdAt: x.createdAt,
-                updatedAt: x.updatedAt,
+                accountid: x.accountid,
                 employeeid: x.employeeid,
-                VoucherId: x.VoucherId,
-                new: false
-
+                jobid: x.jobid,
+                new: false,
             }
           ))
           try{
@@ -85,8 +78,10 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
     
         fetchData();
     }, [temp1]);
-
-
+AllAccounts.forEach(x => {
+    console.log(x.title)
+})
+// console.log(AllAccounts)
     return(
         <>
             <Row>
@@ -114,7 +109,15 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
                 <Col>
                 <div className='div-btn-custom text-center mx-0 py-1 px-3' style={{float:'right'}}
                 onClick={async () => {
-                    // dispatch({type:'toggle', fieldName:'chargeLoad', payload:true})
+                    let changes = false
+                    fields.forEach(x => {
+                        if(x.new == true){
+                            changes = true
+                        }
+                    })
+                    if(DeleteList.length == 0 && !changes){
+                        openNotification("No Changes", "No Changes", "orange")
+                    }
                     await DeleteList.forEach(x => {
                         x.id = x.newid
                         const result = axios.get(process.env.NEXT_PUBLIC_CLIMAX_POST_DELETE_EMPLOYEE_PAYABLE, {
@@ -151,9 +154,6 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
                     })
                     replace(tempo)
                     console.log(fields)
-                    // setTemp1([...tempo])
-                    // dispatch({type:'set', fieldName:'chargeLoad', payload:false})
-                    
                 }}
                 >
                 Save Charges
@@ -177,6 +177,7 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
                     <tbody>
                         
                     {fields.map((x, index) => {
+                        const accountTitle = AllAccounts.find(account => account.id === x.accountid)?.title || x.accountid;
                                 return(
                                     <tr className='f table-row-center-singleLine'>
                                         <td className='text-center'>
@@ -207,7 +208,7 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
                                             </Select>}
                                         </td>
                                         <td className='text-center'>
-                                            {!x.new && x.accountid}
+                                            {!x.new && accountTitle}
                                             {x.new && <Select className='table-dropdown' showSearch style={{ padding: 0 }} disabled={x.new && getStatus("admin")} onChange={e => x.accountid = e}>
                                             {AllAccounts.map((x) => <Select.Option key={x.id} value={x.id}>{x.title}</Select.Option>)}
                                             </Select>}
@@ -219,7 +220,7 @@ const EmployeeList = ({state, dispatch, jobNo, jobID}) => {
                                             {!x.new && x.amount}
                                             {x.new && <input className='table-dropdown' type="number" style={{ border: "1px solid #d7d7d7", padding: 0 }} onChange={(e) => x.amount = e.target.value}/>}
                                         </td>
-                                        <td className='text-center'>{x.paid}</td>
+                                        <td className='text-center'>{x.paid && <CheckCircleOutlined style={{ color: 'green' }}></CheckCircleOutlined>}{!x.approved && <CloseCircleOutlined></CloseCircleOutlined>}</td>
                                     </tr>
                                 )
 

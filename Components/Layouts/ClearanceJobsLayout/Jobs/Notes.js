@@ -1,5 +1,5 @@
-import React from 'react';
-import { Popover, Input } from "antd";
+import React, { useEffect } from 'react';
+import { Popover, Input, Select } from "antd";
 import { Row, Col, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -8,6 +8,10 @@ import moment from 'moment';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 
 const Notes = ({state, dispatch, type}) => {
+
+  useEffect(() => {
+    getNotes();
+  }, [])
   
   const handleSubmit = async() => {
 
@@ -37,7 +41,7 @@ const Notes = ({state, dispatch, type}) => {
     }
   };
   const getNotes = async() => {
-    dispatch({type:'toggle', fieldName:'load', payload:true});
+    // dispatch({type:'toggle', fieldName:'load', payload:true});
     setTimeout(async() => {
       await axios.post(process.env.NEXT_PUBLIC_CLIMAX_GET_SEAJOB_NOTES,{
         id: state.selectedRecord.id, type :state.selectedRecord.operation
@@ -56,10 +60,13 @@ const Notes = ({state, dispatch, type}) => {
           })
           dispatch({type:'toggle', fieldName:'notes', payload:tempNotes});
         }
-        dispatch({type:'toggle', fieldName:'load', payload:false})
+        // dispatch({type:'toggle', fieldName:'load', payload:false})
       })
     }, 2000);
   };
+
+  // getNotes();
+
   const updateNote = async(data) => {
     await axios.post(process.env.NEXT_PUBLIC_CLIMAX_UPDATE_SEAJOB_NOTES, {data})
   };
@@ -70,10 +77,16 @@ const Notes = ({state, dispatch, type}) => {
       <Popover trigger="click"
         content={
           <div className='p-2 m-0' style={{border:'1px solid silver'}}>
-            <h5>Add A Note</h5>
+            <h5>Add a Note</h5>
             {/* <Input placeholder='title' value={state.title} 
               onChange={(e)=>dispatch({type:'toggle', fieldName:'title', payload:e.target.value})}
             /> */}
+            <Select className='table-dropdown' style={{minWidth:150}} placeholder='Select Title' onChange={(e)=>dispatch({type:'toggle', fieldName:'title', payload:e})}>
+              <Option value="Charges Payable">Charges Payable</Option>
+              <Option value="Client Instructions">Client Instructions</Option>
+              <Option value="Own Instructions">Own Instructions</Option>
+              <Option value="Others">Others</Option>
+            </Select>
             <Input.TextArea rows={4} placeholder='description' className='my-2' 
               value={state.note} 
               onChange={(e)=>dispatch({type:'toggle', fieldName:'note', payload:e.target.value})} 
@@ -168,7 +181,7 @@ const Notes = ({state, dispatch, type}) => {
           </div>
         }
       >
-      <div className='div-btn px-3 mt-2' style={{maxWidth:110}} onClick={()=>getNotes()}>View Notes</div>
+      <div className='div-btn px-3 mt-2' style={{maxWidth:110}} onClick={()=>getNotes()}>View Notes({state.notes.length})</div>
       </Popover>
     </div>
   )
