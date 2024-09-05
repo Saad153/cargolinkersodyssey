@@ -113,7 +113,8 @@ const baseValues = {
   arrivalTime:'',
   departureDate:'',
   departureTime:'',
-  gross:''
+  gross:'',
+  regPageNo:'',
 };
 
 const initialState = {

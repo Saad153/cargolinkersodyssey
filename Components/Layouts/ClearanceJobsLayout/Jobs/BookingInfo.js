@@ -36,6 +36,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
   const customAgentId = useWatch({control, name:"customAgentId"});
   const commodityId = useWatch({control, name:"commodityId"});
   const localVendorId = useWatch({control, name:"localVendorId"});
+  const regPageNo = useWatch({control, name:"regPageNo"});
   const approved = useWatch({control, name:"approved"});
   const Space = () => <div className='mt-2'/>
 
@@ -174,7 +175,7 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
           ]}
         />
       </Col>
-      <Col md={2} className='py-1'>
+      <Col md={1} className='py-1'>
         <SelectComp register={register} name='subType' control={control} label='Shipment Type' width={"100%"} 
           options={[
             {id:'FCL', name:'FCL'},
@@ -186,6 +187,9 @@ const BookingInfo = ({handleSubmit, onEdit, register, control, errors, state, us
       </Col>
       <Col md={2} className='py-1'>
         <InputComp register={register} name='customerRef' control={control} label='Invoice #' width={"100%"}  />
+      </Col>
+      <Col md={1} className='py-1'>
+        <InputComp register={register} name='regPageNo' control={control} label='Reg. Page No.' width={"100%"}  />
       </Col>
     </Row>
     <hr />
