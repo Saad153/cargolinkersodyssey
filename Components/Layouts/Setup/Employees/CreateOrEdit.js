@@ -313,6 +313,7 @@ return(
             <Select.Option disabled={isAdmin} value={'AgentInvBalance'}>Agent Inv Balance</Select.Option>
             <Select.Option disabled={isAdmin} value={'TrialBalance'}>Trial Balance</Select.Option>
             <Select.Option disabled={isAdmin} value={'IncomeStatement'}>Income Statement</Select.Option>
+            <Select.Option disabled={isAdmin} value={'Delete'}>Delete</Select.Option>
             <Select.Option disabled={isNotAdmin} onChange={checkAdmin} value={'admin'}>Admin</Select.Option>
 
           </Select>

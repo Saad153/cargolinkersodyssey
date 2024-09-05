@@ -277,9 +277,11 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                         amount :y.fixAmount>0?y.fixAmount:tempChargePerPiece,
                         taxPerc: y.taxApply == "Yes" ? parseFloat(y.taxPerc) : 0.00,
                       }
+                      // console.log(tempChargeList[index])
 
                       let partyType = "";
                       let choiceArr = ['', 'defaultRecivableParty', 'defaultPaybleParty']; // 0=null, 1=recivable, 2=payble
+                      // console.log(state.chargesTab)
                       partyType = y[choiceArr[parseInt(state.chargesTab)]];
                       let searchPartyId;
                       switch (partyType) {
@@ -308,6 +310,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                         searchPartyId = state.selectedRecord.localVendorId;
                         break;
                       }
+                      // console.log(searchPartyId)
                       let partyData = [{}];
                       if(searchPartyId){
                         partyData = partyType=="Client"?await getClients(searchPartyId) :await getVendors(searchPartyId);
@@ -320,6 +323,7 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
                       tempChargeList[index].name = partyData[0]?.name||null;
                       tempChargeList[index].partyId = partyData[0]?.id||null;
                       tempChargeList[index].partyType = partyType == "Client" ? "client" : "vendor";
+                      // console.log(x)
                       reset({ chargeList: tempChargeList })
                     }
                 })}}
@@ -335,7 +339,9 @@ const ChargesList=({state, dispatch, type, append, reset, fields, chargeList, co
               />
               }{x.name != "" ? <span className='m-2 '><Tag color="geekblue" style={{ fontSize: 15 }}>{x.name}</Tag></span> : ""}
             </td>
-            <td>{x.particular}</td>
+            <td>
+            {x.particular}
+            </td>
             <td>{x.basis}</td>{/* Basis */}
             {/* PP?CC */}
             <td style={{ padding: 3, minWidth: 50 }}>
